@@ -7,7 +7,7 @@ secrets/
 .pytest_cache/
 .ruff_cache/
 data/uploads/
-models/
+services/*/models/
 
 services/auth-service/.env
 services/rag-service/.env
