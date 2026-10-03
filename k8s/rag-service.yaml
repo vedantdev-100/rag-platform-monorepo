@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: rag-service, namespace: rag-platform }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: rag-service } }
+  template:
+    metadata: { labels: { app: rag-service } }
+    spec:
+      containers:
+        - name: rag-service
+          image: registry.example.com/rag-service:v1.0.0  # models baked in at build time
+          envFrom: [{ secretRef: { name: rag-service-secrets } }]
+          readinessProbe: { httpGet: { path: /health, port: 8000 } }
+          resources: { requests: { cpu: "1", memory: 2Gi }, limits: { cpu: "2", memory: 4Gi } }
+          # If NOT baking models into the image, mount a pre-populated PVC instead:
+          # volumeMounts: [{ name: models, mountPath: /code/models, readOnly: true }]
+      # volumes: [{ name: models, persistentVolumeClaim: { claimName: rag-models-pvc, readOnly: true } }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: rag-service, namespace: rag-platform }
+spec:
+  selector: { app: rag-service }
+  ports: [{ port: 80, targetPort: 8000 }]
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: { name: rag-service, namespace: rag-platform }
+spec:
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: rag-service }
+  minReplicas: 2
+  maxReplicas: 8
+  metrics: [{ type: Resource, resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } } }]

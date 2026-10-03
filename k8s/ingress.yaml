@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: { name: rag-platform, namespace: rag-platform }
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api/v1/auth
+            pathType: Prefix
+            backend: { service: { name: auth-service, port: { number: 80 } } }
+          - path: /api/v1/users
+            pathType: Prefix
+            backend: { service: { name: auth-service, port: { number: 80 } } }
+          - path: /.well-known
+            pathType: Prefix
+            backend: { service: { name: auth-service, port: { number: 80 } } }
+          - path: /api/v1/documents
+            pathType: Prefix
+            backend: { service: { name: rag-service, port: { number: 80 } } }
+          # Future: add one more path block for agents-service here.

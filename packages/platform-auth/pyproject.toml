@@ -1,0 +1,20 @@
+[project]
+name = "platform-auth"
+version = "1.0.0"
+description = "Shared JWT verification + RBAC for all services in this platform"
+requires-python = "==3.12.*"
+dependencies = [
+    "fastapi==0.115.0",
+    "python-jose[cryptography]==3.3.0",
+    "httpx==0.27.2",
+    "structlog==24.4.0",
+]
+
+[project.optional-dependencies]
+# Only services that need instant token revocation install this extra.
+redis = ["redis==5.0.8"]
+
+[tool.uv]
+resolution = "highest"
+prerelease = "disallow"
+exclude-newer = "7 days"
