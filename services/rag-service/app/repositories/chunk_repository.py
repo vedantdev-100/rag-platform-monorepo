@@ -1,7 +1,8 @@
 import uuid
 
-from sqlalchemy import func, select, text
+from sqlalchemy import func, select, text, cast
 from sqlalchemy.ext.asyncio import AsyncSession
+from pgvector.sqlalchemy import Vector
 
 from app.core.config import get_settings
 from app.models.chunk import Chunk

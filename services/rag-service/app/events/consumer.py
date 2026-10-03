@@ -46,6 +46,8 @@ class UserEventConsumer:
             # Deliberately no data deletion — a deactivated account can be
             # reactivated, and deactivation alone shouldn't destroy data.
             logger.info("user_deactivated_event_received", user_id=user_id)
+        elif event_type == "user.reactivated":
+            logger.info("user_reactivated_event_received", user_id=user_id)
         else:
             logger.warning("unknown_user_event", event=event)
 

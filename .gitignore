@@ -11,3 +11,4 @@ services/*/models/
 
 services/auth-service/.env
 services/rag-service/.env
+data/

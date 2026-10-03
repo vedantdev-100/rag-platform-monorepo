@@ -26,6 +26,9 @@ class UserEventPublisher:
     async def publish_deactivated(self, user_id: uuid.UUID) -> None:
         await self._publish("user.deactivated", user_id)
 
+    async def publish_reactivated(self, user_id: uuid.UUID) -> None:
+        await self._publish("user.reactivated", user_id)
+
     async def publish_deleted(self, user_id: uuid.UUID) -> None:
         await self._publish("user.deleted", user_id)
 

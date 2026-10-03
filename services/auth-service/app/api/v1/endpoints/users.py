@@ -63,6 +63,15 @@ async def deactivate_user_admin(
     await service.deactivate_user(user_id)
 
 
+@router.patch("/{user_id}/reactivate", response_model=UserOut)
+async def reactivate_user_admin(
+    user_id: uuid.UUID,
+    current_user: AuthenticatedUser = Depends(require_role("admin")),
+    service: AuthService = Depends(get_auth_service),
+):
+    return await service.reactivate_user(user_id)
+
+
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user_admin(
     user_id: uuid.UUID,

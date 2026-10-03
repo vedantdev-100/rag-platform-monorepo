@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     RAG_PARSER_BACKEND: Literal["docling"] = "docling"
     RAG_PARSER_MAX_CONCURRENCY: int = 1
     RAG_DOCLING_LOCAL_MODELS_ONLY: bool = True
-    RAG_OCR_ENABLED: bool = True
+    RAG_OCR_ENABLED: bool = False
     RAG_TABLE_STRUCTURE_ENABLED: bool = True
 
     RAG_PICTURE_DESCRIPTION_ENABLED: bool = False

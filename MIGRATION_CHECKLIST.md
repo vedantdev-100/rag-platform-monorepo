@@ -72,18 +72,18 @@ into this monorepo. A couple need a one-line trim, noted inline.
 
 
 ## DATABSE MIGRATION SETUP STEPWISE
-1. Go to the the database ans open psql terminal: cmd : [ docker exec -it <your_container_name> psql -U postgres -d ai_platform ]
-2. Create the schema if does not *EXITS* and schema specific roles for security: cmd: : [ 
+1 **. Go to the the database and open psql terminal: cmd : [ docker exec -it <your_container_name> psql -U postgres -d ai_platform ]
+2 **. Create the schema if does not *EXITS* and schema specific roles for security: cmd: : [ 
     CREATE SCHEMA auth;
     CREATE SCHEMA rag;
-
+`
     CREATE ROLE auth_service_role LOGIN PASSWORD 'your_secure_password';
     GRANT USAGE, CREATE ON SCHEMA auth TO auth_service_role;
 
     CREATE ROLE rag_service_role LOGIN PASSWORD 'your_secure_password';
     GRANT USAGE, CREATE ON SCHEMA rag TO rag_service_role;
 ]
-3. Update the postgres  connection url in .env (only the role part)
+3 **. Update the postgres  connection url in .env (only the role part)
 4. Add the name_service/alembic/env.py => then update the schema name model names in "from app.models import refresh_token, user"
 5. Add models in name_service/app/models + Add the base.py file in app.db
 6. Add the util files if required + update app.utils.__init__.py
@@ -94,8 +94,10 @@ into this monorepo. A couple need a one-line trim, noted inline.
     uv run alembic revision --autogenerate -m "create auth tables"
     uv run alembic upgrade head
 
-11. get into psql in containter: cmd: [ docker exec -it rag-postgres psql -U postgres -d ai_platform ]
+11 **. get into psql in containter: cmd: [ docker exec -it rag-postgres psql -U postgres -d ai_platform ]
     Reactivate the vector extension in the schema: [
         DROP EXTENSION IF EXISTS vector;
         CREATE EXTENSION vector WITH SCHEMA auth;
     ]
+
+*** if just creating setup in other pc just skip creating table sql commands (2 & 11) 

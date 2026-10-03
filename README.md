@@ -1,4 +1,4 @@
-# RAG Platform — Microservices Monorepo
+# RAG Platform ï¿½ Microservices Monorepo
 
 ```
 packages/platform-auth/   shared JWT verification + RBAC (no private key, no DB)
@@ -14,7 +14,7 @@ exact list of files to copy over unchanged from your existing
 
 ## Local setup, per package/service
 
-No `uv init` needed — pyproject.toml already exists in each one. Just:
+No `uv init` needed ï¿½ pyproject.toml already exists in each one. Just:
 
 ```bash
 cd packages/platform-auth && uv lock && uv sync
@@ -22,7 +22,7 @@ cd ../../services/auth-service && uv lock && uv sync
 cd ../rag-service && uv lock && uv sync
 ```
 
-Each service keeps its own `.venv` and `uv.lock` — they are
+Each service keeps its own `.venv` and `uv.lock`they are
 independently deployable, so independent dependency resolution is
 correct here (this is NOT set up as a `uv` workspace on purpose).
 
