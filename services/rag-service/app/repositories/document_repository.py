@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.document import Document
@@ -47,3 +47,10 @@ class DocumentRepository:
     async def delete(self, document: Document) -> None:
         await self.session.delete(document)  # cascades to chunks (ondelete="CASCADE")
         await self.session.commit()
+
+    async def delete_all_for_owner(self, owner_id: uuid.UUID) -> int:
+        """Bulk DELETE — chunks cascade via the DB-level ondelete='CASCADE'
+        FK, no need to load/iterate rows first."""
+        result = await self.session.execute(delete(Document).where(Document.owner_id == owner_id))
+        await self.session.commit()
+        return result.rowcount

@@ -14,8 +14,8 @@ from app.core.security import (
 )
 from app.exceptions import (
     InvalidCredentialsError,
-    # InvalidTokenError,
     UserAlreadyExistsError,
+    UserNotFoundError
 )
 from platform_auth.exceptions import InvalidTokenError, TokenExpiredError
 
@@ -27,13 +27,18 @@ from app.repositories.user_repository import UserRepository
 from app.schemas.auth import TokenResponse
 from app.utils import utcnow
 
+# redis streams
+import uuid  # add to existing imports
+from app.events.publisher import UserEventPublisher  # add to existing imports
+
 logger = get_logger(__name__)
 
 
 class AuthService:
-    def __init__(self, user_repo: UserRepository, token_repo: RefreshTokenRepository):
+    def __init__(self, user_repo: UserRepository, token_repo: RefreshTokenRepository, event_publisher: UserEventPublisher | None = None):
         self.user_repo = user_repo
         self.token_repo = token_repo
+        self.event_publisher = event_publisher 
 
     async def register(self, email: str, password: str, full_name: str | None) -> User:
         existing = await self.user_repo.get_by_email(email)
@@ -153,3 +158,27 @@ class AuthService:
             select(RefreshToken).where(RefreshToken.revoked.is_(False))
         )
         return list(result.scalars().all())
+
+
+    async def deactivate_user(self, user_id: uuid.UUID) -> User:
+        user = await self.user_repo.get_by_id(user_id)
+        if user is None:
+            raise UserNotFoundError(f"User {user_id} not found")
+        user.is_active = False
+        await self.user_repo.session.commit()
+        await self.user_repo.session.refresh(user)
+        await self.token_repo.revoke_all_for_user(user_id)  # kill refresh tokens immediately
+        if self.event_publisher:
+            await self.event_publisher.publish_deactivated(user_id)
+        logger.info("user_deactivated", user_id=str(user_id))
+        return user
+
+    async def delete_user(self, user_id: uuid.UUID) -> None:
+        user = await self.user_repo.get_by_id(user_id)
+        if user is None:
+            raise UserNotFoundError(f"User {user_id} not found")
+        await self.user_repo.session.delete(user)  # cascades to refresh_tokens (ondelete=CASCADE)
+        await self.user_repo.session.commit()
+        if self.event_publisher:
+            await self.event_publisher.publish_deleted(user_id)
+        logger.info("user_deleted", user_id=str(user_id))

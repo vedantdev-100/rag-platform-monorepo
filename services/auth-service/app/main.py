@@ -13,6 +13,8 @@ from app.logging import configure_logging, get_logger
 
 # mountuing the well_known route separately to avoid circular import issues with platform_auth
 from app.api.v1.endpoints import well_known 
+# redis streams
+from app.events.publisher import UserEventPublisher  # add import
 
 settings = get_settings()
 configure_logging(debug=settings.DEBUG)
@@ -42,6 +44,14 @@ def create_app() -> FastAPI:
     # Shared concerns (request-ID middleware, JWT verification for the
     # /users/me route, shared exception types) come from platform_auth.
     setup_auth(app)
+
+    app.state.user_event_publisher = UserEventPublisher(settings.REDIS_URL, settings.USER_EVENTS_STREAM)
+    
+    @app.on_event("shutdown")
+    async def _close_event_publisher():
+        await app.state.user_event_publisher.close()
+
+
     # auth-service's OWN exceptions (InvalidCredentialsError, etc.)
     register_exception_handlers(app, is_production=settings.is_production)
 

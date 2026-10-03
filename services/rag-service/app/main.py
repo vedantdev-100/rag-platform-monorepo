@@ -21,6 +21,9 @@ from app.core.rate_limit import limiter
 from app.exceptions import register_exception_handlers
 from app.logging import configure_logging, get_logger
 
+import asyncio
+from app.events.consumer import UserEventConsumer
+
 settings = get_settings()
 configure_logging(debug=settings.DEBUG)
 logger = get_logger(__name__)
@@ -49,6 +52,19 @@ def create_app() -> FastAPI:
     # Shared concerns (request-ID middleware, JWT verification, shared
     # exception types) come from platform_auth � no local auth code here.
     setup_auth(app)
+
+# Redis streams for user lifecycle events (user.deleted, user.deactivated, etc.) consumed by rag-service to clean up orphaned documents/chunks.
+    consumer = UserEventConsumer(settings.REDIS_URL, settings.USER_EVENTS_STREAM, settings.USER_EVENTS_CONSUMER_GROUP)
+
+    @app.on_event("startup")
+    async def _start_consumer():
+        app.state.consumer_task = asyncio.create_task(consumer.run())
+
+    @app.on_event("shutdown")
+    async def _stop_consumer():
+        await consumer.stop()
+        app.state.consumer_task.cancel()
+        
     # rag-service's OWN exceptions: IngestionError, ModelNotFoundError, etc.
     register_exception_handlers(app, is_production=settings.is_production)
 
