@@ -20,7 +20,10 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 def get_auth_service(request: Request, session: AsyncSession = Depends(get_db_session)) -> AuthService:
     return AuthService(
-        UserRepository(session), RefreshTokenRepository(session), request.app.state.user_event_publisher
+        UserRepository(session), 
+        RefreshTokenRepository(session), 
+        request.app.state.user_event_publisher,
+        request.app.state.token_blacklist,  # NEW — setup_auth() already created this in app.state
     )
 
 

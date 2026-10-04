@@ -10,4 +10,11 @@ from slowapi.util import get_remote_address
 
 from app.core.config import get_settings
 
-limiter = Limiter(key_func=get_remote_address, default_limits=[get_settings().RATE_LIMIT_DEFAULT])
+settings = get_settings()
+
+limiter = Limiter(
+    key_func=get_remote_address, 
+    default_limits=[settings.RATE_LIMIT_DEFAULT],
+    storage_uri=settings.REDIS_URL,
+)
+print("AUTH-SERVICE LIMITER STORAGE:", limiter._storage)

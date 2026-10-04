@@ -22,4 +22,4 @@ async def decode_access_token(token: str, jwks_client: JWKSClient) -> dict:
 
     if payload.get("type") != "access":
         raise InvalidTokenError("Not an access token")
-    return payload
+    return payload  # payload["iat"] is already an int (unix timestamp) — jose handles this

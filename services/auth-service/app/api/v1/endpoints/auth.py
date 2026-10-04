@@ -13,6 +13,7 @@ from app.schemas.auth import (
     RegisterRequest,
     TokenResponse,
 )
+# pyrefly: ignore [missing-import]
 from app.schemas.user import UserOut
 from app.services.auth_service import AuthService
 
@@ -36,6 +37,7 @@ async def register(
     request: Request,
     payload: RegisterRequest,
     service: AuthService = Depends(get_auth_service),
+    storage_uri=settings.REDIS_URL,
 ):
     return await service.register(payload.email, payload.password, payload.full_name)
 
@@ -46,6 +48,7 @@ async def login(
     request: Request,
     payload: LoginRequest,
     service: AuthService = Depends(get_auth_service),
+    storage_uri=settings.REDIS_URL,
 ):
     return await service.login(payload.email, payload.password)
 
@@ -56,6 +59,7 @@ async def refresh(
     request: Request,
     payload: RefreshRequest,
     service: AuthService = Depends(get_auth_service),
+    storage_uri=settings.REDIS_URL,
 ):
     return await service.refresh(payload.refresh_token)
 
@@ -66,6 +70,7 @@ async def logout(
     request: Request,
     payload: LogoutRequest,
     service: AuthService = Depends(get_auth_service),
+    storage_uri=settings.REDIS_URL,
 ):
     await service.logout(payload.refresh_token)
     return None

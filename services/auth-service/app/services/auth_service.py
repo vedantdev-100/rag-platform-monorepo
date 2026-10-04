@@ -128,6 +128,8 @@ class AuthService:
         for candidate in candidates:
             if verify_refresh_token(plain_refresh_token, candidate.token_hash):
                 await self.token_repo.revoke(candidate)
+                if self.token_blacklist:
+                    await self.token_blacklist.revoke_user(str(candidate.user_id))  # NEW — kill the access token(s) too, not just the refresh token
                 logger.info("user_logged_out", user_id=str(candidate.user_id))
                 return
 
@@ -170,6 +172,12 @@ class AuthService:
         await self.user_repo.session.commit()
         await self.user_repo.session.refresh(user)
         await self.token_repo.revoke_all_for_user(user_id)  # kill refresh tokens immediately
+
+        # user revocation: also revoke access tokens via the blacklist if available
+        if self.token_blacklist:
+            await self.token_blacklist.revoke_user(str(user_id))  # NEW
+
+        # redis streams: publish user deactivation event if an event publisher is configured
         if self.event_publisher:
             await self.event_publisher.publish_deactivated(user_id)
         logger.info("user_deactivated", user_id=str(user_id))
@@ -191,6 +199,11 @@ class AuthService:
         user = await self.user_repo.get_by_id(user_id)
         if user is None:
             raise UserNotFoundError(f"User {user_id} not found")
+
+        # user revocation: also revoke access tokens via the blacklist if available
+        if self.token_blacklist:
+            await self.token_blacklist.revoke_user(str(user_id))  # NEW — do this BEFORE deleting the row
+
         await self.user_repo.session.delete(user)  # cascades to refresh_tokens (ondelete=CASCADE)
         await self.user_repo.session.commit()
         if self.event_publisher:

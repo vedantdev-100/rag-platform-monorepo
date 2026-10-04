@@ -21,9 +21,11 @@ def get_current_user_dependency():
         payload = await decode_access_token(token, request.app.state.jwks_client)
 
         blacklist: TokenBlacklist = request.app.state.token_blacklist
-        if await blacklist.is_revoked(payload.get("jti", "")):
+        # if await blacklist.is_revoked(payload.get("jti", "")):
+        #     raise InvalidTokenError("Token has been revoked")
+        if await blacklist.is_token_revoked(payload["sub"], payload["iat"]):
             raise InvalidTokenError("Token has been revoked")
-
+        
         return AuthenticatedUser(id=payload["sub"], role=payload["role"], scopes=payload.get("scopes", []))
 
     return _dependency
