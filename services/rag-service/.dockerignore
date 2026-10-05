@@ -1,0 +1,63 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+build/
+dist/
+
+# --- Virtual environment (rebuilt fresh inside the image via uv sync) ---
+.venv/
+venv/
+env/
+
+# --- Local runtime data (never belongs in the image) ---
+data/
+models/
+
+# --- Secrets & environment files ---
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# --- Version control ---
+.git/
+.gitignore
+.gitattributes
+
+# --- Testing / linting / caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- IDE / editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+
+# --- Docker itself ---
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# --- Docs / misc (not needed at runtime) ---
+README.md
+*.md
+MIGRATION_CHECKLIST.md
+
+# --- CI ---
+.github/
