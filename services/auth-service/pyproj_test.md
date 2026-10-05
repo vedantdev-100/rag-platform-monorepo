@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Auth microservice: issues and manages JWTs, owns users/refresh_tokens"
 requires-python = "==3.12.*"
 dependencies = [
+    "platform-auth",
     "fastapi==0.115.0",
     "uvicorn[standard]==0.30.6",
     "pydantic==2.9.2",
@@ -38,4 +39,4 @@ exclude-newer = "7 days"
 default-groups = ["dev"]
 
 [tool.uv.sources]
-platform-auth = { git = "https://github.com/vedantdev-100/platform-auth.git", tag = "v1.0.0" }
+platform-auth = { path = "../../packages/platform-auth", editable = true}

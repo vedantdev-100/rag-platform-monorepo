@@ -17,4 +17,4 @@ limiter = Limiter(
     default_limits=[settings.RATE_LIMIT_DEFAULT],
     storage_uri=settings.REDIS_URL,
 )
-print("AUTH-SERVICE LIMITER STORAGE:", limiter._storage)
+# print("AUTH-SERVICE LIMITER STORAGE:", limiter._storage)
