@@ -10,6 +10,7 @@ import asyncio
 import json
 import socket
 import uuid
+from datetime import timedelta
 
 import redis.asyncio as redis
 
@@ -52,10 +53,17 @@ class UserEventConsumer:
                     owner_state.last_event_type = event_type
                     owner_state.last_event_id = event_id
                     sources = (await session.execute(
-                        select(Document.id, Document.source_uri).where(Document.owner_id == owner_id)
+                        select(Document.id, Document.source_uri, Document.doc_metadata,
+                               Document.processing_lease_until).where(Document.owner_id == owner_id)
                     )).all()
-                    for document_id, uri in sources:
-                        await enqueue_cleanup(session, uri, document_id=document_id, owner_id=owner_id)
+                    for document_id, uri, metadata, lease_until in sources:
+                        # A source write can still be in flight. Its reservation
+                        # bounds the write window; do not DELETE before PUT ends.
+                        not_before = None
+                        if metadata.get("source_ready") is False and lease_until is not None:
+                            not_before = lease_until + timedelta(seconds=30)
+                        await enqueue_cleanup(session, uri, document_id=document_id, owner_id=owner_id,
+                                              not_before=not_before)
                     deleted = await DocumentRepository(session).delete_all_for_owner(owner_id)
                 logger.info("user_deleted_documents_purged", user_id=user_id, documents_deleted=deleted)
         elif event_type == "user.deactivated":
@@ -106,7 +114,9 @@ class UserEventConsumer:
                         await self._process(messages)
                 except asyncio.CancelledError:
                     break
-                except Exception:
+                except Exception as exc:
+                    if isinstance(exc, redis.ResponseError) and "NOGROUP" in str(exc):
+                        group_ready = False
                     logger.exception("user_event_consumer_loop_error")
                     await asyncio.sleep(2)
         finally:

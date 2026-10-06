@@ -54,16 +54,22 @@ def create_app() -> FastAPI:
     setup_auth(app)
 
 # Redis streams for user lifecycle events (user.deleted, user.deactivated, etc.) consumed by rag-service to clean up orphaned documents/chunks.
-    consumer = UserEventConsumer(settings.REDIS_URL, settings.USER_EVENTS_STREAM, settings.USER_EVENTS_CONSUMER_GROUP)
+    if settings.RUN_LIFECYCLE_CONSUMER:
+        consumer = UserEventConsumer(
+            settings.REDIS_URL, settings.USER_EVENTS_STREAM, settings.USER_EVENTS_CONSUMER_GROUP,
+        )
 
-    @app.on_event("startup")
-    async def _start_consumer():
-        app.state.consumer_task = asyncio.create_task(consumer.run())
+        @app.on_event("startup")
+        async def _start_consumer():
+            app.state.consumer_task = asyncio.create_task(consumer.run())
 
-    @app.on_event("shutdown")
-    async def _stop_consumer():
-        await consumer.stop()
-        app.state.consumer_task.cancel()
+        @app.on_event("shutdown")
+        async def _stop_consumer():
+            app.state.consumer_task.cancel()
+            await asyncio.gather(app.state.consumer_task, return_exceptions=True)
+            await consumer.stop()
+    else:
+        logger.info("api_background_consumers_disabled")
         
     # rag-service's OWN exceptions: IngestionError, ModelNotFoundError, etc.
     register_exception_handlers(app, is_production=settings.is_production)

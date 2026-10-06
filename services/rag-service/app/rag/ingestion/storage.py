@@ -67,10 +67,16 @@ class LocalFileStorage(FileStorage):
             raise ValueError("Local source is outside the upload directory")
         return path
 
-    async def save(self, content: bytes, filename: str) -> str:
+    def allocate(self, filename: str, document_id: uuid.UUID, owner_id: uuid.UUID) -> str:
         name = Path(filename.replace("\\", "/")).name or "upload"
-        uri = str(self.base_dir / f"{uuid.uuid4()}_{name}")
+        return str(self.base_dir / f"{document_id}_{name}")
+
+    async def write(self, uri: str, content: bytes, filename: str) -> None:
         await _write_at_uri(lambda: self._path(uri).write_bytes(content), uri)
+
+    async def save(self, content: bytes, filename: str) -> str:
+        uri = self.allocate(filename, uuid.uuid4(), uuid.uuid4())
+        await self.write(uri, content, filename)
         return uri
 
     async def read(self, uri: str) -> bytes:
@@ -106,16 +112,23 @@ class MinioFileStorage(FileStorage):
             raise ValueError("Source URI does not belong to the configured bucket")
         return result
 
-    async def save(self, content: bytes, filename: str) -> str:
+    def allocate(self, filename: str, document_id: uuid.UUID, owner_id: uuid.UUID) -> str:
         suffix = Path(filename.replace("\\", "/")).suffix.lower()
         if not re.fullmatch(r"\.[a-z0-9]{1,12}", suffix):
             suffix = ""
-        key = f"raw/{uuid.uuid4().hex}{suffix}"
-        uri = f"s3://{self.bucket}/{quote(key, safe='/')}"
+        key = f"raw/{owner_id.hex}/{document_id.hex}{suffix}"
+        return f"s3://{self.bucket}/{quote(key, safe='/')}"
+
+    async def write(self, uri: str, content: bytes, filename: str) -> None:
+        bucket, key = self._location(uri)
         mime = mimetypes.guess_type(filename)[0] or "application/octet-stream"
         await _write_at_uri(
-            lambda: self.client.put_object(Bucket=self.bucket, Key=key, Body=content, ContentType=mime), uri,
+            lambda: self.client.put_object(Bucket=bucket, Key=key, Body=content, ContentType=mime), uri,
         )
+
+    async def save(self, content: bytes, filename: str) -> str:
+        uri = self.allocate(filename, uuid.uuid4(), uuid.uuid4())
+        await self.write(uri, content, filename)
         return uri
 
     async def read(self, uri: str) -> bytes:
@@ -144,6 +157,15 @@ class RoutingFileStorage(FileStorage):
                 raise ValueError("MinIO credentials are required for existing object sources")
             return self.minio
         return self.local
+
+    def allocate(self, filename: str, document_id: uuid.UUID, owner_id: uuid.UUID) -> str:
+        writer = self.minio if self.backend == "minio" else self.local
+        if writer is None:
+            raise ValueError("MinIO writer is not configured")
+        return writer.allocate(filename, document_id, owner_id)
+
+    async def write(self, uri: str, content: bytes, filename: str) -> None:
+        await self._reader(uri).write(uri, content, filename)
 
     async def save(self, content: bytes, filename: str) -> str:
         writer = self.minio if self.backend == "minio" else self.local

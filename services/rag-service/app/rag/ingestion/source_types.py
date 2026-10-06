@@ -19,3 +19,6 @@ _SUFFIX_TO_SOURCE_TYPE = {
 
 def detect_source_type(filename: str) -> str:
     return _SUFFIX_TO_SOURCE_TYPE.get(Path(filename).suffix.lower(), "unknown")
+
+
+SUPPORTED_SOURCE_TYPES = ("pdf", "docx", "pptx", "html", "md", "txt")

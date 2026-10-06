@@ -1,0 +1,50 @@
+# Third overlay, after docker-compose.yml and docker-compose.minio.yml.
+services:
+  rag-service:
+    environment:
+      RUN_LIFECYCLE_CONSUMER: "false"
+      INGESTION_STREAM: ${INGESTION_STREAM:-rag:ingestion:jobs}
+      INGESTION_CONSUMER_GROUP: ${INGESTION_CONSUMER_GROUP:-rag-ingestion-workers}
+      INGESTION_DLQ_STREAM: ${INGESTION_DLQ_STREAM:-rag:ingestion:dlq}
+
+  rag-worker:
+    # Reuse the installed service environment; no second image build yet.
+    image: rag-platform/rag-service:local
+    init: true
+    command: ["python", "-m", "app.worker"]
+    restart: unless-stopped
+    stop_grace_period: 120s
+    env_file:
+      - ./services/rag-service/.env
+    environment:
+      RUN_LIFECYCLE_CONSUMER: "true"
+      INGESTION_STREAM: ${INGESTION_STREAM:-rag:ingestion:jobs}
+      INGESTION_CONSUMER_GROUP: ${INGESTION_CONSUMER_GROUP:-rag-ingestion-workers}
+      INGESTION_DLQ_STREAM: ${INGESTION_DLQ_STREAM:-rag:ingestion:dlq}
+      MODELS_DIR: ./models
+      DATABASE_URL: ${RAG_DATABASE_URL:?Set RAG_DATABASE_URL in .env.compose}
+      REDIS_URL: ${EVENTS_REDIS_URL:?Set EVENTS_REDIS_URL in .env.compose}
+      PLATFORM_AUTH_REDIS_URL: ${AUTH_REDIS_URL:?Set AUTH_REDIS_URL in .env.compose}
+      USER_EVENTS_STREAM: ${USER_EVENTS_STREAM:-user-events}
+      USER_EVENTS_CONSUMER_GROUP: ${USER_EVENTS_CONSUMER_GROUP:-rag-service}
+      STORAGE_BACKEND: ${RAG_STORAGE_BACKEND:-minio}
+      LOCAL_STORAGE_DIR: ./data/uploads
+      MINIO_ENDPOINT_URL: http://minio:9000
+      MINIO_BUCKET: ${MINIO_BUCKET:-rag-documents}
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER in .env.compose}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env.compose}
+      MINIO_REGION: us-east-1
+    volumes:
+      - type: bind
+        source: ./services/rag-service/data/uploads
+        target: /workspace/services/rag-service/data/uploads
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./services/rag-service/models
+        target: /workspace/services/rag-service/models
+        bind:
+          create_host_path: false
+    depends_on:
+      minio-init:
+        condition: service_completed_successfully

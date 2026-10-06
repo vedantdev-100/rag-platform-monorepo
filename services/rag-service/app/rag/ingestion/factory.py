@@ -14,12 +14,7 @@ from functools import lru_cache
 
 from app.core.config import get_settings
 from app.rag.ingestion.base import Chunker, DocumentParser, EmbeddingGenerator, FileStorage
-from app.rag.ingestion.chunking.docling_chunker import DoclingHybridChunker
-from app.rag.ingestion.chunking.simple_chunker import SimpleChunker
-from app.rag.ingestion.chunking.tokenizers import build_tokenizer
-from app.rag.ingestion.embeddings.stub_embedder import StubEmbeddingGenerator
 from app.rag.ingestion.model_paths import require_local_model
-from app.rag.ingestion.parsers.docling_parser import DoclingParser
 from app.rag.ingestion.storage_factory import build_file_storage
 
 settings = get_settings()
@@ -32,6 +27,7 @@ def get_file_storage() -> FileStorage:
 @lru_cache
 def get_document_parser() -> DocumentParser:
     if settings.RAG_PARSER_BACKEND == "docling":
+        from app.rag.ingestion.parsers.docling_parser import DoclingParser
         return DoclingParser(settings)
     raise ValueError(f"Unknown RAG_PARSER_BACKEND: {settings.RAG_PARSER_BACKEND!r}")
 
@@ -39,10 +35,13 @@ def get_document_parser() -> DocumentParser:
 @lru_cache
 def get_chunker() -> Chunker:
     if settings.RAG_CHUNKER_BACKEND == "docling":
+        from app.rag.ingestion.chunking.docling_chunker import DoclingHybridChunker
+        from app.rag.ingestion.chunking.tokenizers import build_tokenizer
         return DoclingHybridChunker(
             tokenizer=build_tokenizer(settings), merge_peers=settings.RAG_CHUNKER_MERGE_PEERS
         )
     if settings.RAG_CHUNKER_BACKEND == "simple":
+        from app.rag.ingestion.chunking.simple_chunker import SimpleChunker
         return SimpleChunker()
     raise ValueError(f"Unknown RAG_CHUNKER_BACKEND: {settings.RAG_CHUNKER_BACKEND!r}")
 
@@ -50,6 +49,7 @@ def get_chunker() -> Chunker:
 @lru_cache
 def get_embedding_generator() -> EmbeddingGenerator:
     if settings.RAG_EMBEDDING_BACKEND == "stub":
+        from app.rag.ingestion.embeddings.stub_embedder import StubEmbeddingGenerator
         return StubEmbeddingGenerator(dimensions=settings.EMBEDDING_DIMENSIONS)
     if settings.RAG_EMBEDDING_BACKEND == "sentence_transformers":
         from app.rag.ingestion.embeddings.sentence_transformers_embedder import SentenceTransformersEmbedder

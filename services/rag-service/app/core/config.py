@@ -35,6 +35,31 @@ class Settings(BaseSettings):
     # REDIS_URL: str = "redis://redis:6379/0"
     USER_EVENTS_STREAM: str = "user-events"
     USER_EVENTS_CONSUMER_GROUP: str = "rag-service"
+    RUN_LIFECYCLE_CONSUMER: bool = True
+    INGESTION_STREAM: str = "rag:ingestion:jobs"
+    INGESTION_CONSUMER_GROUP: str = "rag-ingestion-workers"
+    INGESTION_DLQ_STREAM: str = "rag:ingestion:dlq"
+    INGESTION_LEASE_SECONDS: int = 180
+    INGESTION_HEARTBEAT_SECONDS: int = 30
+    INGESTION_MAX_ATTEMPTS: int = 3
+    INGESTION_RETRY_BASE_SECONDS: int = 15
+    INGESTION_JOB_TIMEOUT_SECONDS: int = 900
+    UPLOAD_RESERVATION_SECONDS: int = 600
+
+    @model_validator(mode="after")
+    def _validate_ingestion_queue(self) -> "Settings":
+        if not 5 <= self.INGESTION_HEARTBEAT_SECONDS < self.INGESTION_LEASE_SECONDS / 3:
+            raise ValueError("Heartbeat must be >=5 seconds and less than one third of the job lease")
+        if self.UPLOAD_RESERVATION_SECONDS < 600:
+            raise ValueError("Upload reservation must allow at least 600 seconds for bounded storage writes")
+        if self.INGESTION_MAX_ATTEMPTS < 1 or self.INGESTION_RETRY_BASE_SECONDS < 1 or self.INGESTION_JOB_TIMEOUT_SECONDS < 30:
+            raise ValueError("Invalid ingestion retry/timeout settings")
+        if self.EMBEDDING_DIMENSIONS != 768:
+            raise ValueError("This database schema requires 768-dimensional embeddings")
+        if len({self.INGESTION_STREAM, self.INGESTION_DLQ_STREAM, self.USER_EVENTS_STREAM}) != 3:
+            raise ValueError("Lifecycle, ingestion and dead-letter streams must have different names")
+        return self
+
 
     STORAGE_BACKEND: Literal["local", "minio"] = "local"
     MINIO_ENDPOINT_URL: str = "http://minio:9000"

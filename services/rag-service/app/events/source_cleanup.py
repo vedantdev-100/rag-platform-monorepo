@@ -34,16 +34,17 @@ async def lock_owner(session: AsyncSession, owner_id: uuid.UUID) -> UserLifecycl
     )).scalar_one()
 
 
-async def enqueue_cleanup(session: AsyncSession, uri: str | None, *, document_id=None, owner_id=None) -> None:
+async def enqueue_cleanup(session: AsyncSession, uri: str | None, *, document_id=None, owner_id=None,
+                          not_before=None) -> None:
     if not uri:
         return
     dedup = f"source.delete:{hashlib.sha256(uri.encode()).hexdigest()}"
     await session.execute(insert(OutboxMessage).values(
         kind=KIND, aggregate_id=document_id, owner_id=owner_id,
-        deduplication_key=dedup, payload={"uri": uri}, status="pending", available_at=utcnow(),
+        deduplication_key=dedup, payload={"uri": uri}, status="pending", available_at=not_before or utcnow(),
     ).on_conflict_do_update(
         index_elements=[OutboxMessage.deduplication_key],
-        set_={"status": "pending", "available_at": utcnow(), "locked_by": None,
+        set_={"status": "pending", "available_at": not_before or utcnow(), "locked_by": None,
               "locked_until": None, "published_at": None, "updated_at": utcnow()},
     ))
 
