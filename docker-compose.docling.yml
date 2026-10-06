@@ -1,0 +1,25 @@
+# Fourth overlay. Step 10A starts the service; worker routing changes in Step 10B.
+services:
+  docling-serve:
+    image: quay.io/docling-project/docling-serve-cpu:v1.21.0
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 120s
+    environment:
+      UVICORN_WORKERS: "1"
+      DOCLING_SERVE_ENG_KIND: local
+      DOCLING_SERVE_ENABLE_UI: "false"
+      DOCLING_SERVE_LOAD_MODELS_AT_BOOT: "true"
+      DOCLING_SERVE_MAX_DOCUMENT_TIMEOUT: "840"
+      DOCLING_SERVE_MAX_SYNC_WAIT: "840"
+      DOCLING_SERVE_MAX_FILE_SIZE: "26214400"
+      DOCLING_SERVE_LOG_LEVEL: INFO
+      OMP_NUM_THREADS: "2"
+    ports:
+      - "127.0.0.1:${DOCLING_HOST_PORT:-5001}:5001"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/openapi.json', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 40
+      start_period: 120s
