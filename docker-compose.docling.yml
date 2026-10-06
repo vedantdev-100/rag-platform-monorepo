@@ -1,4 +1,4 @@
-# Fourth overlay. Step 10A starts the service; worker routing changes in Step 10B.
+# Fourth overlay. Backend defaults to local until explicit rollout after probes.
 services:
   docling-serve:
     image: quay.io/docling-project/docling-serve-cpu:v1.21.0
@@ -8,18 +8,39 @@ services:
     environment:
       UVICORN_WORKERS: "1"
       DOCLING_SERVE_ENG_KIND: local
+      DOCLING_SERVE_ENG_LOC_NUM_WORKERS: "1"
+      DOCLING_NUM_THREADS: "2"
+      DOCLING_DEVICE: cpu
       DOCLING_SERVE_ENABLE_UI: "false"
       DOCLING_SERVE_LOAD_MODELS_AT_BOOT: "true"
       DOCLING_SERVE_MAX_DOCUMENT_TIMEOUT: "840"
       DOCLING_SERVE_MAX_SYNC_WAIT: "840"
       DOCLING_SERVE_MAX_FILE_SIZE: "26214400"
       DOCLING_SERVE_LOG_LEVEL: INFO
+      DOCLING_SERVE_ENABLE_REMOTE_SERVICES: ${DOCLING_SERVE_ENABLE_REMOTE_SERVICES:-false}
+      DOCLING_SERVE_ALLOW_CUSTOM_PICTURE_DESCRIPTION_CONFIG: ${DOCLING_SERVE_ALLOW_CUSTOM_PICTURE_DESCRIPTION_CONFIG:-false}
       OMP_NUM_THREADS: "2"
     ports:
       - "127.0.0.1:${DOCLING_HOST_PORT:-5001}:5001"
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/openapi.json', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=5)"]
       interval: 15s
       timeout: 6s
       retries: 40
       start_period: 120s
+
+  rag-service:
+    environment:
+      RAG_PARSER_BACKEND: ${RAG_PARSER_BACKEND:-docling}
+      DOCLING_SERVE_URL: http://docling-serve:5001
+      DOCLING_SERVE_EXPECTED_VERSION: "1.21.0"
+      DOCLING_SERVE_EXPECTED_DOCLING_VERSION: "2.96.1"
+      DOCLING_SERVE_EXPECTED_CORE_VERSION: "2.78.0"
+
+  rag-worker:
+    environment:
+      RAG_PARSER_BACKEND: ${RAG_PARSER_BACKEND:-docling}
+      DOCLING_SERVE_URL: http://docling-serve:5001
+      DOCLING_SERVE_EXPECTED_VERSION: "1.21.0"
+      DOCLING_SERVE_EXPECTED_DOCLING_VERSION: "2.96.1"
+      DOCLING_SERVE_EXPECTED_CORE_VERSION: "2.78.0"

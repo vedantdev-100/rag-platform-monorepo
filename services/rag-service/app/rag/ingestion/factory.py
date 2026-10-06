@@ -26,6 +26,9 @@ def get_file_storage() -> FileStorage:
 
 @lru_cache
 def get_document_parser() -> DocumentParser:
+    if settings.RAG_PARSER_BACKEND == "docling_serve":
+        from app.rag.ingestion.parsers.docling_serve_parser import DoclingServeParser
+        return DoclingServeParser(settings)
     if settings.RAG_PARSER_BACKEND == "docling":
         from app.rag.ingestion.parsers.docling_parser import DoclingParser
         return DoclingParser(settings)

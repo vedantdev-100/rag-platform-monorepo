@@ -13,6 +13,13 @@ def processing_version(settings):
              "RAG_CHUNKER_MAX_TOKENS", "RAG_CHUNKER_MERGE_PEERS",
              "RAG_EMBEDDING_BACKEND", "RAG_EMBEDDING_MODEL", "EMBEDDING_DIMENSIONS"]
     data = {name: getattr(settings, name) for name in names}
+    if settings.RAG_PARSER_BACKEND == "docling_serve":
+        for name in ("DOCLING_SERVE_EXPECTED_VERSION", "DOCLING_SERVE_EXPECTED_DOCLING_VERSION",
+                     "DOCLING_SERVE_EXPECTED_CORE_VERSION", "DOCLING_SERVE_DOCUMENT_TIMEOUT_SECONDS"):
+            data[name] = getattr(settings, name)
+        # Explicit adapter revision: alter when conversion semantics change.
+        data["parser_adapter"] = "docling-serve-v1-json-1"
+        data["picture_api_url"] = settings.RAG_PICTURE_DESCRIPTION_API_URL
     return "ingestion-v1:" + hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
 
 

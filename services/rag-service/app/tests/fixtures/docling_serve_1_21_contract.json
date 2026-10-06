@@ -1,0 +1,547 @@
+{
+  "paths": {
+    "/v1/convert/file": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_process_file_v1_convert_file_post"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_process_file_v1_convert_file_post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "contentMediaType": "application/octet-stream"
+            },
+            "type": "array",
+            "title": "Files"
+          },
+          "target_type": {
+            "$ref": "#/components/schemas/TargetName",
+            "default": "inbody"
+          },
+          "from_formats": {
+            "items": {
+              "$ref": "#/components/schemas/InputFormat"
+            },
+            "type": "array",
+            "title": "From Formats",
+            "description": "Input format(s) to convert from. String or list of strings. Allowed values: docx, pptx, html, image, pdf, asciidoc, md, csv, xlsx, xml_uspto, xml_jats, xml_xbrl, mets_gbs, json_docling, audio, vtt, latex. Optional, defaults to all formats.",
+            "default": [
+              "docx",
+              "pptx",
+              "html",
+              "image",
+              "pdf",
+              "asciidoc",
+              "md",
+              "csv",
+              "xlsx",
+              "xml_uspto",
+              "xml_jats",
+              "xml_xbrl",
+              "mets_gbs",
+              "json_docling",
+              "audio",
+              "vtt",
+              "latex"
+            ],
+            "examples": [
+              [
+                "docx",
+                "pptx",
+                "html",
+                "image",
+                "pdf",
+                "asciidoc",
+                "md",
+                "csv",
+                "xlsx",
+                "xml_uspto",
+                "xml_jats",
+                "xml_xbrl",
+                "mets_gbs",
+                "json_docling",
+                "audio",
+                "vtt",
+                "latex"
+              ]
+            ]
+          },
+          "to_formats": {
+            "items": {
+              "$ref": "#/components/schemas/OutputFormat"
+            },
+            "type": "array",
+            "title": "To Formats",
+            "description": "Output format(s) to convert to. String or list of strings. Allowed values: md, json, yaml, html, html_split_page, text, doctags, vtt. Optional, defaults to Markdown.",
+            "default": [
+              "md"
+            ],
+            "examples": [
+              [
+                "md"
+              ],
+              [
+                "md",
+                "json"
+              ],
+              [
+                "md",
+                "json",
+                "yaml",
+                "html",
+                "html_split_page",
+                "text",
+                "doctags",
+                "vtt"
+              ]
+            ]
+          },
+          "image_export_mode": {
+            "$ref": "#/components/schemas/ImageRefMode",
+            "description": "Image export mode for the document (in case of JSON, Markdown or HTML). Allowed values: placeholder, embedded, referenced. Optional, defaults to Embedded.",
+            "default": "embedded",
+            "examples": [
+              "embedded"
+            ]
+          },
+          "do_ocr": {
+            "type": "boolean",
+            "title": "Do Ocr",
+            "description": "If enabled, the bitmap content will be processed using OCR. Boolean. Optional, defaults to true",
+            "default": true
+          },
+          "force_ocr": {
+            "type": "boolean",
+            "title": "Force Ocr",
+            "description": "If enabled, replace existing text with OCR-generated text over content. Boolean. Optional, defaults to false.",
+            "default": false
+          },
+          "ocr_engine": {
+            "type": "string",
+            "title": "Ocr Engine",
+            "description": "DEPRECATED: Use ocr_preset instead. The OCR engine to use. String. ",
+            "default": "auto"
+          },
+          "ocr_lang": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ocr Lang",
+            "description": "List of languages used by the OCR engine. Note that each OCR engine has different values for the language names. String or list of strings. Optional, defaults to empty.",
+            "examples": [
+              [
+                "fr",
+                "de",
+                "es",
+                "en"
+              ]
+            ]
+          },
+          "ocr_preset": {
+            "type": "string",
+            "title": "Ocr Preset",
+            "description": "Preset ID for OCR engine.",
+            "default": "auto",
+            "examples": [
+              "auto",
+              "easyocr",
+              "tesseract"
+            ]
+          },
+          "ocr_custom_config": {
+            "type": "string",
+            "title": "Ocr Custom Config",
+            "description": "Custom configuration for OCR engine. Use this to specify engine-specific options beyond ocr_lang. Each OCR engine kind has its own configuration schema.",
+            "examples": [
+              "{\"kind\": \"easyocr\", \"lang\": [\"en\", \"fr\"], \"use_gpu\": true, \"confidence_threshold\": 0.5, \"force_full_page_ocr\": false}",
+              "{\"kind\": \"tesseract_cli\", \"lang\": [\"eng\", \"deu\"], \"force_full_page_ocr\": false}"
+            ]
+          },
+          "pdf_backend": {
+            "$ref": "#/components/schemas/PdfBackend",
+            "description": "The PDF backend to use. String. Allowed values: pypdfium2, docling_parse, threaded_docling_parse, dlparse_v1, dlparse_v2, dlparse_v4. Optional, defaults to docling_parse.",
+            "default": "docling_parse",
+            "examples": [
+              "docling_parse"
+            ]
+          },
+          "table_mode": {
+            "$ref": "#/components/schemas/TableFormerMode",
+            "description": "Mode to use for table structure, String. Allowed values: fast, accurate. Optional, defaults to accurate.",
+            "default": "accurate",
+            "examples": [
+              "accurate"
+            ]
+          },
+          "table_cell_matching": {
+            "type": "boolean",
+            "title": "Table Cell Matching",
+            "description": "If true, matches table cells predictions back to PDF cells. Can break table output if PDF cells are merged across table columns. If false, let table structure model define the text cells, ignore PDF cells.",
+            "default": true,
+            "examples": [
+              true
+            ]
+          },
+          "pipeline": {
+            "$ref": "#/components/schemas/ProcessingPipeline",
+            "description": "Choose the pipeline to process PDF or image files.",
+            "default": "standard"
+          },
+          "page_range": {
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Page Range",
+            "description": "Only convert a range of pages. The page number starts at 1.",
+            "default": [
+              1,
+              9223372036854775807
+            ],
+            "examples": [
+              [
+                1,
+                9223372036854775807
+              ],
+              [
+                1,
+                4
+              ]
+            ]
+          },
+          "document_timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Timeout",
+            "description": "The timeout for processing each document, in seconds."
+          },
+          "abort_on_error": {
+            "type": "boolean",
+            "title": "Abort On Error",
+            "description": "Abort on error if enabled. Boolean. Optional, defaults to false.",
+            "default": false
+          },
+          "do_table_structure": {
+            "type": "boolean",
+            "title": "Do Table Structure",
+            "description": "If enabled, the table structure will be extracted. Boolean. Optional, defaults to true.",
+            "default": true,
+            "examples": [
+              true
+            ]
+          },
+          "include_images": {
+            "type": "boolean",
+            "title": "Include Images",
+            "description": "If enabled, images will be extracted from the document. Boolean. Optional, defaults to true.",
+            "default": true,
+            "examples": [
+              true
+            ]
+          },
+          "images_scale": {
+            "type": "number",
+            "title": "Images Scale",
+            "description": "Scale factor for images. Float. Optional, defaults to 2.0.",
+            "default": 2.0,
+            "examples": [
+              2.0
+            ]
+          },
+          "md_page_break_placeholder": {
+            "type": "string",
+            "title": "Md Page Break Placeholder",
+            "description": "Add this placeholder between pages in the markdown output.",
+            "default": "",
+            "examples": [
+              "<!-- page-break -->",
+              ""
+            ]
+          },
+          "do_code_enrichment": {
+            "type": "boolean",
+            "title": "Do Code Enrichment",
+            "description": "If enabled, perform OCR code enrichment. Boolean. Optional, defaults to false.",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "do_formula_enrichment": {
+            "type": "boolean",
+            "title": "Do Formula Enrichment",
+            "description": "If enabled, perform formula OCR, return LaTeX code. Boolean. Optional, defaults to false.",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "do_picture_classification": {
+            "type": "boolean",
+            "title": "Do Picture Classification",
+            "description": "If enabled, classify pictures in documents. Boolean. Optional, defaults to false.",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "do_chart_extraction": {
+            "type": "boolean",
+            "title": "Do Chart Extraction",
+            "description": "If enabled, extract numeric data from charts. Boolean. Optional, defaults to false.",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "do_picture_description": {
+            "type": "boolean",
+            "title": "Do Picture Description",
+            "description": "If enabled, describe pictures in documents. Boolean. Optional, defaults to false.",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "picture_description_area_threshold": {
+            "type": "number",
+            "title": "Picture Description Area Threshold",
+            "description": "Minimum percentage of the area for a picture to be processed with the models.",
+            "default": 0.05,
+            "examples": [
+              0.05
+            ]
+          },
+          "picture_description_local": {
+            "type": "string",
+            "title": "Picture Description Local",
+            "description": "DEPRECATED: Options for running a local vision-language model in the picture description. The parameters refer to a model hosted on Hugging Face. This parameter is mutually exclusive with picture_description_api. Please migrate to picture_description_preset or picture_description_custom_config.",
+            "examples": [
+              "{\"repo_id\": \"ibm-granite/granite-vision-3.2-2b\", \"prompt\": \"Describe this image in a few sentences.\", \"generation_config\": {\"max_new_tokens\": 200, \"do_sample\": false}, \"classification_allow\": null, \"classification_deny\": null, \"classification_min_confidence\": 0.0}",
+              "{\"repo_id\": \"HuggingFaceTB/SmolVLM-256M-Instruct\", \"prompt\": \"Describe this image in a few sentences.\", \"generation_config\": {\"max_new_tokens\": 200, \"do_sample\": false}, \"classification_allow\": null, \"classification_deny\": null, \"classification_min_confidence\": 0.0}"
+            ]
+          },
+          "picture_description_api": {
+            "type": "string",
+            "title": "Picture Description Api",
+            "description": "DEPRECATED: API details for using a vision-language model in the picture description. This parameter is mutually exclusive with picture_description_local. Please migrate to picture_description_preset or picture_description_custom_config.",
+            "examples": [
+              "{\"url\": \"http://localhost:1234/v1/chat/completions\", \"headers\": {}, \"params\": {\"model\": \"granite3.2-vision:2b\"}, \"timeout\": 20.0, \"concurrency\": 1, \"prompt\": \"Describe this image in a few sentences.\", \"classification_allow\": null, \"classification_deny\": null, \"classification_min_confidence\": 0.0}",
+              "{\"url\": \"http://localhost:11434/v1/chat/completions\", \"headers\": {}, \"params\": {\"model\": \"granite3.2-vision:2b\"}, \"timeout\": 20.0, \"concurrency\": 1, \"prompt\": \"Describe this image in a few sentences.\", \"classification_allow\": null, \"classification_deny\": null, \"classification_min_confidence\": 0.0}"
+            ]
+          },
+          "vlm_pipeline_model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VlmModelType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "DEPRECATED: Preset of local and API models for the vlm pipeline. This parameter is mutually exclusive with vlm_pipeline_model_local and vlm_pipeline_model_api. Use the other options for more parameters. Please migrate to vlm_pipeline_preset or vlm_pipeline_custom_config.",
+            "examples": [
+              "granite_docling"
+            ]
+          },
+          "vlm_pipeline_model_local": {
+            "type": "string",
+            "title": "Vlm Pipeline Model Local",
+            "description": "DEPRECATED: Options for running a local vision-language model for the vlm pipeline. The parameters refer to a model hosted on Hugging Face. This parameter is mutually exclusive with vlm_pipeline_model_api and vlm_pipeline_model. Please migrate to vlm_pipeline_preset or vlm_pipeline_custom_config.",
+            "examples": [
+              "{\"repo_id\": \"ibm-granite/granite-docling-258M\", \"prompt\": \"Convert this page to docling.\", \"scale\": 2.0, \"response_format\": \"doctags\", \"inference_framework\": \"transformers\", \"transformers_model_type\": \"automodel-imagetexttotext\", \"extra_generation_config\": {\"skip_special_tokens\": false}, \"temperature\": 0.0}",
+              "{\"repo_id\": \"ibm-granite/granite-docling-258M-mlx\", \"prompt\": \"Convert this page to docling.\", \"scale\": 2.0, \"response_format\": \"doctags\", \"inference_framework\": \"mlx\", \"transformers_model_type\": \"automodel\", \"extra_generation_config\": {}, \"temperature\": 0.0}",
+              "{\"repo_id\": \"ibm-granite/granite-vision-3.2-2b\", \"prompt\": \"Convert this page to markdown. Do not miss any text and only output the bare markdown!\", \"scale\": 2.0, \"response_format\": \"markdown\", \"inference_framework\": \"transformers\", \"transformers_model_type\": \"automodel-imagetexttotext\", \"extra_generation_config\": {}, \"temperature\": 0.0}"
+            ]
+          },
+          "vlm_pipeline_model_api": {
+            "type": "string",
+            "title": "Vlm Pipeline Model Api",
+            "description": "DEPRECATED: API details for using a vision-language model for the vlm pipeline. This parameter is mutually exclusive with vlm_pipeline_model_local and vlm_pipeline_model. Please migrate to vlm_pipeline_preset or vlm_pipeline_custom_config.",
+            "examples": [
+              "{\"url\": \"http://localhost:1234/v1/chat/completions\", \"headers\": {}, \"params\": {\"model\": \"ibm-granite/granite-docling-258M-mlx\"}, \"timeout\": 60.0, \"concurrency\": 1, \"prompt\": \"Convert this page to docling.\", \"scale\": 2.0, \"response_format\": \"doctags\", \"temperature\": 0.0}"
+            ]
+          },
+          "vlm_pipeline_preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vlm Pipeline Preset",
+            "description": "Preset ID to use (e.g., \"default\", \"granite_docling\"). Use \"default\" for stable, admin-controlled configuration.",
+            "examples": [
+              "default",
+              "granite_docling"
+            ]
+          },
+          "picture_description_preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Picture Description Preset",
+            "description": "Preset ID for picture description.",
+            "examples": [
+              "default",
+              "smolvlm",
+              "granite_vision"
+            ]
+          },
+          "code_formula_preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code Formula Preset",
+            "description": "Preset ID for code/formula extraction.",
+            "examples": [
+              "default"
+            ]
+          },
+          "vlm_pipeline_custom_config": {
+            "type": "string",
+            "title": "Vlm Pipeline Custom Config",
+            "description": "Custom VLM configuration including model spec and engine options. Only available if admin allows it. Must include 'model_spec' and 'engine_options'."
+          },
+          "picture_description_custom_config": {
+            "type": "string",
+            "title": "Picture Description Custom Config",
+            "description": "Custom picture description configuration including model spec and engine options."
+          },
+          "code_formula_custom_config": {
+            "type": "string",
+            "title": "Code Formula Custom Config",
+            "description": "Custom code/formula extraction configuration including model spec and engine options."
+          },
+          "table_structure_preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Table Structure Preset",
+            "description": "Preset ID for table structure detection.",
+            "examples": [
+              "default",
+              "tableformer_v1_accurate",
+              "tableformer_v1_fast",
+              "tableformer_v2"
+            ]
+          },
+          "table_structure_custom_config": {
+            "type": "string",
+            "title": "Table Structure Custom Config",
+            "description": "Custom configuration for table structure model. Use this to specify a non-default kind with its options. The 'kind' field in the config dict determines which table structure implementation to use. If not specified, uses the default kind with preset configuration.",
+            "examples": [
+              "{\"kind\": \"custom_table_model\", \"model_path\": \"/path/to/model\", \"confidence_threshold\": 0.8}",
+              "{\"kind\": \"docling_tableformer\", \"mode\": \"fast\", \"do_cell_matching\": false}"
+            ]
+          },
+          "layout_custom_config": {
+            "type": "string",
+            "title": "Layout Custom Config",
+            "description": "Custom configuration for layout model. Use this to specify a non-default kind with its options. The 'kind' field in the config dict determines which layout implementation to use. If not specified, uses the default kind with preset configuration.",
+            "examples": [
+              "{\"kind\": \"docling_layout_default\", \"keep_empty_clusters\": false, \"skip_cell_assignment\": false, \"create_orphan_clusters\": true}",
+              "{\"kind\": \"layout_object_detection\", \"keep_empty_clusters\": false, \"skip_cell_assignment\": false}"
+            ]
+          },
+          "layout_preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Layout Preset",
+            "description": "Preset ID for layout detection.",
+            "examples": [
+              "default",
+              "docling_layout_default"
+            ]
+          },
+          "picture_classification_preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Picture Classification Preset",
+            "description": "Preset ID for picture classification.",
+            "examples": [
+              "default",
+              "document_figure_classifier_v2"
+            ]
+          },
+          "picture_classification_custom_config": {
+            "type": "string",
+            "title": "Picture Classification Custom Config",
+            "description": "Custom configuration for picture classification. Use this to specify custom options for the picture classifier. The configuration should match DocumentPictureClassifierOptions schema.",
+            "examples": [
+              "{\"kind\": \"document_picture_classifier\"}"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_process_file_v1_convert_file_post"
+      }
+    }
+  }
+}

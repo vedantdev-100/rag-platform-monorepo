@@ -5,8 +5,8 @@
 | Stage | Work | State |
 | --- | --- | --- |
 | 9 | Single worker with durable ingestion outbox, Redis stream, retries and status polling | User verified |
-| 10A | CPU Docling Serve deployment and conversion check | Setup supplied |
-| 10B | Worker HTTP parser adapter and chunker/schema compatibility | Next, after deployment check |
+| 10A | CPU Docling Serve deployment and conversion check | Running versions and OpenAPI supplied by user |
+| 10B | Worker HTTP parser adapter and chunker/schema compatibility | Patch supplied; real probe and rollout pending |
 | 11 | Shared BGE base en v1.5 ONNX embedding service, CPU batching | Planned |
 | 12 | Slim runtime images and deployment validation | Planned |
 | LLM generation | Live SSE token streaming and document status events | Required by user |

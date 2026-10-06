@@ -127,6 +127,8 @@ async def complete(job, token, chunk_data, vectors, metadata):
                              for index, (chunk, vector) in enumerate(zip(chunk_data, vectors, strict=True))])
             document.doc_metadata = {**document.doc_metadata, **metadata, "source_ready": True,
                                      "chunks": len(chunk_data)}
+            document.parser_provider = metadata.get("parser_provider") or get_settings().RAG_PARSER_BACKEND
+            document.parser_version = metadata.get("parser_version")
             document.status = "ingested"
             document.failure_reason = None
             document.processing_token = None

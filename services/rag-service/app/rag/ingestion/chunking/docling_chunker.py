@@ -19,7 +19,7 @@ Chunk.modality marks the richest content type present in the chunk
 ("table" if it contains a table, else "image" if it contains a picture,
 else "text"); the exact composition is in metadata["labels"].
 """
-from docling.chunking import HybridChunker
+from docling_core.transforms.chunker.hybrid_chunker import HybridChunker
 from docling_core.transforms.chunker.tokenizer.base import BaseTokenizer
 
 from app.exceptions import IngestionError
