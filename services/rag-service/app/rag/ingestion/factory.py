@@ -20,15 +20,13 @@ from app.rag.ingestion.chunking.tokenizers import build_tokenizer
 from app.rag.ingestion.embeddings.stub_embedder import StubEmbeddingGenerator
 from app.rag.ingestion.model_paths import require_local_model
 from app.rag.ingestion.parsers.docling_parser import DoclingParser
-from app.rag.ingestion.storage import LocalFileStorage
+from app.rag.ingestion.storage_factory import build_file_storage
 
 settings = get_settings()
 
 
 def get_file_storage() -> FileStorage:
-    if settings.STORAGE_BACKEND == "local":
-        return LocalFileStorage(settings.LOCAL_STORAGE_DIR)
-    raise ValueError(f"Unknown STORAGE_BACKEND: {settings.STORAGE_BACKEND!r}")
+    return build_file_storage()
 
 
 @lru_cache

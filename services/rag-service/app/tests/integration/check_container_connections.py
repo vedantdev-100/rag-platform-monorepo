@@ -34,9 +34,9 @@ async def check(with_http: bool) -> None:
                 SELECT format_type(a.atttypid, a.atttypmod)
                 FROM pg_attribute a
                 WHERE a.attrelid = 'rag.chunks'::regclass
-                  AND a.attname = 'embedding' AND NOT a.attisdropped
+                AND a.attname = 'embedding' AND NOT a.attisdropped
             """))
-            assert dimension == "vector(768)", f"Unexpected embedding type: {dimension}"
+            assert dimension in {"vector(768)", "rag.vector(768)"}, (f"Unexpected embedding type: {dimension}")
         print("PostgreSQL: OK; four RAG tables present; vector(768) retained")
     finally:
         await engine.dispose()

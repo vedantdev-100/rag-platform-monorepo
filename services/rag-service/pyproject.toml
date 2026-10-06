@@ -26,6 +26,7 @@ dependencies = [
     "python-multipart>=0.0.32",
     "rag-contracts",
     "rag-persistence",
+    "boto3==1.40.20",
 ]
 
 [dependency-groups]

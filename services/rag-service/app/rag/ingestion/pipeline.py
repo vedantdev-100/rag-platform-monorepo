@@ -6,6 +6,8 @@ behavior and status vocabulary are preserved until the queue cutover.
 """
 import asyncio
 import math
+import hashlib
+import mimetypes
 import uuid
 
 from app.exceptions import IngestionError
@@ -15,6 +17,10 @@ from app.models.document import Document
 from app.rag.ingestion.base import Chunker, DocumentParser, EmbeddingGenerator, FileStorage
 from app.repositories.chunk_repository import ChunkRepository
 from app.repositories.document_repository import DocumentRepository
+
+from app.events.source_cleanup import enqueue_cleanup, lock_owner, record_unattached_source
+from app.rag.ingestion.storage import object_location
+from rag_persistence.utils import utcnow
 
 logger = get_logger(__name__)
 
@@ -49,11 +55,21 @@ class IngestionService:
             supported = ", ".join(self.parser.supported_source_types)
             raise IngestionError(f"Unsupported file type for {filename!r}. Supported types: {supported}")
 
-        uri = await self.storage.save(content, filename)
         document_id = uuid.uuid4()
+        try:
+            uri = await self.storage.save(content, filename)
+        except BaseException as exc:
+            source_uri = getattr(exc, "source_uri", None)
+            if source_uri:
+                await record_unattached_source(source_uri, document_id=document_id, owner_id=owner_id)
+            raise
+        location = object_location(uri)
 
         # Transaction 1: persist the document before external/CPU work.
         try:
+            owner_state = await lock_owner(self.session, owner_id)
+            if owner_state.is_deleted:
+                raise IngestionError("Owner was deleted; ingestion is not permitted")
             document = await self.document_repo.create(
                 Document(
                     id=document_id,
@@ -61,6 +77,11 @@ class IngestionService:
                     title=filename,
                     source_type=source_type,
                     source_uri=uri,
+                    object_bucket=location[0] if location else None,
+                    object_key=location[1] if location else None,
+                    checksum=hashlib.sha256(content).hexdigest(),
+                    file_size_bytes=len(content),
+                    mime_type=mimetypes.guess_type(filename)[0] or "application/octet-stream",
                     status="pending",
                 )
             )
@@ -68,6 +89,7 @@ class IngestionService:
             await self.session.commit()
         except BaseException:
             await self.session.rollback()
+            await record_unattached_source(uri, document_id=document_id, owner_id=owner_id)
             raise
 
         try:
@@ -94,8 +116,11 @@ class IngestionService:
                 if not finite:
                     raise IngestionError("Embedding contains non-finite values")
 
-            # Transaction 2: a fresh, locked row prevents writing through
-            # stale ORM state. Full user-level fencing arrives with the queue.
+            # Transaction 2: owner and document locks serialize completion
+            # against user deletion without holding locks during model work.
+            owner_state = await lock_owner(self.session, owner_id)
+            if owner_state.is_deleted:
+                raise IngestionError("Owner was deleted during ingestion")
             document = await self.document_repo.get_by_id_for_update(document_id)
             if document is None or document.owner_id != owner_id or document.status != "processing":
                 raise IngestionError("Document was removed or is no longer eligible for ingestion")
@@ -113,6 +138,8 @@ class IngestionService:
             ]
             await self.chunk_repo.bulk_create(chunks)
             await self.document_repo.update_metadata(document, {**parsed.metadata, "chunks": len(chunks)})
+            document.processed_at = utcnow()
+            document.embedding_dimension = EMBEDDING_DIM
             await self.document_repo.update_status(document, "ingested")
             await self.session.commit()
         except BaseException as exc:
@@ -122,7 +149,11 @@ class IngestionService:
             if isinstance(exc, Exception):
                 try:
                     failed_document = await self.document_repo.get_by_id_for_update(document_id)
-                    if failed_document is not None and failed_document.status == "processing":
+                    if failed_document is None:
+                        await enqueue_cleanup(self.session, uri, document_id=document_id, owner_id=owner_id)
+                    elif failed_document.status == "processing":
+                        # Retain failed sources for inspection and future retry.
+                        failed_document.failure_reason = type(exc).__name__
                         await self.document_repo.update_status(failed_document, "failed")
                     await self.session.commit()
                 except Exception:

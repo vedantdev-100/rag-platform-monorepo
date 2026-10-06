@@ -12,6 +12,8 @@ rag_persistence/db/session.py
 rag_persistence/models/__init__.py
 rag_persistence/models/chunk.py
 rag_persistence/models/document.py
+rag_persistence/models/outbox.py
+rag_persistence/models/user_lifecycle_state.py
 rag_persistence/repositories/__init__.py
 rag_persistence/repositories/chunk_repository.py
 rag_persistence/repositories/document_repository.py

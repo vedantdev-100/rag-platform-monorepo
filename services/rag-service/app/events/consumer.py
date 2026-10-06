@@ -15,6 +15,10 @@ import redis.asyncio as redis
 
 from app.db.session import AsyncSessionLocal
 from app.logging import get_logger
+from sqlalchemy import select
+from app.events.source_cleanup import enqueue_cleanup, lock_owner, run_cleanup
+from rag_persistence.models.document import Document
+from rag_persistence.utils import utcnow
 from app.repositories.document_repository import DocumentRepository
 
 logger = get_logger(__name__)
@@ -35,13 +39,24 @@ class UserEventConsumer:
             if "BUSYGROUP" not in str(exc):
                 raise  # group already exists from a previous run — fine
 
-    async def _handle(self, event: dict) -> None:
+    async def _handle(self, event: dict, event_id: str | None = None) -> None:
         event_type = event.get("event")
         user_id = event.get("user_id")
         if event_type == "user.deleted" and user_id:
             async with AsyncSessionLocal() as session:
                 async with session.begin():
-                    deleted = await DocumentRepository(session).delete_all_for_owner(uuid.UUID(user_id))
+                    owner_id = uuid.UUID(str(user_id))
+                    owner_state = await lock_owner(session, owner_id)
+                    owner_state.is_deleted = True
+                    owner_state.deleted_at = owner_state.deleted_at or utcnow()
+                    owner_state.last_event_type = event_type
+                    owner_state.last_event_id = event_id
+                    sources = (await session.execute(
+                        select(Document.id, Document.source_uri).where(Document.owner_id == owner_id)
+                    )).all()
+                    for document_id, uri in sources:
+                        await enqueue_cleanup(session, uri, document_id=document_id, owner_id=owner_id)
+                    deleted = await DocumentRepository(session).delete_all_for_owner(owner_id)
                 logger.info("user_deleted_documents_purged", user_id=user_id, documents_deleted=deleted)
         elif event_type == "user.deactivated":
             # Deliberately no data deletion — a deactivated account can be
@@ -52,32 +67,51 @@ class UserEventConsumer:
         else:
             logger.warning("unknown_user_event", event=event)
 
+    async def _process(self, messages) -> None:
+        for message_id, fields in messages:
+            try:
+                event = json.loads(fields[b"data"])
+                event_id = message_id.decode() if isinstance(message_id, bytes) else str(message_id)
+                await self._handle(event, event_id)
+                # DB deletion and cleanup intent are committed before ACK.
+                await self._redis.xack(self._stream, self._group, message_id)
+            except Exception:
+                logger.exception("user_event_processing_failed", message_id=message_id)
+
     async def run(self) -> None:
         self._running = True
-        await self._ensure_group()
-        logger.info("user_event_consumer_started", consumer=self._consumer_name)
-        while self._running:
-            try:
-                response = await self._redis.xreadgroup(
-                    groupname=self._group, consumername=self._consumer_name,
-                    streams={self._stream: ">"}, count=10, block=5000,
-                )
-                for _stream_name, messages in response:
-                    for message_id, fields in messages:
-                        try:
-                            event = json.loads(fields[b"data"])
-                            await self._handle(event)
-                            await self._redis.xack(self._stream, self._group, message_id)
-                        except Exception:
-                            # Leave pending on failure. Reading only '>' does
-                            # not recover pending entries; recovery is added
-                            # during the worker/queue implementation step.
-                            logger.exception("user_event_processing_failed", message_id=message_id)
-            except asyncio.CancelledError:
-                break
-            except Exception:
-                logger.exception("user_event_consumer_loop_error")
-                await asyncio.sleep(2)  # back off before retrying the connection
+        cleanup_task = asyncio.create_task(run_cleanup())
+        group_ready = False
+        claim_cursor = "0-0"
+        try:
+            while self._running:
+                try:
+                    if not group_ready:
+                        await self._ensure_group()
+                        group_ready = True
+                        logger.info("user_event_consumer_started", consumer=self._consumer_name)
+                    # Redis >=6.2: also recover pending messages from stopped
+                    # consumers instead of reading only never-delivered entries.
+                    claimed = await self._redis.xautoclaim(
+                        self._stream, self._group, self._consumer_name,
+                        min_idle_time=60000, start_id=claim_cursor, count=10,
+                    )
+                    claim_cursor = claimed[0]
+                    await self._process(claimed[1])
+                    response = await self._redis.xreadgroup(
+                        groupname=self._group, consumername=self._consumer_name,
+                        streams={self._stream: ">"}, count=10, block=5000,
+                    )
+                    for _stream_name, messages in response:
+                        await self._process(messages)
+                except asyncio.CancelledError:
+                    break
+                except Exception:
+                    logger.exception("user_event_consumer_loop_error")
+                    await asyncio.sleep(2)
+        finally:
+            cleanup_task.cancel()
+            await asyncio.gather(cleanup_task, return_exceptions=True)
 
     async def stop(self) -> None:
         self._running = False

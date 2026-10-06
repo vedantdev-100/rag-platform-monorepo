@@ -2,7 +2,7 @@
 check itself (`require_scopes("rag:ingest")`) is identical."""
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Request, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile
 from platform_auth import AuthenticatedUser, require_scopes
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,6 +13,7 @@ from app.exceptions import FileTooLargeError
 from app.rag.ingestion.factory import get_chunker, get_document_parser, get_embedding_generator, get_file_storage
 from app.rag.ingestion.pipeline import IngestionService
 from app.rag.ingestion.source_types import detect_source_type
+from app.rag.ingestion.storage import StorageWriteError
 from app.repositories.chunk_repository import ChunkRepository
 from app.repositories.document_repository import DocumentRepository
 from app.schemas.document import DocumentListOut, DocumentOut
@@ -49,10 +50,13 @@ async def upload_document(
 ):
     filename = Path(file.filename or "upload").name
     content = await _read_capped(file, settings.RAG_MAX_UPLOAD_MB * 1024 * 1024)
-    return await service.ingest(
-        owner_id=current_user.id, filename=filename, content=content,
-        source_type=detect_source_type(filename),
-    )
+    try:
+        return await service.ingest(
+            owner_id=current_user.id, filename=filename, content=content,
+            source_type=detect_source_type(filename),
+        )
+    except StorageWriteError as exc:
+        raise HTTPException(status_code=503, detail="Source storage is unavailable; try again later") from exc
 
 
 @router.get("", response_model=DocumentListOut)
