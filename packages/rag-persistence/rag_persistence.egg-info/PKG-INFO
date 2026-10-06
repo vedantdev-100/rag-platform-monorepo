@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: rag-persistence
+Version: 0.1.0
+Summary: Shared RAG database models and repositories
+Requires-Python: <3.13,>=3.12
+Requires-Dist: sqlalchemy[asyncio]==2.0.35
+Requires-Dist: asyncpg==0.29.0
+Requires-Dist: pgvector==0.3.6

@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: rag-contracts
+Version: 0.1.0
+Summary: Shared data definitions for RAG services
+Requires-Python: <3.13,>=3.12

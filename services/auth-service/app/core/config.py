@@ -35,8 +35,8 @@ class Settings(BaseSettings):
     DB_POOL_TIMEOUT: int = 30
     DB_POOL_RECYCLE: int = 1800
 
-    # REDIS_URL: str = "redis://localhost:6379/0"
-    REDIS_URL: str = "redis://redis:6379/0"
+    REDIS_URL: str = "redis://localhost:6379/0"
+    # REDIS_URL: str = "redis://redis:6379/0"
     USER_EVENTS_STREAM: str = "user-events"
 
     @property

@@ -24,6 +24,8 @@ dependencies = [
     "tenacity==9.0.0",
     "platform-auth[redis]",
     "python-multipart>=0.0.32",
+    "rag-contracts",
+    "rag-persistence",
 ]
 
 [dependency-groups]
@@ -46,6 +48,8 @@ default-groups = ["dev"]
 platform-auth = { git = "https://github.com/vedantdev-100/platform-auth.git", tag = "v1.0.0" }
 torch = { index = "pytorch-cpu" }
 torchvision = { index = "pytorch-cpu" }
+rag-contracts = { path = "../../packages/rag-contracts", editable = true }
+rag-persistence = { path = "../../packages/rag-persistence", editable = true }
 
 [[tool.uv.index]]
 name = "pytorch-cpu"

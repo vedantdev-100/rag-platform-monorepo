@@ -1,11 +1,4 @@
-"""
-Declarative base shared by all ORM models. Alembic's env.py imports this
-(and every model module) so `alembic revision --autogenerate` can detect
-schema changes across the whole app, not just auth.
-"""
-from sqlalchemy import MetaData
-from sqlalchemy.orm import DeclarativeBase
+"""Compatibility export of the authoritative RAG ORM base."""
+from rag_persistence.db.base import Base
 
-
-class Base(DeclarativeBase):
-    metadata = MetaData(schema="rag")
+__all__ = ["Base"]

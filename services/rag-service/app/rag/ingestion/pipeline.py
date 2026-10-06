@@ -1,16 +1,16 @@
-"""
-Orchestrates the full ingestion flow: raw upload -> stored file -> parsed
--> chunked -> embedded -> persisted. Depends only on the interfaces in
-base.py (constructor injection), so any stage's backend can be swapped
-(via app.rag.ingestion.factory, driven by Settings) without this class
-changing at all.
+"""Ingestion orchestration owns short database transactions.
+
+Parsing/chunking/embedding run outside database transactions. Final chunks,
+metadata and the ingested status commit together. Current synchronous upload
+behavior and status vocabulary are preserved until the queue cutover.
 """
 import asyncio
+import math
 import uuid
 
 from app.exceptions import IngestionError
 from app.logging import get_logger
-from app.models.chunk import Chunk
+from app.models.chunk import Chunk, EMBEDDING_DIM
 from app.models.document import Document
 from app.rag.ingestion.base import Chunker, DocumentParser, EmbeddingGenerator, FileStorage
 from app.repositories.chunk_repository import ChunkRepository
@@ -29,83 +29,113 @@ class IngestionService:
         document_repo: DocumentRepository,
         chunk_repo: ChunkRepository,
     ):
+        if document_repo.session is not chunk_repo.session:
+            raise ValueError("Ingestion repositories must share the same database session")
         self.storage = storage
         self.parser = parser
         self.chunker = chunker
         self.embedder = embedder
         self.document_repo = document_repo
         self.chunk_repo = chunk_repo
+        self.session = document_repo.session
 
     async def ingest(
         self, *, owner_id: uuid.UUID, filename: str, content: bytes, source_type: str
     ) -> Document:
-        # Reject unsupported types before anything is written to disk or the
-        # database — no orphan file, no "failed" row for a request that was
-        # never going to work.
+        
+        owner_id = uuid.UUID(str(owner_id))
+
         if source_type not in self.parser.supported_source_types:
             supported = ", ".join(self.parser.supported_source_types)
             raise IngestionError(f"Unsupported file type for {filename!r}. Supported types: {supported}")
 
-        # 1. Persist the raw file first, outside the DB — see storage.py
-        # for why blobs never go in a Postgres row.
         uri = await self.storage.save(content, filename)
+        document_id = uuid.uuid4()
 
-        document = await self.document_repo.create(
-            Document(
-                owner_id=owner_id,
-                title=filename,
-                source_type=source_type,
-                source_uri=uri,
-                status="pending",
+        # Transaction 1: persist the document before external/CPU work.
+        try:
+            document = await self.document_repo.create(
+                Document(
+                    id=document_id,
+                    owner_id=owner_id,
+                    title=filename,
+                    source_type=source_type,
+                    source_uri=uri,
+                    status="pending",
+                )
             )
-        )
+            await self.document_repo.update_status(document, "processing")
+            await self.session.commit()
+        except BaseException:
+            await self.session.rollback()
+            raise
 
         try:
-            document = await self.document_repo.update_status(document, "processing")
-
-            # 2. Parse: raw bytes -> layout-aware ParsedDocument
+            # No database transaction is held while models are running.
             parsed = await self.parser.parse(content, filename)
             if not parsed.elements:
                 raise IngestionError(f"Parsing produced no content for {filename!r}")
-
-            # 3. Chunk: ParsedDocument -> list[ChunkData], context-aware.
-            # Tokenizing is CPU-bound, so keep it off the event loop.
             chunk_data = await asyncio.to_thread(self.chunker.chunk, parsed)
             if not chunk_data:
                 raise IngestionError(f"Chunking produced no chunks for {filename!r}")
 
-            # 4. Embed: batch all chunk texts in one call — most embedding
-            # backends (including sentence-transformers) are far more
-            # efficient batched than called once per chunk. The text embedded
-            # is the same text stored (and full-text indexed): headings
-            # included.
             vectors = await self.embedder.embed([c.content for c in chunk_data])
+            if self.embedder.dimensions != EMBEDDING_DIM:
+                raise IngestionError("Embedding provider dimension does not match the database schema")
+            if len(vectors) != len(chunk_data):
+                raise IngestionError("Embedding count does not match chunk count")
+            for vector in vectors:
+                if len(vector) != EMBEDDING_DIM:
+                    raise IngestionError(f"Embedding must contain {EMBEDDING_DIM} values")
+                try:
+                    finite = all(math.isfinite(value) for value in vector)
+                except (TypeError, ValueError, OverflowError) as exc:
+                    raise IngestionError("Embedding contains invalid numeric values") from exc
+                if not finite:
+                    raise IngestionError("Embedding contains non-finite values")
 
-            # 5. Persist chunks with their embeddings.
+            # Transaction 2: a fresh, locked row prevents writing through
+            # stale ORM state. Full user-level fencing arrives with the queue.
+            document = await self.document_repo.get_by_id_for_update(document_id)
+            if document is None or document.owner_id != owner_id or document.status != "processing":
+                raise IngestionError("Document was removed or is no longer eligible for ingestion")
+
             chunks = [
                 Chunk(
-                    document_id=document.id,
+                    document_id=document_id,
                     chunk_index=i,
                     modality=cd.modality,
                     content=cd.content,
                     embedding=vector,
                     chunk_metadata=cd.metadata,
                 )
-                for i, (cd, vector) in enumerate(zip(chunk_data, vectors))
+                for i, (cd, vector) in enumerate(zip(chunk_data, vectors, strict=True))
             ]
             await self.chunk_repo.bulk_create(chunks)
-
-            # Record what the parser found so it's visible per document:
-            # e.g. pictures > pictures_described means some picture content
-            # is NOT searchable (picture description was off or skipped it).
             await self.document_repo.update_metadata(document, {**parsed.metadata, "chunks": len(chunks)})
-            document = await self.document_repo.update_status(document, "ingested")
-            logger.info(
-                "document_ingested", document_id=str(document.id), chunk_count=len(chunks), **parsed.metadata
-            )
-            return document
-
-        except Exception:
-            await self.document_repo.update_status(document, "failed")
-            logger.warning("document_ingestion_failed", document_id=str(document.id))
+            await self.document_repo.update_status(document, "ingested")
+            await self.session.commit()
+        except BaseException as exc:
+            # Flush failures invalidate the transaction. Roll back before
+            # using this session to record failure; reload expired ORM state.
+            await self.session.rollback()
+            if isinstance(exc, Exception):
+                try:
+                    failed_document = await self.document_repo.get_by_id_for_update(document_id)
+                    if failed_document is not None and failed_document.status == "processing":
+                        await self.document_repo.update_status(failed_document, "failed")
+                    await self.session.commit()
+                except Exception:
+                    await self.session.rollback()
+                    logger.exception("document_failure_status_update_failed", document_id=str(document_id))
+                logger.exception("document_ingestion_failed", document_id=str(document_id))
             raise
+
+        # Logging occurs after commit, outside failure-state handling.
+        logger.info(
+            "document_ingested",
+            document_id=str(document_id),
+            chunk_count=len(chunks),
+            parser_metadata=parsed.metadata,
+        )
+        return document

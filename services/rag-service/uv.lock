@@ -1630,6 +1630,28 @@ wheels = [
 ]
 
 [[package]]
+name = "rag-contracts"
+version = "0.1.0"
+source = { editable = "../../packages/rag-contracts" }
+
+[[package]]
+name = "rag-persistence"
+version = "0.1.0"
+source = { editable = "../../packages/rag-persistence" }
+dependencies = [
+    { name = "asyncpg" },
+    { name = "pgvector" },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "asyncpg", specifier = "==0.29.0" },
+    { name = "pgvector", specifier = "==0.3.6" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = "==2.0.35" },
+]
+
+[[package]]
 name = "rag-service"
 version = "0.1.0"
 source = { virtual = "." }
@@ -1648,6 +1670,8 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
     { name = "python-multipart" },
+    { name = "rag-contracts" },
+    { name = "rag-persistence" },
     { name = "sentence-transformers" },
     { name = "slowapi" },
     { name = "sqlalchemy", extra = ["asyncio"] },
@@ -1684,6 +1708,8 @@ requires-dist = [
     { name = "pydantic-settings", specifier = "==2.5.2" },
     { name = "python-dotenv", specifier = "==1.0.1" },
     { name = "python-multipart", specifier = ">=0.0.32" },
+    { name = "rag-contracts", editable = "../../packages/rag-contracts" },
+    { name = "rag-persistence", editable = "../../packages/rag-persistence" },
     { name = "sentence-transformers", specifier = "==3.3.1" },
     { name = "slowapi", specifier = "==0.1.9" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = "==2.0.35" },

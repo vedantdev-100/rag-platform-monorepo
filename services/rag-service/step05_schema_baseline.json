@@ -1,0 +1,22 @@
+{
+  "database": "ai_platform",
+  "documents": {
+    "count": 3,
+    "sha256": "913c5b4b384b27ba9bccb6e8293b6e1b27a5ab088fbd8d02802ac191478dafae"
+  },
+  "chunks": {
+    "count": 14,
+    "sha256": "4e5cdaa8513077bf2e99cadf4cae61c76b8521ce23bcc709137a6ca722b3cb35"
+  },
+  "statuses": {
+    "failed": 1,
+    "ingested": 2
+  },
+  "indexes": {
+    "chunks_pkey": "CREATE UNIQUE INDEX chunks_pkey ON rag.chunks USING btree (id)",
+    "documents_pkey": "CREATE UNIQUE INDEX documents_pkey ON rag.documents USING btree (id)",
+    "ix_chunks_content_tsv": "CREATE INDEX ix_chunks_content_tsv ON rag.chunks USING gin (content_tsv)",
+    "ix_chunks_embedding_cosine": "CREATE INDEX ix_chunks_embedding_cosine ON rag.chunks USING hnsw (embedding vector_cosine_ops)",
+    "ix_rag_documents_owner_id": "CREATE INDEX ix_rag_documents_owner_id ON rag.documents USING btree (owner_id)"
+  }
+}

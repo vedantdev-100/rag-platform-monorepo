@@ -40,7 +40,8 @@ class UserEventConsumer:
         user_id = event.get("user_id")
         if event_type == "user.deleted" and user_id:
             async with AsyncSessionLocal() as session:
-                deleted = await DocumentRepository(session).delete_all_for_owner(uuid.UUID(user_id))
+                async with session.begin():
+                    deleted = await DocumentRepository(session).delete_all_for_owner(uuid.UUID(user_id))
                 logger.info("user_deleted_documents_purged", user_id=user_id, documents_deleted=deleted)
         elif event_type == "user.deactivated":
             # Deliberately no data deletion — a deactivated account can be
@@ -68,8 +69,9 @@ class UserEventConsumer:
                             await self._handle(event)
                             await self._redis.xack(self._stream, self._group, message_id)
                         except Exception:
-                            # Don't ack — redelivered on the next read instead
-                            # of being silently dropped.
+                            # Leave pending on failure. Reading only '>' does
+                            # not recover pending entries; recovery is added
+                            # during the worker/queue implementation step.
                             logger.exception("user_event_processing_failed", message_id=message_id)
             except asyncio.CancelledError:
                 break

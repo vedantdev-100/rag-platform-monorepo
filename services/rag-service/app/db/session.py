@@ -1,38 +1,30 @@
-"""
-Async SQLAlchemy engine + session factory.
+"""Service configuration and request-session lifecycle remain in rag-service."""
+from collections.abc import AsyncIterator
 
-Decision: async everywhere. RAG/agent workloads are I/O bound (vector DB
-calls, LLM API calls, tool calls); an async stack from the DB layer up
-avoids event-loop-blocking sync calls creeping in later.
-"""
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
+from rag_persistence.db.session import create_session_factory
 
 settings = get_settings()
 
-engine = create_async_engine(
+engine, AsyncSessionLocal = create_session_factory(
     settings.DATABASE_URL,
     echo=settings.DEBUG,
-    pool_pre_ping=True,
     pool_size=settings.DB_POOL_SIZE,
     max_overflow=settings.DB_MAX_OVERFLOW,
     pool_timeout=settings.DB_POOL_TIMEOUT,
     pool_recycle=settings.DB_POOL_RECYCLE,
-    connect_args={"server_settings": {"search_path": "rag, public"}},
-)
-
-AsyncSessionLocal = async_sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
 )
 
 
-async def get_db_session() -> AsyncSession:
-    """FastAPI dependency — yields one session per request, always closed."""
+async def get_db_session() -> AsyncIterator[AsyncSession]:
+    """Yield one session per request and close it on exit."""
     async with AsyncSessionLocal() as session:
         try:
             yield session
+        except BaseException:
+            await session.rollback()
+            raise
         finally:
             await session.close()
