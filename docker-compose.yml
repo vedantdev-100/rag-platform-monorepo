@@ -1,0 +1,76 @@
+# Run from the monorepo root: docker compose --env-file .env.compose ...
+# PostgreSQL and Redis remain at their existing addresses during this step.
+name: rag-platform-local
+services:
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    image: rag-platform/auth-service:local
+    init: true
+    env_file:
+      - ./services/auth-service/.env
+    environment:
+      DATABASE_URL: ${AUTH_DATABASE_URL:?Set AUTH_DATABASE_URL in .env.compose}
+      REDIS_URL: ${EVENTS_REDIS_URL:?Set EVENTS_REDIS_URL in .env.compose}
+      PLATFORM_AUTH_REDIS_URL: ${AUTH_REDIS_URL:?Set AUTH_REDIS_URL in .env.compose}
+      PLATFORM_AUTH_JWKS_URL: http://auth-service:8000/.well-known/jwks.json
+      JWT_PRIVATE_KEY_PATH: /code/secrets/private_key.pem
+      JWT_PUBLIC_KEY_PATH: /code/secrets/public_key.pem
+    command: ["/code/.venv/bin/uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "127.0.0.1:${AUTH_HOST_PORT:-8001}:8000"
+    volumes:
+      - type: bind
+        source: ./services/auth-service/secrets
+        target: /code/secrets
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: ["CMD", "/code/.venv/bin/python", "-c", "import json,urllib.request; d=json.load(urllib.request.urlopen('http://127.0.0.1:8000/.well-known/jwks.json',timeout=5)); assert d.get('keys')"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 20s
+
+  rag-service:
+    build:
+      context: .
+      dockerfile: services/rag-service/Dockerfile
+    image: rag-platform/rag-service:local
+    init: true
+    env_file:
+      - ./services/rag-service/.env
+    environment:
+      DATABASE_URL: ${RAG_DATABASE_URL:?Set RAG_DATABASE_URL in .env.compose}
+      REDIS_URL: ${EVENTS_REDIS_URL:?Set EVENTS_REDIS_URL in .env.compose}
+      PLATFORM_AUTH_REDIS_URL: ${AUTH_REDIS_URL:?Set AUTH_REDIS_URL in .env.compose}
+      PLATFORM_AUTH_JWKS_URL: http://auth-service:8000/.well-known/jwks.json
+      USER_EVENTS_STREAM: ${USER_EVENTS_STREAM:-user-events}
+      USER_EVENTS_CONSUMER_GROUP: ${USER_EVENTS_CONSUMER_GROUP:-rag-service}
+      STORAGE_BACKEND: local
+      LOCAL_STORAGE_DIR: ./data/uploads
+      MODELS_DIR: ./models
+    ports:
+      - "127.0.0.1:${RAG_HOST_PORT:-8000}:8000"
+    depends_on:
+      auth-service:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./services/rag-service/data/uploads
+        target: /workspace/services/rag-service/data/uploads
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./services/rag-service/models
+        target: /workspace/services/rag-service/models
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 30s

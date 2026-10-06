@@ -1,0 +1,18 @@
+# Merge with your existing auth .dockerignore; retain any extra exclusions.
+.git
+.venv
+__pycache__
+**/__pycache__
+*.py[cod]
+**/*.py[cod]
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.egg-info
+.env
+.env.*
+secrets
+**/*.pem
+**/*.key
+data
+models

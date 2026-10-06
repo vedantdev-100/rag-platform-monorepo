@@ -1,0 +1,3 @@
+# Append to your existing root .gitignore; do not replace that file.
+.env.compose
+services/auth-service/secrets/
