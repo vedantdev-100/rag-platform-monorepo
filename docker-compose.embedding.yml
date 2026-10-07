@@ -1,0 +1,47 @@
+# Fifth overlay. Generate services/embedding-service/contract.env before using dc.
+services:
+  embedding-service:
+    build:
+      context: ./services/embedding-service
+    image: rag-platform/embedding-service:local
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 120s
+    environment:
+      MODEL_DIR: /models/bge
+      MODEL_MANIFEST: /config/model-manifest.json
+      TOKENIZERS_PARALLELISM: "false"
+      EMBEDDING_SERVICE_API_KEY: ${EMBEDDING_SERVICE_API_KEY:-}
+    ports:
+      - "127.0.0.1:${EMBEDDING_HOST_PORT:-5002}:8000"
+    volumes:
+      - type: bind
+        source: ./services/rag-service/models/BAAI--bge-base-en-v1.5
+        target: /models/bge
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./services/embedding-service/model-manifest.json
+        target: /config/model-manifest.json
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 30
+      start_period: 60s
+  rag-service:
+    environment:
+      RAG_EMBEDDING_BACKEND: ${RAG_EMBEDDING_BACKEND:-sentence_transformers}
+      EMBEDDING_SERVICE_URL: http://embedding-service:8000
+      EMBEDDING_SERVICE_REVISION: ${EMBEDDING_SERVICE_REVISION:?Generate Step 11 contract.env}
+      EMBEDDING_SERVICE_API_KEY: ${EMBEDDING_SERVICE_API_KEY:-}
+  rag-worker:
+    environment:
+      RAG_EMBEDDING_BACKEND: ${RAG_EMBEDDING_BACKEND:-sentence_transformers}
+      EMBEDDING_SERVICE_URL: http://embedding-service:8000
+      EMBEDDING_SERVICE_REVISION: ${EMBEDDING_SERVICE_REVISION:?Generate Step 11 contract.env}
+      EMBEDDING_SERVICE_API_KEY: ${EMBEDDING_SERVICE_API_KEY:-}

@@ -1,0 +1,47 @@
+# Sixth overlay. Requires Docker Compose >=2.24.4 for !override.
+services:
+  rag-service:
+    image: rag-platform/rag-service:local
+    build:
+      context: .
+      dockerfile: services/rag-service/Dockerfile.runtime
+      target: api
+    environment:
+      RAG_RUNTIME_ROLE: api
+      RUN_LIFECYCLE_CONSUMER: "false"
+      RAG_PARSER_BACKEND: ${RAG_PARSER_BACKEND:-docling_serve}
+      RAG_EMBEDDING_BACKEND: ${RAG_EMBEDDING_BACKEND:-http}
+    # Retain legacy local sources; remove the entire model mount from the API.
+    volumes: !override
+      - type: bind
+        source: ./services/rag-service/data/uploads
+        target: /workspace/services/rag-service/data/uploads
+        bind:
+          create_host_path: false
+
+  rag-worker:
+    image: rag-platform/rag-worker:local
+    build:
+      context: .
+      dockerfile: services/rag-service/Dockerfile.runtime
+      target: worker
+    environment:
+      RAG_RUNTIME_ROLE: worker
+      RUN_LIFECYCLE_CONSUMER: "true"
+      RAG_PARSER_BACKEND: ${RAG_PARSER_BACKEND:-docling_serve}
+      RAG_EMBEDDING_BACKEND: ${RAG_EMBEDDING_BACKEND:-http}
+      MODELS_DIR: ./models
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+    volumes: !override
+      - type: bind
+        source: ./services/rag-service/data/uploads
+        target: /workspace/services/rag-service/data/uploads
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./services/rag-service/data/tokenizers
+        target: /workspace/services/rag-service/models
+        read_only: true
+        bind:
+          create_host_path: false

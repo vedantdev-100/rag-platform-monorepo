@@ -15,15 +15,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     APP_NAME: str = "rag-service"
-
-    # Step 12: image runtime role.
-    RAG_RUNTIME_ROLE: Literal["development", "api", "worker"] = "development"
-
-    @model_validator(mode="after")
-    def _validate_runtime_role(self) -> "Settings":
-        from app.core.runtime_roles import validate_runtime_role
-        return validate_runtime_role(self)
-
     ENVIRONMENT: Literal["development", "staging", "production"] = "development"
     DEBUG: bool = False
     API_V1_PREFIX: str = "/api/v1"
@@ -150,29 +141,7 @@ class Settings(BaseSettings):
     RAG_CHUNKER_MAX_TOKENS: int = 500
     RAG_CHUNKER_MERGE_PEERS: bool = True
 
-    RAG_EMBEDDING_BACKEND: Literal["stub", "sentence_transformers", "http"] = "sentence_transformers"
-    # Step 11: shared embedding contract.
-    EMBEDDING_SERVICE_URL: str = "http://embedding-service:8000"
-    EMBEDDING_SERVICE_REVISION: str = ""
-    EMBEDDING_SERVICE_API_KEY: SecretStr = SecretStr("")
-    EMBEDDING_SERVICE_TIMEOUT_SECONDS: int = 75
-
-    @model_validator(mode="after")
-    def _validate_embedding_service(self) -> "Settings":
-        if self.RAG_EMBEDDING_BACKEND != "http":return self
-        import re
-        from urllib.parse import urlsplit
-        url=urlsplit(self.EMBEDDING_SERVICE_URL)
-        if (url.scheme not in {"http","https"} or not url.netloc or url.path not in {"","/"}
-                or url.username or url.password or url.query or url.fragment):
-            raise ValueError("EMBEDDING_SERVICE_URL must be a server URL without credentials")
-        if not re.fullmatch(r"bge-onnx-v1:[0-9a-f]{64}",self.EMBEDDING_SERVICE_REVISION):
-            raise ValueError("Generate the Step 11 model contract before enabling HTTP embeddings")
-        if self.RAG_EMBEDDING_MODEL!="BAAI/bge-base-en-v1.5" or self.EMBEDDING_DIMENSIONS!=768:
-            raise ValueError("Step 11 model contract requires BGE base en v1.5 and dimension 768")
-        if not 65 <= self.EMBEDDING_SERVICE_TIMEOUT_SECONDS < self.INGESTION_JOB_TIMEOUT_SECONDS:
-            raise ValueError("Embedding timeout must be >=65 seconds and below the job timeout")
-        return self
+    RAG_EMBEDDING_BACKEND: Literal["stub", "sentence_transformers"] = "sentence_transformers"
     RAG_EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
     RAG_EMBEDDING_DEVICE: str | None = None
     RAG_EMBEDDING_BATCH_SIZE: int = 32

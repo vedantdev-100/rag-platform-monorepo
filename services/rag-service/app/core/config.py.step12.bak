@@ -15,15 +15,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     APP_NAME: str = "rag-service"
-
-    # Step 12: image runtime role.
-    RAG_RUNTIME_ROLE: Literal["development", "api", "worker"] = "development"
-
-    @model_validator(mode="after")
-    def _validate_runtime_role(self) -> "Settings":
-        from app.core.runtime_roles import validate_runtime_role
-        return validate_runtime_role(self)
-
     ENVIRONMENT: Literal["development", "staging", "production"] = "development"
     DEBUG: bool = False
     API_V1_PREFIX: str = "/api/v1"

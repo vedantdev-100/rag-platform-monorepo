@@ -1,0 +1,144 @@
+{
+  "sources": [
+    {
+      "path": "services/rag-service/app/rag/ingestion/embeddings/sentence_transformers_embedder.py",
+      "present": true,
+      "size_bytes": 2333,
+      "sha256": "2c1a2a27665b6eb63f925fe1a172a43ed57c76f124235b034e027e565b1a3e88"
+    },
+    {
+      "path": "services/rag-service/app/rag/retrieval/factory.py",
+      "present": true,
+      "size_bytes": 2621,
+      "sha256": "0064c07c6990e89498e9b24c62a1bae5aac2480054f178b37172341b219c163e"
+    },
+    {
+      "path": "services/rag-service/app/rag/retrieval/vector_retriever.py",
+      "present": true,
+      "size_bytes": 1090,
+      "sha256": "e010e685c887a14a7c9e73548ec0c82f43e73037c22bb60f0299f447cf767df7"
+    },
+    {
+      "path": "services/rag-service/app/rag/retrieval/hybrid_retriever.py",
+      "present": true,
+      "size_bytes": 987,
+      "sha256": "68947db1d17c132f80f31bffed3f83abbf0349e9b67d8757eda5614db9fa27a0"
+    },
+    {
+      "path": "services/rag-service/app/rag/retrieval/base.py",
+      "present": true,
+      "size_bytes": 3203,
+      "sha256": "331bde5c059dc20f2d1d3b9cf74865e4615b4d3e9c3458e57fe79158253c9493"
+    },
+    {
+      "path": "services/rag-service/app/rag/ingestion/model_paths.py",
+      "present": true,
+      "size_bytes": 1878,
+      "sha256": "3c13e529dab70bdfef471472828fa4b86c0a10fd801ad1298e9948ab9632b288"
+    }
+  ],
+  "model_files": [
+    {
+      "path": "modules.json",
+      "present": true,
+      "size_bytes": 349,
+      "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+    },
+    {
+      "path": "1_Pooling/config.json",
+      "present": true,
+      "size_bytes": 190,
+      "sha256": "c9bef85e8bbf4b2eab4941b3fb62bd33f88686748b478f2e264d256472d9643b"
+    },
+    {
+      "path": "sentence_bert_config.json",
+      "present": true,
+      "size_bytes": 52,
+      "sha256": "84e39fda68ccbff05bfa723ae9c0e70e23e2ec373b76e0f8c6e71af72a693cbf"
+    },
+    {
+      "path": "config_sentence_transformers.json",
+      "present": true,
+      "size_bytes": 124,
+      "sha256": "940d5f50db195fa6e5e6a4f122c095f77880de259d74b14a65779ed48bdd7c56"
+    },
+    {
+      "path": "config.json",
+      "present": true,
+      "size_bytes": 777,
+      "sha256": "bc00af31a4a31b74040d73370aa83b62da34c90b75eb77bfa7db039d90abd591"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "present": true,
+      "size_bytes": 366,
+      "sha256": "9261e7d79b44c8195c1cada2b453e55b00aeb81e907a6664974b4d7776172ab3"
+    },
+    {
+      "path": "special_tokens_map.json",
+      "present": true,
+      "size_bytes": 125,
+      "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3"
+    },
+    {
+      "path": "onnx/model.onnx",
+      "present": true,
+      "size_bytes": 435811539
+    },
+    {
+      "path": "model.safetensors",
+      "present": true,
+      "size_bytes": 437955512
+    },
+    {
+      "path": "pytorch_model.bin",
+      "present": true,
+      "size_bytes": 437997357
+    },
+    {
+      "path": "tokenizer.json",
+      "present": true,
+      "size_bytes": 711396,
+      "sha256": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66"
+    },
+    {
+      "path": "vocab.txt",
+      "present": true,
+      "size_bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    }
+  ],
+  "settings": {
+    "code_defaults": {
+      "MODELS_DIR": "./models",
+      "RAG_CHUNKER_TOKENIZER": "huggingface",
+      "RAG_CHUNKER_TOKENIZER_MODEL": "BAAI/bge-base-en-v1.5",
+      "RAG_CHUNKER_MAX_TOKENS": 500,
+      "RAG_EMBEDDING_BACKEND": "sentence_transformers",
+      "RAG_EMBEDDING_MODEL": "BAAI/bge-base-en-v1.5",
+      "RAG_EMBEDDING_DEVICE": null,
+      "RAG_EMBEDDING_BATCH_SIZE": 32,
+      "EMBEDDING_DIMENSIONS": 768,
+      "RAG_RERANKER_ENABLED": false,
+      "RAG_RERANKER_BACKEND": "local"
+    },
+    "services/rag-service/.env:selected_values_only": {
+      "MODELS_DIR": "./models",
+      "RAG_CHUNKER_TOKENIZER": "huggingface",
+      "RAG_CHUNKER_TOKENIZER_MODEL": "BAAI/bge-base-en-v1.5",
+      "RAG_CHUNKER_MAX_TOKENS": "500",
+      "RAG_EMBEDDING_BACKEND": "sentence_transformers",
+      "RAG_EMBEDDING_MODEL": "BAAI/bge-base-en-v1.5",
+      "EMBEDDING_DIMENSIONS": "768",
+      "RAG_RERANKER_ENABLED": "false",
+      "RAG_RERANKER_BACKEND": "local"
+    },
+    ".env.compose:selected_values_only": {}
+  },
+  "excluded": [
+    "credentials/full .env files",
+    "model weights",
+    "documents",
+    "database contents"
+  ]
+}

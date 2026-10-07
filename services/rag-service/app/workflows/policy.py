@@ -20,6 +20,8 @@ def processing_version(settings):
         # Explicit adapter revision: alter when conversion semantics change.
         data["parser_adapter"] = "docling-serve-v1-json-1"
         data["picture_api_url"] = settings.RAG_PICTURE_DESCRIPTION_API_URL
+    if settings.RAG_EMBEDDING_BACKEND == "http":
+        data["embedding_contract"] = settings.EMBEDDING_SERVICE_REVISION
     return "ingestion-v1:" + hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
 
 

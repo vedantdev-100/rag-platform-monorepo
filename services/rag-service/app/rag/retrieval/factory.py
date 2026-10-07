@@ -17,12 +17,12 @@ settings = get_settings()
 
 def get_retriever(chunk_repo: ChunkRepository) -> Retriever:
     if settings.RAG_RETRIEVER_BACKEND == "vector":
-        return VectorRetriever(chunk_repo, get_embedding_generator())
+        return VectorRetriever(chunk_repo, get_embedding_generator("query"))
     if settings.RAG_RETRIEVER_BACKEND == "keyword":
         return KeywordRetriever(chunk_repo)
     if settings.RAG_RETRIEVER_BACKEND == "hybrid":
         return HybridRetriever(
-            VectorRetriever(chunk_repo, get_embedding_generator()),
+            VectorRetriever(chunk_repo, get_embedding_generator("query")),
             KeywordRetriever(chunk_repo),
             rrf_k=settings.RAG_RRF_K,
         )

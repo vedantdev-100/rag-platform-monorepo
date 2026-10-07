@@ -50,7 +50,10 @@ def get_chunker() -> Chunker:
 
 
 @lru_cache
-def get_embedding_generator() -> EmbeddingGenerator:
+def get_embedding_generator(input_type: str = "document") -> EmbeddingGenerator:
+    if settings.RAG_EMBEDDING_BACKEND == "http":
+        from app.rag.embeddings.client import HttpEmbeddingGenerator
+        return HttpEmbeddingGenerator(settings, input_type)
     if settings.RAG_EMBEDDING_BACKEND == "stub":
         from app.rag.ingestion.embeddings.stub_embedder import StubEmbeddingGenerator
         return StubEmbeddingGenerator(dimensions=settings.EMBEDDING_DIMENSIONS)

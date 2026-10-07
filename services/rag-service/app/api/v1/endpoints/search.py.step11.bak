@@ -1,5 +1,3 @@
-from fastapi import HTTPException
-from app.rag.embeddings.client import EmbeddingServiceError
 """Only the auth import changed from the version given earlier in chat."""
 from fastapi import APIRouter, Depends, Request
 from platform_auth import AuthenticatedUser, require_scopes
@@ -29,10 +27,7 @@ async def search_documents(
     reranker = get_reranker()
 
     candidate_count = settings.RAG_RETRIEVAL_CANDIDATES if reranker else payload.top_k
-    try:
-        results = await retriever.retrieve(payload.query, owner_id=str(current_user.id), top_k=candidate_count)
-    except EmbeddingServiceError:
-        raise HTTPException(status_code=503, detail="embedding_service_unavailable")
+    results = await retriever.retrieve(payload.query, owner_id=str(current_user.id), top_k=candidate_count)
 
     reranked = False
     if reranker and results:

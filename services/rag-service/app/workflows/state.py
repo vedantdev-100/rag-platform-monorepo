@@ -137,6 +137,12 @@ async def complete(job, token, chunk_data, vectors, metadata):
             document.processed_at = utcnow()
             document.embedding_model = get_settings().RAG_EMBEDDING_MODEL
             document.embedding_dimension = EMBEDDING_DIM
+            settings = get_settings()
+            document.embedding_model_revision = (settings.EMBEDDING_SERVICE_REVISION
+                if settings.RAG_EMBEDDING_BACKEND == "http" else None)
+            document.doc_metadata = {**document.doc_metadata,
+                "embedding_backend": settings.RAG_EMBEDDING_BACKEND,
+                "embedding_revision": document.embedding_model_revision}
 
 
 async def fail(job, token, reason, *, retryable):
