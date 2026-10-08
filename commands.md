@@ -65,3 +65,20 @@ GRANT USAGE, CREATE ON SCHEMA auth TO auth_service_role;
 
 CREATE ROLE rag_service_role LOGIN PASSWORD 'your_secure_password';
 GRANT USAGE, CREATE ON SCHEMA rag TO rag_service_role;
+
+
+# Start the Docker setup
+source scripts/dc-step12.sh
+dc12 up -d
+dc12 down
+
+# (mostly for auth service only)
+MSYS_NO_PATHCONV=1 dc12 run --rm --no-deps auth-service /code/.venv/bin/alembic current
+MSYS_NO_PATHCONV=1 dc12 run --rm --no-deps auth-service /code/.venv/bin/alembic heads
+MSYS_NO_PATHCONV=1 dc12 run --rm --no-deps auth-service /code/.venv/bin/alembic upgrade head
+
+# docker resuouse usage
+docker stats --no-stream
+
+# Disk usage, including shared image layer
+docker system df -v
