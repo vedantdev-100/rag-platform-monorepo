@@ -1,0 +1,222 @@
+[
+  {
+    "path": "packages/rag-persistence/rag_persistence/repositories/chunk_repository.py",
+    "before": "16260b4018cdedd19735d575d3f42b9b8c0ee920f0ad4ee1b29e1a03a01dd30c",
+    "after": "44dff4d9ebd7f64e4d2acf6a45c6fa45769908291ea8cc276e796f9c68ad03d6"
+  },
+  {
+    "path": "services/rag-service/Dockerfile.runtime",
+    "before": "c35ab38edfaa27f30c55c77a195574363705d1467dfa550cf76b2b12239700a0",
+    "after": "a785199952ac95b6d8fd76c59a982f20b9dc25fab82ceb9fb02dbe8cbc6f6086"
+  },
+  {
+    "path": "services/rag-service/app/api/v1/endpoints/document_events.py",
+    "before": null,
+    "after": "00237b6394a4006c18db2a9858af27cae4cb1911cc467032025b7cd1c4d69626"
+  },
+  {
+    "path": "services/rag-service/app/api/v1/endpoints/generation.py",
+    "before": null,
+    "after": "6f8c610933a0d1129d954b373acf60a470d0bdc26593b36763702ae7662b484f"
+  },
+  {
+    "path": "services/rag-service/app/api/v1/endpoints/search.py",
+    "before": "29d1cf246274e16f8ebb4594816cfd1b478396f61b91e9c078463ad1040d1e9b",
+    "after": "18e60fcf528fae6a9c3b527f8234a564032c5809c5c7c2c2ad815d4b5a58b439"
+  },
+  {
+    "path": "services/rag-service/app/api/v1/router.py",
+    "before": "eef926f72f0d47340493e654c48f23cac74b97f2d65930df8724fe16fe0970fc",
+    "after": "a54d704fba000be41fbd064308d7e3b6ba5022a30ae3cd496301a0f01b12165f"
+  },
+  {
+    "path": "services/rag-service/app/cli/check_generation.py",
+    "before": null,
+    "after": "ac30e17cd72e3169fb50ad49bb992d4f019592d3f8478024aea5d27d6149ac5a"
+  },
+  {
+    "path": "services/rag-service/app/cli/check_rag_setup.py",
+    "before": null,
+    "after": "dd028aa3f039ea9b7b95a5954a3fe616ce41fbb9bcd22506e9fad3e774236de9"
+  },
+  {
+    "path": "services/rag-service/app/cli/check_retrieval.py",
+    "before": null,
+    "after": "42d873153d7bab1dd41a23110c61f699bef5950db9586b33898760f7d8e660f9"
+  },
+  {
+    "path": "services/rag-service/app/cli/check_retrieval_repository.py",
+    "before": null,
+    "after": "4c24fdc5e55a81b449ade12a1c1bde9d5fbeba05016085136bb7bd0f63ae41c4"
+  },
+  {
+    "path": "services/rag-service/app/cli/check_runtime_image.py",
+    "before": "da532dbfd2f749ee2069cd8a66dba7347705a25a3a6af64a00623a78ac3f8659",
+    "after": "2c120f331a174586fdc08caf222f357617600b476afd99ece676e1df33a00cca"
+  },
+  {
+    "path": "services/rag-service/app/core/config.py",
+    "before": "6b9e9a16eea8b70382c52edd9dd93f0d16a531bca6c3dc0310540278896edb69",
+    "after": "34a9e497884386e844d72034ae442104412bb9fb2a256eb1d4921fe30fdf4f50"
+  },
+  {
+    "path": "services/rag-service/app/main.py",
+    "before": "6122fe0d63ec511b3b612d9442fd244310345f29ab2a3e58b685225895aa15b5",
+    "after": "7486bcdfae2dfeeba7812a3ef3fd445ae621dbec0e9b43556b88f69d59eeae1d"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/__init__.py",
+    "before": null,
+    "after": "965d75b061a6e39ec77d4c9564b349145011396b67047061957fd86c921b2ece"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/auth.py",
+    "before": null,
+    "after": "d9fedb4110ef521307e40d675c6fe0a0e47f01fee12fd9e2b27e7fe30ee3fc58"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/context.py",
+    "before": null,
+    "after": "1f6063e72a260c880b833fd06aefab94e3c0132320950e3473f01585d333ab4a"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/document_status.py",
+    "before": null,
+    "after": "8a62a30d975745e4d37740629881ae84d6a95d6490e69405984d5845aa55ca30"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/events.py",
+    "before": null,
+    "after": "06192a55b21c2dd01ba2114b9e6eef7a21c1df226c5d27e6e42490f64c045fa5"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/providers/__init__.py",
+    "before": null,
+    "after": "7d11495bc079b6da59b320ca0fe4b9c0978cdc936c2bc617d5bb19db2b19dd48"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/providers/openai_compatible.py",
+    "before": null,
+    "after": "dd7f6c15ca56348e6e4aa042f268e8b4393287b244208d0409874c0c5f4b2187"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/retrieval_adapter.py",
+    "before": null,
+    "after": "dc732c14c430d60e81d857bfd71a77525ec39e794c9d174ac149cad76f725384"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/service.py",
+    "before": null,
+    "after": "725a1b8376246279868ca6e875c5b991104ca911df2fdf0255860cb977929c33"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/settings.py",
+    "before": null,
+    "after": "657f90ef20c2c37807bd0a16aea5a3c6924ae0c0d130f51f14092982844942c8"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/strategies/__init__.py",
+    "before": null,
+    "after": "ed78a08fbd9187886901256ec84240a90c1893f91ad309edfc39ac7cc940dbe6"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/strategies/registry.py",
+    "before": null,
+    "after": "00fec890444cd07488be415ad26272de792a0a20649318b10382efb5f1489b70"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/strategies/standard.py",
+    "before": null,
+    "after": "e2766ee7e43acfd3a233a3498fa3b1cfe5e0ecf229c7033c14c07a055cad1392"
+  },
+  {
+    "path": "services/rag-service/app/rag/generation/types.py",
+    "before": null,
+    "after": "7c22fed87c4cfff8447b08b69b0a772e77005a67f9177dc169d4cd3e342d809b"
+  },
+  {
+    "path": "services/rag-service/app/rag/retrieval/factory.py",
+    "before": "a5e5a0b19099e96778a31c6860c1816b74e398b688b26da2bda2756edaff9627",
+    "after": "cec6d75d4c0827f8d45501b8fe45127ea6b700d0ad6735a895e79a4469ffcf2e"
+  },
+  {
+    "path": "services/rag-service/app/rag/retrieval/rerankers/cohere_reranker.py",
+    "before": "bc6efefac4880617c92a333dd12af81a9059d3d4c818bb221868b5ed1e18e3a4",
+    "after": "e32fbfa7e9cf179d2b6194f5ca97d572ed377834c85e650d0f55d5e3ea69b62b"
+  },
+  {
+    "path": "services/rag-service/app/rag/retrieval/rerankers/http_results.py",
+    "before": null,
+    "after": "ff8c87ceb7b14a061ad683c35f1e7e2eeac71f32de63a20099da2875cea32ebe"
+  },
+  {
+    "path": "services/rag-service/app/rag/retrieval/rerankers/voyage_reranker.py",
+    "before": "1369b89ee7fddd77b093fcd096f7b09bc57c3e6d2d978f333c0a976abef95529",
+    "after": "bb624fac01faaf44c0a38fced298d02f8ea23b8517e9e6fdd936900a15af01f3"
+  },
+  {
+    "path": "services/rag-service/app/rag/retrieval/service.py",
+    "before": null,
+    "after": "037fbc549669cdbfcbf72e90ec2829021d11ef667e5c2cc2441f8166d0c45943"
+  },
+  {
+    "path": "services/rag-service/app/rag/retrieval/validation.py",
+    "before": null,
+    "after": "a10ec2652d04506ec3093c9b0c7b2a9fe94f4b01399ca9b816dcc6cc04ff5e40"
+  },
+  {
+    "path": "services/rag-service/app/schemas/generation.py",
+    "before": null,
+    "after": "10f14f4cde6985737f8e79c5a78c205a66e58acba80692760ec0edd9a973de6e"
+  },
+  {
+    "path": "services/rag-service/app/schemas/search.py",
+    "before": "b485f4e6dc7c00db1bf12f644bf6bfef5d6687f2a97a9b61c9194a7935d88625",
+    "after": "345a59d584750f9ed6c05d5579f2d270037c934f2841796805d28e2d13f56f10"
+  },
+  {
+    "path": "services/rag-service/app/tests/fixtures/generation_harness.json",
+    "before": null,
+    "after": "79eb71010f64e5f6afd5c59a9b799c1ea01e2fd82d616fa492ee283ff7e966fd"
+  },
+  {
+    "path": "services/rag-service/app/tests/unit/test_document_events.py",
+    "before": null,
+    "after": "3903763825e19cde715dba05693857a5180759db19b282a75129632ef96805a1"
+  },
+  {
+    "path": "services/rag-service/app/tests/unit/test_generation.py",
+    "before": null,
+    "after": "f5e24b24dc89bbf8f3b34d70e9f5bcb417b55b4e5e8c36c38f9e17dc7c0bba3e"
+  },
+  {
+    "path": "services/rag-service/app/tests/unit/test_generation_api.py",
+    "before": null,
+    "after": "ac51776f3a11ac1219977d8166ef918fc5730bff6d85de3737a47807017ed255"
+  },
+  {
+    "path": "services/rag-service/app/tests/unit/test_generation_auth.py",
+    "before": null,
+    "after": "11cfdfec50c2d976776d8c0286c3a04df39338c435757cb4911428eb0607f9d0"
+  },
+  {
+    "path": "services/rag-service/app/tests/unit/test_rag_setup_harness.py",
+    "before": null,
+    "after": "2991da189790c7aba922c0ba6b082811f783e46d72f4b80f916ab66f88a732fe"
+  },
+  {
+    "path": "services/rag-service/app/tests/unit/test_retrieval_finalization.py",
+    "before": null,
+    "after": "44b6281f1986371ea0d7032292c168274f28be2bf466ea1a2a1982abd898ac3e"
+  },
+  {
+    "path": "services/rag-service/pyproject.toml",
+    "before": "8a6732d389274f240451d08195869f0eca7d10b1f9aeac8028dbcdff3f835fd6",
+    "after": "0ab623f9295e172bf55483d9d211e5bb6769e5bc28de1ff3e4b08d1f3bf31d71"
+  },
+  {
+    "path": "services/rag-service/uv.lock",
+    "before": "2cfe4d142466c59be593038f56536697e3f5e5b4ce5b04ca178ebbefd51341e6",
+    "after": "3d53901dd8985bbbdc83746e4acb70f0b7207acd81ec20c3e36aadb7516aeafd"
+  }
+]

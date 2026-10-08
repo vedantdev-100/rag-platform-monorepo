@@ -1,0 +1,223 @@
+"""
+No JWT_* fields at all  rag-service never issues or holds signing
+keys. Token verification settings (PLATFORM_AUTH_JWKS_URL, etc.) live
+in platform_auth's own PlatformAuthSettings, read from the same .env
+via the PLATFORM_AUTH_ env prefix.
+"""
+from functools import lru_cache
+from typing import List, Literal
+
+from pydantic import SecretStr, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    APP_NAME: str = "rag-service"
+
+    # Step 12: image runtime role.
+    RAG_RUNTIME_ROLE: Literal["development", "api", "worker"] = "development"
+
+    @model_validator(mode="after")
+    def _validate_runtime_role(self) -> "Settings":
+        from app.core.runtime_roles import validate_runtime_role
+        return validate_runtime_role(self)
+
+    ENVIRONMENT: Literal["development", "staging", "production"] = "development"
+    DEBUG: bool = False
+    API_V1_PREFIX: str = "/api/v1"
+    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+
+    DATABASE_URL: str
+
+    RATE_LIMIT_UPLOAD: str = "5/minute"
+    RATE_LIMIT_SEARCH: str = "20/minute"
+    RATE_LIMIT_DEFAULT: str = "60/minute"
+
+    DB_POOL_SIZE: int = 10
+    DB_MAX_OVERFLOW: int = 20
+    DB_POOL_TIMEOUT: int = 30
+    DB_POOL_RECYCLE: int = 1800
+
+    REDIS_URL: str = "redis://localhost:6379/0"
+    # REDIS_URL: str = "redis://redis:6379/0"
+    USER_EVENTS_STREAM: str = "user-events"
+    USER_EVENTS_CONSUMER_GROUP: str = "rag-service"
+    RUN_LIFECYCLE_CONSUMER: bool = True
+    INGESTION_STREAM: str = "rag:ingestion:jobs"
+    INGESTION_CONSUMER_GROUP: str = "rag-ingestion-workers"
+    INGESTION_DLQ_STREAM: str = "rag:ingestion:dlq"
+    INGESTION_LEASE_SECONDS: int = 180
+    INGESTION_HEARTBEAT_SECONDS: int = 30
+    INGESTION_MAX_ATTEMPTS: int = 3
+    INGESTION_RETRY_BASE_SECONDS: int = 15
+    INGESTION_JOB_TIMEOUT_SECONDS: int = 900
+    UPLOAD_RESERVATION_SECONDS: int = 600
+
+    @model_validator(mode="after")
+    def _validate_ingestion_queue(self) -> "Settings":
+        if not 5 <= self.INGESTION_HEARTBEAT_SECONDS < self.INGESTION_LEASE_SECONDS / 3:
+            raise ValueError("Heartbeat must be >=5 seconds and less than one third of the job lease")
+        if self.UPLOAD_RESERVATION_SECONDS < 600:
+            raise ValueError("Upload reservation must allow at least 600 seconds for bounded storage writes")
+        if self.INGESTION_MAX_ATTEMPTS < 1 or self.INGESTION_RETRY_BASE_SECONDS < 1 or self.INGESTION_JOB_TIMEOUT_SECONDS < 30:
+            raise ValueError("Invalid ingestion retry/timeout settings")
+        if self.EMBEDDING_DIMENSIONS != 768:
+            raise ValueError("This database schema requires 768-dimensional embeddings")
+        if len({self.INGESTION_STREAM, self.INGESTION_DLQ_STREAM, self.USER_EVENTS_STREAM}) != 3:
+            raise ValueError("Lifecycle, ingestion and dead-letter streams must have different names")
+        return self
+
+
+    STORAGE_BACKEND: Literal["local", "minio"] = "local"
+    MINIO_ENDPOINT_URL: str = "http://minio:9000"
+    MINIO_BUCKET: str = "rag-documents"
+    MINIO_ACCESS_KEY: str = ""
+    MINIO_SECRET_KEY: SecretStr = SecretStr("")
+    MINIO_REGION: str = "us-east-1"
+
+    @model_validator(mode="after")
+    def _validate_minio_storage(self) -> "Settings":
+        import re
+        from urllib.parse import urlsplit
+        configured = bool(self.MINIO_ACCESS_KEY or self.MINIO_SECRET_KEY.get_secret_value())
+        if self.STORAGE_BACKEND == "minio" or configured:
+            if not self.MINIO_ACCESS_KEY or not self.MINIO_SECRET_KEY.get_secret_value():
+                raise ValueError("MinIO requires both MINIO_ACCESS_KEY and MINIO_SECRET_KEY")
+            endpoint = urlsplit(self.MINIO_ENDPOINT_URL)
+            if (endpoint.scheme not in {"http", "https"} or not endpoint.netloc
+                    or endpoint.path not in {"", "/"} or endpoint.query or endpoint.fragment
+                    or endpoint.username or endpoint.password):
+                raise ValueError("MINIO_ENDPOINT_URL must be an HTTP(S) server URL without credentials")
+            if not re.fullmatch(r"[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]", self.MINIO_BUCKET):
+                raise ValueError("MINIO_BUCKET must be a 3-63 character lowercase bucket name")
+        return self
+
+    LOCAL_STORAGE_DIR: str = "./data/uploads"
+    RAG_MAX_UPLOAD_MB: int = 25
+    MODELS_DIR: str = "./models"
+
+    RAG_PARSER_BACKEND: Literal["docling", "docling_serve"] = "docling"
+    # Step 10B: version-pinned remote parser contract.
+    DOCLING_SERVE_URL: str = "http://docling-serve:5001"
+    DOCLING_SERVE_API_KEY: SecretStr = SecretStr("")
+    DOCLING_SERVE_EXPECTED_VERSION: str = "1.21.0"
+    DOCLING_SERVE_EXPECTED_DOCLING_VERSION: str = "2.96.1"
+    DOCLING_SERVE_EXPECTED_CORE_VERSION: str = "2.78.0"
+    DOCLING_SERVE_DOCUMENT_TIMEOUT_SECONDS: int = 600
+    DOCLING_SERVE_HTTP_TIMEOUT_SECONDS: int = 630
+    DOCLING_SERVE_MAX_RESPONSE_MB: int = 50
+
+    @model_validator(mode="after")
+    def _validate_docling_serve(self) -> "Settings":
+        if self.RAG_PARSER_BACKEND != "docling_serve":
+            return self
+        from urllib.parse import urlsplit
+        url = urlsplit(self.DOCLING_SERVE_URL)
+        if (url.scheme not in {"http", "https"} or not url.netloc or url.path not in {"", "/"}
+                or url.username or url.password or url.query or url.fragment):
+            raise ValueError("DOCLING_SERVE_URL must be a server URL without credentials or paths")
+        if not (30 <= self.DOCLING_SERVE_DOCUMENT_TIMEOUT_SECONDS
+                < self.DOCLING_SERVE_HTTP_TIMEOUT_SECONDS < self.INGESTION_JOB_TIMEOUT_SECONDS - 30):
+            raise ValueError("Docling document < HTTP < job timeout minus 30 seconds required")
+        if not (1 <= self.DOCLING_SERVE_MAX_RESPONSE_MB <= 100) or self.RAG_PARSER_MAX_CONCURRENCY < 1:
+            raise ValueError("Invalid remote parser response/concurrency limits")
+        if (self.RAG_PICTURE_DESCRIPTION_ENABLED and self.RAG_PICTURE_MIN_AREA != 0.05):
+            raise ValueError("Remote picture threshold other than 0.05 needs a server preset before switching")
+        return self
+    RAG_PARSER_MAX_CONCURRENCY: int = 1
+    RAG_DOCLING_LOCAL_MODELS_ONLY: bool = True
+    RAG_OCR_ENABLED: bool = False
+    RAG_TABLE_STRUCTURE_ENABLED: bool = True
+
+    RAG_PICTURE_DESCRIPTION_ENABLED: bool = False
+    RAG_PICTURE_DESCRIPTION_BACKEND: Literal["local", "api"] = "local"
+    RAG_PICTURE_DESCRIPTION_MODEL: str = "HuggingFaceTB/SmolVLM-256M-Instruct"
+    RAG_PICTURE_DESCRIPTION_PROMPT: str = (
+        "Describe this image in a few sentences. If it is a chart, graph or diagram, "
+        "state its type, axes, series, and the key values and trends."
+    )
+    RAG_PICTURE_MIN_AREA: float = 0.05
+    RAG_PICTURE_DESCRIPTION_API_URL: str = ""
+    RAG_PICTURE_DESCRIPTION_API_MODEL: str = ""
+    RAG_PICTURE_DESCRIPTION_API_KEY: SecretStr = SecretStr("")
+    RAG_PICTURE_DESCRIPTION_TIMEOUT: int = 60
+
+    RAG_CHUNKER_BACKEND: Literal["docling", "simple"] = "docling"
+    RAG_CHUNKER_TOKENIZER: Literal["huggingface", "approx"] = "huggingface"
+    RAG_CHUNKER_TOKENIZER_MODEL: str = "BAAI/bge-base-en-v1.5"
+    RAG_CHUNKER_MAX_TOKENS: int = 500
+    RAG_CHUNKER_MERGE_PEERS: bool = True
+
+    RAG_EMBEDDING_BACKEND: Literal["stub", "sentence_transformers", "http"] = "sentence_transformers"
+    # Step 11: shared embedding contract.
+    EMBEDDING_SERVICE_URL: str = "http://embedding-service:8000"
+    EMBEDDING_SERVICE_REVISION: str = ""
+    EMBEDDING_SERVICE_API_KEY: SecretStr = SecretStr("")
+    EMBEDDING_SERVICE_TIMEOUT_SECONDS: int = 75
+
+    @model_validator(mode="after")
+    def _validate_embedding_service(self) -> "Settings":
+        if self.RAG_EMBEDDING_BACKEND != "http":return self
+        import re
+        from urllib.parse import urlsplit
+        url=urlsplit(self.EMBEDDING_SERVICE_URL)
+        if (url.scheme not in {"http","https"} or not url.netloc or url.path not in {"","/"}
+                or url.username or url.password or url.query or url.fragment):
+            raise ValueError("EMBEDDING_SERVICE_URL must be a server URL without credentials")
+        if not re.fullmatch(r"bge-onnx-v1:[0-9a-f]{64}",self.EMBEDDING_SERVICE_REVISION):
+            raise ValueError("Generate the Step 11 model contract before enabling HTTP embeddings")
+        if self.RAG_EMBEDDING_MODEL!="BAAI/bge-base-en-v1.5" or self.EMBEDDING_DIMENSIONS!=768:
+            raise ValueError("Step 11 model contract requires BGE base en v1.5 and dimension 768")
+        if not 65 <= self.EMBEDDING_SERVICE_TIMEOUT_SECONDS < self.INGESTION_JOB_TIMEOUT_SECONDS:
+            raise ValueError("Embedding timeout must be >=65 seconds and below the job timeout")
+        return self
+    RAG_EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
+    RAG_EMBEDDING_DEVICE: str | None = None
+    RAG_EMBEDDING_BATCH_SIZE: int = 32
+    EMBEDDING_DIMENSIONS: int = 768
+
+    RAG_DEFAULT_TOP_K: int = 5
+    RAG_CHUNK_SIZE: int = 512
+    RAG_CHUNK_OVERLAP: int = 50
+    RAG_DISTANCE_METRIC: str = "cosine"
+    RAG_HYBRID_VECTOR_WEIGHT: float = 0.5
+
+    RAG_RETRIEVER_BACKEND: Literal["vector", "keyword", "hybrid"] = "hybrid"
+    RAG_RETRIEVAL_CANDIDATES: int = 20
+    RAG_RRF_K: int = 60
+
+    RAG_RERANKER_ENABLED: bool = False
+    RAG_RERANKER_BACKEND: Literal["local", "api"] = "local"
+    RAG_RERANKER_TOP_N: int = 5
+    RAG_RERANKER_MODEL: str = "BAAI/bge-reranker-base"
+    RAG_RERANKER_DEVICE: str | None = None
+    RAG_RERANKER_API_PROVIDER: Literal["cohere", "voyage"] = "cohere"
+    RAG_RERANKER_API_KEY: SecretStr = SecretStr("")
+    RAG_RERANKER_API_MODEL: str = "rerank-english-v3.0"
+    RAG_RERANKER_API_TIMEOUT: int = 30
+
+    @model_validator(mode="after")
+    def _validate_picture_description(self) -> "Settings":
+        if self.RAG_PICTURE_DESCRIPTION_ENABLED and self.RAG_PICTURE_DESCRIPTION_BACKEND == "api":
+            missing = [n for n in ("RAG_PICTURE_DESCRIPTION_API_URL", "RAG_PICTURE_DESCRIPTION_API_MODEL") if not getattr(self, n)]
+            if missing:
+                raise ValueError(f"RAG_PICTURE_DESCRIPTION_BACKEND=api requires: {', '.join(missing)}")
+        return self
+
+    @model_validator(mode="after")
+    def _validate_reranker(self) -> "Settings":
+        if self.RAG_RERANKER_ENABLED and self.RAG_RERANKER_BACKEND == "api":
+            if not self.RAG_RERANKER_API_KEY.get_secret_value():
+                raise ValueError("RAG_RERANKER_BACKEND=api requires RAG_RERANKER_API_KEY")
+        return self
+
+    @property
+    def is_production(self) -> bool:
+        return self.ENVIRONMENT == "production"
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()

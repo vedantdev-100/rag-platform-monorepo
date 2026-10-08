@@ -1,0 +1,41 @@
+# Build context: monorepo root. Separate dependency environments for each role.
+FROM python:3.12-slim AS dependency-base
+COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /usr/local/bin/
+ENV UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never
+WORKDIR /workspace/services/rag-service
+RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev git \
+    && rm -rf /var/lib/apt/lists/*
+COPY packages/rag-contracts /workspace/packages/rag-contracts
+COPY packages/rag-persistence /workspace/packages/rag-persistence
+COPY services/rag-service/pyproject.toml services/rag-service/uv.lock services/rag-service/.python-version ./
+COPY services/rag-service/app/cli/check_runtime_image.py /tmp/check_runtime_image.py
+
+FROM dependency-base AS api-dependencies
+RUN uv sync --locked --no-dev --no-editable --no-install-project \
+    && .venv/bin/python /tmp/check_runtime_image.py --role api --dependencies-only
+
+FROM dependency-base AS worker-dependencies
+RUN uv sync --locked --no-dev --no-editable --no-install-project --extra worker \
+    && .venv/bin/python /tmp/check_runtime_image.py --role worker --dependencies-only
+
+FROM python:3.12-slim AS runtime-base
+WORKDIR /workspace/services/rag-service
+ENV PATH="/workspace/services/rag-service/.venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+# Copy code explicitly: no service .env, secrets, data, weights, or host venv.
+COPY services/rag-service/app ./app
+COPY services/rag-service/alembic ./alembic
+COPY services/rag-service/alembic.ini ./alembic.ini
+RUN mkdir -p data/uploads
+
+FROM runtime-base AS worker
+COPY --from=worker-dependencies /workspace/services/rag-service/.venv ./.venv
+ENV RAG_RUNTIME_ROLE=worker RUN_LIFECYCLE_CONSUMER=true
+CMD ["python", "-m", "app.worker"]
+
+FROM runtime-base AS api
+COPY --from=api-dependencies /workspace/services/rag-service/.venv ./.venv
+ENV RAG_RUNTIME_ROLE=api RUN_LIFECYCLE_CONSUMER=false
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
