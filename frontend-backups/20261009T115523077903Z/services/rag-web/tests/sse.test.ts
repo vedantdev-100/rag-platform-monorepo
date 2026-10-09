@@ -19,7 +19,3 @@ test('ignores subsequent events after terminal callback',async()=>{
  await consumeSSE(response(['event: done\ndata: {}\n\nevent: error\ndata: {}\n\n']),e=>{seen.push(e.event);return true})
  assert.deepEqual(seen,['done'])
 })
-
-import { fileProblem,appendDocument } from '../src/features/documents/utils/files.ts'
-test('rejects empty and unsupported uploads',()=>{assert.ok(fileProblem({name:'a.txt',size:0}));assert.ok(fileProblem({name:'a.exe',size:100}));assert.equal(fileProblem({name:'Report.PDF',size:100}),null)})
-test('attachment preserves existing selections and deduplicates',()=>{assert.deepEqual(appendDocument(['a','b'],'c'),['a','b','c']);assert.deepEqual(appendDocument(['a','b'],'a'),['a','b']);assert.deepEqual(appendDocument(null,'a'),['a'])})

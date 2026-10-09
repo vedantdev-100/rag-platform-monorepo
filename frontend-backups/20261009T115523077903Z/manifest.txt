@@ -1,0 +1,13 @@
+REPLACED services\rag-web\src\app\layouts\Workspace.tsx
+REPLACED services\rag-web\src\features\auth\screens\AuthScreen.tsx
+REPLACED services\rag-web\src\features\chat\screens\ChatScreen.tsx
+REPLACED services\rag-web\src\features\documents\api\documents.ts
+REPLACED services\rag-web\src\features\documents\components\DocumentPanel.tsx
+ADDED services\rag-web\src\features\documents\components\UploadCards.tsx
+ADDED services\rag-web\src\features\documents\hooks\useFileDrop.ts
+ADDED services\rag-web\src\features\documents\store\uploads.ts
+ADDED services\rag-web\src\features\documents\utils\files.ts
+ADDED services\rag-web\src\shared\components\ThemeToggle.tsx
+ADDED services\rag-web\src\shared\store\theme.ts
+REPLACED services\rag-web\src\styles\globals.css
+REPLACED services\rag-web\tests\sse.test.ts

@@ -1,4 +1,3 @@
-import { ThemeToggle } from '../../../shared/components/ThemeToggle'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link,Navigate,useLocation,useNavigate } from 'react-router'
@@ -14,7 +13,7 @@ export function AuthScreen({register=false}:{register?:boolean}){
  if(register){await signup(email,password,String(form.get('name')));setNotice('Account created. Sign in to continue.');navigate('/login',{state:{registered:true}})}
  else{await login(email,password);const next=location.state?.from; navigate(typeof next==='string'&&next.startsWith('/chat')?next:'/chat',{replace:true})}
  }catch(e){setError(explain(e))}finally{setBusy(false)}}
- return <div className="auth"><div className="auth-theme"><ThemeToggle/></div><div className="auth-card"><span className="brand">◈ RAG Workspace</span><h1>{register?'Create your account':'Welcome back'}</h1><p className="muted">Your documents. A clearer conversation.</p><form onSubmit={submit}>
+ return <div className="auth"><div className="auth-card"><span className="brand">◈ RAG Workspace</span><h1>{register?'Create your account':'Welcome back'}</h1><p className="muted">Your documents. A clearer conversation.</p><form onSubmit={submit}>
  {register&&<label>Full name<input name="name" autoComplete="name" maxLength={200}/></label>}
  <label>Email<input name="email" type="email" autoComplete="email" required/></label>
  <label>Password<input name="password" type="password" autoComplete={register?'new-password':'current-password'} minLength={register?8:1} maxLength={128} required/></label>
