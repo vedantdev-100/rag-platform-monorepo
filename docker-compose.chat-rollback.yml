@@ -1,0 +1,6 @@
+# Keep the updated worker for chat-data lifecycle cleanup.
+services:
+  auth-service:
+    image: rag-chat-backup/auth-service:before-chat
+  rag-service:
+    image: rag-chat-backup/rag-service:before-chat

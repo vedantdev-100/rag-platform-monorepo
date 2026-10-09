@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": "packages/rag-persistence/rag_persistence/models/conversation.py",
+      "before": null,
+      "after": "2d4f9957627b73ef1cef77db50bf597dfc486155697768be4beb67357248d7a8",
+      "keep_on_rollback": true
+    },
+    {
+      "path": "packages/rag-persistence/rag_persistence/repositories/chunk_repository.py",
+      "before": "44dff4d9ebd7f64e4d2acf6a45c6fa45769908291ea8cc276e796f9c68ad03d6",
+      "after": "504ebe83eed104acac58a6c326a78ece7a0e220ed693fd4df68a5b9229ccd51c"
+    },
+    {
+      "path": "services/auth-service/app/api/v1/endpoints/auth.py",
+      "before": "e8a5de0008975e8f031bfd2d6afabc42cf2501d1f9736dc5503a50e230081cf9",
+      "after": "1429f49370dd848022620f2160f69d38b64f5a44efadb48b33d0f10e2ba594ca"
+    },
+    {
+      "path": "services/auth-service/app/api/v1/endpoints/browser_auth.py",
+      "before": null,
+      "after": "185133d9795d38a0f1646703be3f12d9614382af9368918740dc5f0d0ab34221"
+    },
+    {
+      "path": "services/auth-service/app/api/v1/router.py",
+      "before": "02d488e2a38ee0903ac803b10e2eb0c732b08c45f441f5b4b0ef595451bf1ef2",
+      "after": "b27e858479bdad6b89283f152ddbb29c8773625f7b193827d5d2eee77769795c"
+    },
+    {
+      "path": "services/auth-service/app/services/auth_service.py",
+      "before": "30926629148a917a7e024ecaa8ff34fb653fdf0b665ca6eb53b53968d9f7c40c",
+      "after": "847a2dc5a1643e5d9da806c204eb55046ba26badf007f9f587599ccc31d0fa38"
+    },
+    {
+      "path": "services/rag-service/alembic/env.py",
+      "before": "29056a8f712e6739cb8789114d2ab6b0d58a33216439697485af1da2115b7d75",
+      "after": "b4882d8594437984e69f6c5dd7cacb4811430e347f11f03efbd26f8599704412"
+    },
+    {
+      "path": "services/rag-service/alembic/versions/b7c42d1f305a_chat_conversations.py",
+      "before": null,
+      "after": "3994807d02798362603e8de528b26443219245b733100729c67957cafccfccec",
+      "keep_on_rollback": true
+    },
+    {
+      "path": "services/rag-service/app/api/v1/endpoints/conversations.py",
+      "before": null,
+      "after": "0a5d14fd721de64239810030425c4249b724d7781fad8d28da4745b2ec5374b1"
+    },
+    {
+      "path": "services/rag-service/app/api/v1/endpoints/documents.py",
+      "before": "24c4b76a4626c5ff58a6b2f78fa80e6ca334bbaaff8ba5b0fd09d826b8a468db",
+      "after": "fd81c51b65bd42c0c1b69c9d3941e3eb0774a3ab179c060292f3e80b9ead606b"
+    },
+    {
+      "path": "services/rag-service/app/api/v1/router.py",
+      "before": "a54d704fba000be41fbd064308d7e3b6ba5022a30ae3cd496301a0f01b12165f",
+      "after": "d54a13eae3ac8138ddad56a33c6f5ff38c8ed7e65e90f0bef65cd6c55ef97cf3"
+    },
+    {
+      "path": "services/rag-service/app/chat/__init__.py",
+      "before": null,
+      "after": "c841014feb08465541a5eb655292de899b08dab8a300f48098340d46321283f2"
+    },
+    {
+      "path": "services/rag-service/app/chat/events.py",
+      "before": null,
+      "after": "af53dd62acf563319298a5276e8204a6e2f86487deba45bdcd014a7d4bf1d0ba"
+    },
+    {
+      "path": "services/rag-service/app/chat/memory.py",
+      "before": null,
+      "after": "760e8013c4b112e3e34ff0bb1659ca269ff52396252e6f48883fdc8d72a5fe24"
+    },
+    {
+      "path": "services/rag-service/app/chat/repository.py",
+      "before": null,
+      "after": "354252a956a2e6bb6747750cc0960f9801b5a57aaf9ae37620de4f27ae26dcd7"
+    },
+    {
+      "path": "services/rag-service/app/chat/schemas.py",
+      "before": null,
+      "after": "f89466bad941caaf57166f9ccd32de775cb7f9ae5cf8cdbd4a6dcd4bc0d40fc9"
+    },
+    {
+      "path": "services/rag-service/app/chat/service.py",
+      "before": null,
+      "after": "eaf24aa628b75f249497cab0a02076eb0506cfae64c90c7817eac941c43e3fac"
+    },
+    {
+      "path": "services/rag-service/app/chat/settings.py",
+      "before": null,
+      "after": "a633e8841dcad5c49f3f31a1e88c4a677eddb1c061cdeb721d4c6786b579e1d8"
+    },
+    {
+      "path": "services/rag-service/app/cli/check_chat_repository.py",
+      "before": null,
+      "after": "9540d2e307f22128d9e9915a5318f846b97816cf50583152e6a050c6f1d12f85"
+    },
+    {
+      "path": "services/rag-service/app/events/consumer.py",
+      "before": "2e30446a9860f27bc976928325bf5b95528180792e5262ddfb197e5d12bfb673",
+      "after": "1849ea320a16778fe3c2559970df325ab3b54a5047c9209bab20dc48b1c56a8d",
+      "keep_on_rollback": true
+    },
+    {
+      "path": "services/rag-service/app/rag/generation/context.py",
+      "before": "1f6063e72a260c880b833fd06aefab94e3c0132320950e3473f01585d333ab4a",
+      "after": "44e40be695ab139d0b690701d99aab7e5fcd1d0da8f639378ad42258dbec98a8"
+    },
+    {
+      "path": "services/rag-service/app/rag/generation/retrieval_adapter.py",
+      "before": "dc732c14c430d60e81d857bfd71a77525ec39e794c9d174ac149cad76f725384",
+      "after": "d8b30cafa8907116c9374110c5ba2490eda49c85a9b0f480417483edaf51e952"
+    },
+    {
+      "path": "services/rag-service/app/rag/generation/service.py",
+      "before": "725a1b8376246279868ca6e875c5b991104ca911df2fdf0255860cb977929c33",
+      "after": "feea4b8a6c1b48102cd61c7683df68e3bf9374c299b8d5ecd3e5acfc3598e1e3"
+    },
+    {
+      "path": "services/rag-service/app/rag/generation/strategies/standard.py",
+      "before": "e2766ee7e43acfd3a233a3498fa3b1cfe5e0ecf229c7033c14c07a055cad1392",
+      "after": "44f6f67aecd025603538531ad154f8ea0a1bcf2f4894df2472cfd70629c7a394"
+    },
+    {
+      "path": "services/rag-service/app/rag/generation/types.py",
+      "before": "7c22fed87c4cfff8447b08b69b0a772e77005a67f9177dc169d4cd3e342d809b",
+      "after": "ef1f4132c4b9a804be533493c9bcd722594ef84ce173b66616862f0d19a9d0aa"
+    },
+    {
+      "path": "services/rag-service/app/repositories/chunk_repository.py",
+      "before": "0a5474e5421ed2bf4e0533457c9611c5069fcc567f6c033b988bbe84098f41fe",
+      "after": "42e11b752eff6aba69a046aa86f0d3f0a247e80ff69e76aff0efeb32209f036a"
+    },
+    {
+      "path": "services/rag-service/app/tests/unit/test_chat.py",
+      "before": null,
+      "after": "3d77205ce87d133d1ab98281555d7329858d2c87d9f0c0e9f0972bbd10826149"
+    },
+    {
+      "path": "services/rag-service/app/tests/unit/test_chat_auth.py",
+      "before": null,
+      "after": "0bde457c43c98d5d461ad3727b52f80de98b459fd4d789d769576a86e88e0528"
+    }
+  ]
+}
