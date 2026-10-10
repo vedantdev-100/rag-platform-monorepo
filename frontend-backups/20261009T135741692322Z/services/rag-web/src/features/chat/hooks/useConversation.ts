@@ -1,17 +1,14 @@
 import { useEffect,useRef,useState } from 'react'
-import { shortChatTitle } from '../utils/title'
-import { useChats } from '../store/chat'
 import { chatApi } from '../api/chat'
 import type { Conversation,Message,Run,Turn } from '../types'
 import { consumeSSE } from '../../../shared/api/sse'
 import { ApiError,explain } from '../../../shared/errors/errors'
 export function useConversation(id:string){
- const [optimistic,setOptimistic]=useState<Message|null>(null)
  const [conversation,setConversation]=useState<Conversation|null>(null);const [messages,setMessages]=useState<Message[]>([])
  const [before,setBefore]=useState<number|null>(null);const [loading,setLoading]=useState(true);const [error,setError]=useState('')
  const [busy,setBusy]=useState(false);const [draft,setDraft]=useState('');const [phase,setPhase]=useState('');const [runId,setRunId]=useState<string|null>(null)
  const [retry,setRetry]=useState<Turn|null>(null);const controller=useRef<AbortController|null>(null);const mounted=useRef(true);const locked=useRef(false)
- async function load(){const [c,p]=await Promise.all([chatApi.get(id),chatApi.history(id)]);if(!mounted.current)return;setConversation(c);setMessages(p.items.sort((a,b)=>a.sequence-b.sequence));setOptimistic(old=>old&&p.items.some(m=>m.run_id===old.run_id||m.id===old.id)?null:old);setBefore(p.has_more?p.next_before:null)}
+ async function load(){const [c,p]=await Promise.all([chatApi.get(id),chatApi.history(id)]);if(!mounted.current)return;setConversation(c);setMessages(p.items.sort((a,b)=>a.sequence-b.sequence));setBefore(p.has_more?p.next_before:null)}
  useEffect(()=>{mounted.current=true;load().catch(e=>{if(mounted.current)setError(explain(e))}).finally(()=>{if(mounted.current)setLoading(false)});return()=>{mounted.current=false;controller.current?.abort()}},[id])
  // Recover saved state for a pending turn after reload or a lost connection.
  const pending=messages.find(m=>m.status==='pending')?.run_id
@@ -22,30 +19,21 @@ export function useConversation(id:string){
  locked.current=true;setBusy(true);setError('');setDraft('');setPhase('Starting');setRunId(null)
  const turn=replay??{query,client_message_id:crypto.randomUUID(),top_k:5}
  setRetry(turn)
- if(!replay)setOptimistic({id:'client-'+turn.client_message_id,run_id:'client-'+turn.client_message_id,sequence:Math.max(0,...messages.map(m=>m.sequence))+1,role:'user',content:query,status:'sending',answer:null})
  const ac=new AbortController();controller.current=ac
  let terminal=false;let saved:Run|null=null;let knownRunId:string|null=null;let explicitFailure=false
  function applyRun(result:Run){
   saved=result
   if(!mounted.current)return
-  setOptimistic(null);setDraft('');setRetry(null);setRunId(result.status==='running'?result.run_id:null)
+  setDraft('');setRetry(null);setRunId(result.status==='running'?result.run_id:null)
   setMessages(old=>[...old.filter(m=>m.run_id!==result.run_id),...result.messages].sort((a,b)=>a.sequence-b.sequence))
   if(result.status==='completed')setError('')
-  else if(result.status==='failed'||result.status==='cancelled')setError(explain(new ApiError(400,result.error_code||result.status)))
+  else if(result.status==='failed'||result.status==='cancelled')setError(result.error_code?.replaceAll('_',' ')||result.status)
  }
  try{
-  if(!replay&&!messages.some(m=>m.role==='user')){
-   const fresh=await chatApi.get(id)
-   if(fresh.title==='New chat'){
-    const updated=await chatApi.update(id,{title:shortChatTitle(query)})
-    if(mounted.current)setConversation(updated)
-    useChats.setState(state=>({items:state.items.map(item=>item.id===id?updated:item)}))
-   }
-  }
   await consumeSSE(await chatApi.stream(id,turn,ac.signal),({event,data})=>{
    if(!mounted.current)return true
    const d=data as Record<string,unknown>
-   if(event==='start'){knownRunId=String(d.run_id);setRunId(knownRunId);setOptimistic(old=>old?{...old,id:String(d.user_message_id),run_id:knownRunId!,status:'completed'}:old);setPhase('Finding evidence')}
+   if(event==='start'){knownRunId=String(d.run_id);setRunId(knownRunId);setPhase('Finding evidence')}
    else if(event==='delta'){setDraft(old=>old+String(d.text??''));setPhase('Writing · provisional')}
    else if(event==='done'||event==='replay'){
     const result=data as Run
@@ -64,7 +52,7 @@ export function useConversation(id:string){
    if(knownRunId&&!explicitFailure){
     try{const result=await chatApi.run(id,knownRunId);if(result.client_message_id===turn.client_message_id&&result.conversation_id===id)applyRun(result)}catch{/* Preserve the original stream error. */}
    }
-   if(!saved){setOptimistic(old=>old?{...old,status:ac.signal.aborted?'cancelled':'failed'}:old);if(e instanceof ApiError)setRetry(null);setError(explain(e))}
+   if(!saved){if(e instanceof ApiError)setRetry(null);setError(explain(e))}
   }
  }finally{
   if(mounted.current){
@@ -78,5 +66,5 @@ export function useConversation(id:string){
  }
  }
  async function stop(){if(!runId){controller.current?.abort();return}try{await chatApi.cancel(id,runId);controller.current?.abort()}catch(e){setError(explain(e))}}
- return {optimistic,conversation,setConversation,messages,before,loading,error,setError,busy,draft,phase,runId,retry,pending,load,older,send,stop}
+ return {conversation,setConversation,messages,before,loading,error,setError,busy,draft,phase,runId,retry,pending,load,older,send,stop}
 }

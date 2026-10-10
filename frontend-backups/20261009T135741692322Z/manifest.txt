@@ -1,0 +1,11 @@
+REPLACED services\rag-web\src\app\layouts\Workspace.tsx
+REPLACED services\rag-web\src\app\router.tsx
+REPLACED services\rag-web\src\features\chat\hooks\useConversation.ts
+REPLACED services\rag-web\src\features\chat\screens\ChatScreen.tsx
+ADDED services\rag-web\src\features\chat\utils\title.ts
+ADDED services\rag-web\src\features\documents\components\DocumentPicker.tsx
+ADDED services\rag-web\src\features\documents\screens\ArtifactsScreen.tsx
+ADDED services\rag-web\src\shared\components\Modal.tsx
+ADDED services\rag-web\src\shared\components\Popover.tsx
+REPLACED services\rag-web\src\styles\globals.css
+REPLACED services\rag-web\tests\sse.test.ts

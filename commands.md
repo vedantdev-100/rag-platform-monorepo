@@ -82,3 +82,67 @@ docker stats --no-stream
 
 # Disk usage, including shared image layer
 docker system df -v
+
+
+# INSTRUCTIONS TO START AFTER GIT CLONE
+# Start a new 
+
+source scripts/dc-step12.sh
+
+dc12 config --quiet
+dc12 ps
+
+bash scripts/run-chat-backend-harness.sh
+
+
+### Build the updated images
+dc12 build auth-service rag-service rag-worker 
+
+### Stop existing application containers safely
+dc12 stop rag-service
+
+dc12 run --rm --no-deps rag-service python -m app.cli.check_ingestion_drained
+
+### After draining completly
+dc12 stop rag-worker auth-service
+
+### Check and migrate this laptop’s database
+dc12 run --rm --no-deps rag-service alembic current
+dc12 run --rm --no-deps rag-service alembic heads
+
+### upgrade to latest head(migration)
+dc12 run --rm --no-deps rag-service alembic upgrade head
+dc12 run --rm --no-deps rag-service python -m app.cli.check_chat_repository --concurrency
+
+### Restart the updated backend
+dc12 up -d --force-recreate auth-service rag-service rag-worker
+
+dc12 ps
+dc12 logs --tail=100 auth-service rag-service rag-worker
+
+### Verify the runtime images
+dc12 exec rag-service python -m app.cli.check_runtime_image --role api
+dc12 exec rag-worker python -m app.cli.check_runtime_image --role worker
+
+
+### Start the frontend
+cd services/rag-web
+npm ci
+
+cp .env.example .env.local
+
+### confirms it contains
+VITE_RAG_BASE_URL=http://localhost:8000
+VITE_AUTH_BASE_URL=http://localhost:8001
+VITE_API_PREFIX=/api/v1
+
+npm test
+npm run build
+npm run dev
+
+# shutdown/startup
+### Stop the Compose stack while retaining its volumes
+dc12 down
+
+### Start it again
+dc12 up -d

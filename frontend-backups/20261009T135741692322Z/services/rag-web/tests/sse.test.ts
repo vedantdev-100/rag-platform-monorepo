@@ -23,11 +23,3 @@ test('ignores subsequent events after terminal callback',async()=>{
 import { fileProblem,appendDocument } from '../src/features/documents/utils/files.ts'
 test('rejects empty and unsupported uploads',()=>{assert.ok(fileProblem({name:'a.txt',size:0}));assert.ok(fileProblem({name:'a.exe',size:100}));assert.equal(fileProblem({name:'Report.PDF',size:100}),null)})
 test('attachment preserves existing selections and deduplicates',()=>{assert.deepEqual(appendDocument(['a','b'],'c'),['a','b','c']);assert.deepEqual(appendDocument(['a','b'],'a'),['a','b']);assert.deepEqual(appendDocument(null,'a'),['a'])})
-import { shortChatTitle } from '../src/features/chat/utils/title.ts'
-test('chat title normalizes whitespace and preserves short questions',()=>{assert.equal(shortChatTitle('  Who owns\n Atlas?  '),'Who owns Atlas?');assert.equal(shortChatTitle('  '),'New chat')})
-test('chat title remains short without breaking unicode characters',()=>{const title=shortChatTitle('Explain the ownership history of Atlas and describe all of the supporting documents');assert.ok(Array.from(title).length<=44);assert.ok(title.endsWith('…'));assert.ok(Array.from(shortChatTitle('😀'.repeat(60))).length<=44)})
-
-import { advanceStreamText } from '../src/features/chat/utils/streamText.ts'
-import { userInitials } from '../src/features/auth/utils/initials.ts'
-test('stream easing converges exactly without splitting unicode',()=>{const target='Atlas 😀 ownership '+ 'evidence '.repeat(60);let current='';for(let i=0;i<20&&current!==target;i++){const next=advanceStreamText(current,target);assert.ok(target.startsWith(next));assert.ok(next.length>current.length);current=next}assert.equal(current,target);assert.equal(advanceStreamText(current,''),'')})
-test('avatar initials use a name or email fallback',()=>{assert.equal(userInitials('Mira Shah','a@b.com'),'MS');assert.equal(userInitials(null,'mira@example.com'),'MI');assert.equal(userInitials('  Mira  ','a@b.com'),'MI')})

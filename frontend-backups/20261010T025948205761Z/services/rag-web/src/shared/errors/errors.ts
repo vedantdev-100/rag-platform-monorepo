@@ -3,7 +3,6 @@ export class ApiError extends Error {
 }
 export function explain(e: unknown): string {
  if (e instanceof ApiError) {
-  if (e.code === 'invalid_citations') return 'The answer did not include valid references to the retrieved sources. Send a new message to try again.'
   if (e.status === 401) return 'Your session expired. Please sign in again.'
   if (e.status === 403) return 'You do not have permission for this action.'
   if (e.status === 404) return 'This item is unavailable or has been deleted.'

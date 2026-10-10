@@ -1,0 +1,9 @@
+REPLACED services\rag-web\src\app\layouts\Workspace.tsx
+ADDED services\rag-web\src\features\auth\utils\initials.ts
+REPLACED services\rag-web\src\features\chat\hooks\useConversation.ts
+ADDED services\rag-web\src\features\chat\hooks\useSmoothDraft.ts
+REPLACED services\rag-web\src\features\chat\screens\ChatScreen.tsx
+ADDED services\rag-web\src\features\chat\utils\streamText.ts
+REPLACED services\rag-web\src\shared\errors\errors.ts
+REPLACED services\rag-web\src\styles\globals.css
+REPLACED services\rag-web\tests\sse.test.ts
