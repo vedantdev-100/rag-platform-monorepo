@@ -79,11 +79,7 @@ def build_standard(settings, retriever, provider):
     graph.add_edge(START, "resolve")
     graph.add_edge("resolve", "retrieve")
     graph.add_edge("retrieve", "prepare")
-    graph.add_conditional_edges(
-        "prepare",
-        lambda s: "generate" if s["sources"] else "abstain",
-        {"generate": "generate", "abstain": "abstain"},
-    )
+    graph.add_conditional_edges( "prepare", lambda s: "generate" if s["sources"] else "abstain", {"generate": "generate", "abstain": "abstain"})
     graph.add_edge("generate", "validate")
     graph.add_edge("validate", END)
     graph.add_edge("abstain", END)
