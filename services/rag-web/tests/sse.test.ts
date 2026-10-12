@@ -31,3 +31,8 @@ import { advanceStreamText } from '../src/features/chat/utils/streamText.ts'
 import { userInitials } from '../src/features/auth/utils/initials.ts'
 test('stream easing converges exactly without splitting unicode',()=>{const target='Atlas 😀 ownership '+ 'evidence '.repeat(60);let current='';for(let i=0;i<20&&current!==target;i++){const next=advanceStreamText(current,target);assert.ok(target.startsWith(next));assert.ok(next.length>current.length);current=next}assert.equal(current,target);assert.equal(advanceStreamText(current,''),'')})
 test('avatar initials use a name or email fallback',()=>{assert.equal(userInitials('Mira Shah','a@b.com'),'MS');assert.equal(userInitials(null,'mira@example.com'),'MI');assert.equal(userInitials('  Mira  ','a@b.com'),'MI')})
+
+import { withDeadline,RequestTimeout } from '../src/shared/api/deadline.ts'
+test('request deadlines return successful results unchanged',async()=>{assert.equal(await withDeadline(async()=>42,1000),42)})
+test('request deadline aborts stalled operations',async()=>{let aborted=false;await assert.rejects(withDeadline(signal=>new Promise((_resolve,reject)=>{signal.addEventListener('abort',()=>{aborted=true;reject(new DOMException('Aborted','AbortError'))},{once:true})}),10),RequestTimeout);assert.equal(aborted,true)})
+test('caller cancellation is not reported as a timeout',async()=>{const controller=new AbortController();const task=withDeadline(signal=>new Promise((_resolve,reject)=>{signal.addEventListener('abort',()=>reject(new DOMException('Aborted','AbortError')),{once:true})}),1000,controller.signal);controller.abort();await assert.rejects(task,(e:Error)=>e.name==='AbortError')})

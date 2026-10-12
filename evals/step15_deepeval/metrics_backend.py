@@ -1,13 +1,15 @@
 """DeepEval owns semantic scoring; deterministic audit metrics remain separate."""
 from dataclasses import dataclass
+import json
 import math
 import re
+from pydantic import ValidationError
 
 from deepeval.metrics import (AnswerRelevancyMetric, FaithfulnessMetric,
     ContextualPrecisionMetric, ContextualRecallMetric, ContextualRelevancyMetric, GEval)
 from deepeval.test_case import LLMTestCase, SingleTurnParams
 
-from capture_tools import exact_context, ranked_metrics
+from capture_tools import exact_context, ranked_metrics, HttpFailure
 
 METRIC_DEFINITION_VERSION = 'deepeval-step15-v1'
 CUSTOM_STEPS = {
@@ -27,6 +29,48 @@ CUSTOM_STEPS = {
         'Identify the factual claims in the actual answer that require citations.',
         'Check whether each claim has an appropriate [Snumber] citation to a supplied passage that supports it.',
         'Score how completely factual claims have supporting citations; a decorative citation at the end does not automatically cover every claim.']}
+
+
+def sanitized_judge_error(exc):
+    """Explain transport/schema/limit failures without exporting prompts or bodies."""
+    info = {'type': type(exc).__name__, 'code': 'metric_evaluation_error'}
+    if isinstance(exc, ValidationError):
+        info['code'] = 'judge_schema_validation_failed'
+        info['validation_fields'] = [{'location': list(e['loc']), 'type': e['type']}
+            for e in exc.errors(include_input=False, include_url=False, include_context=False)[:10]]
+    elif isinstance(exc, json.JSONDecodeError):
+        info['code'] = 'judge_invalid_json'
+    elif isinstance(exc, HttpFailure):
+        info.update(code='judge_http_error', http_status=exc.status)
+    elif isinstance(exc, TimeoutError):
+        info['code'] = 'judge_timeout'
+    elif isinstance(exc, OSError):
+        info['code'] = 'judge_transport_error'
+    elif isinstance(exc, ValueError) and str(exc) in {
+            'judge_input_exceeds_budget', 'judge_output_incomplete',
+            'judge_output_not_text', 'metric_returned_invalid_score',
+            'judge_verdict_count_mismatch'}:
+        info['code'] = str(exc)
+    return info
+
+
+def verdict_diagnostics(metric, test_case):
+    details = {}
+    verdicts = getattr(metric, 'verdicts', None)
+    if isinstance(verdicts, list):
+        details['verdict_count'] = len(verdicts)
+    expected = None
+    if isinstance(metric, ContextualPrecisionMetric):
+        expected = len(test_case.retrieval_context)
+    elif isinstance(metric, FaithfulnessMetric):
+        expected = len(metric.claims)
+        details['claim_count'] = expected
+    elif isinstance(metric, AnswerRelevancyMetric):
+        expected = len(metric.statements)
+        details['statement_count'] = expected
+    if expected is not None and (not isinstance(verdicts, list) or len(verdicts) != expected):
+        raise ValueError('judge_verdict_count_mismatch')
+    return details
 
 
 @dataclass
@@ -121,13 +165,15 @@ def score_case(case, record, judge, profile='full', labels=None):
             score = spec.metric.score
             if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score) or not 0 <= score <= 1:
                 raise ValueError('metric_returned_invalid_score')
+            diagnostics = verdict_diagnostics(spec.metric, spec.test_case)
             metrics[spec.key] = score
             details[spec.key] = {'score': score, 'reason': spec.metric.reason,
-                                'scope': spec.scope, 'implementation': spec.implementation}
+                                'scope': spec.scope, 'implementation': spec.implementation,
+                                **diagnostics}
         except Exception as exc:
             metrics[spec.key] = None
             # Provider bodies, prompts and exception text are deliberately excluded.
-            errors.append({'metric': spec.key, 'scope': spec.scope, 'type': type(exc).__name__})
+            errors.append({'metric': spec.key, 'scope': spec.scope, **sanitized_judge_error(exc)})
     if final_valid:
         text = record['answer']['answer']
         supplied = {b['label'] for b in exact_context(record)}

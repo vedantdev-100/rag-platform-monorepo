@@ -230,7 +230,10 @@ def do_capture(args, cfg):
         raise ValueError('Output belongs to another configuration; choose a new --out')
     done = {r['case_id'] for r in recorded}
     expected_settings = recorded[0]['settings'] if recorded else None
+    expected_source_hashes = recorded[0]['source_hashes'] if recorded else None
     expected = json.loads((ROOT / 'compatibility.json').read_text())
+    dependency_file = ROOT / 'compatibility-dependencies.json'
+    dependencies = json.loads(dependency_file.read_text()) if dependency_file.exists() else {}
     remote = '/tmp/step15-' + uuid.uuid4().hex + '.py'
     subprocess.run(['docker', 'cp', str(ROOT / 'container_capture.py'), args.container + ':' + remote], check=True)
     interval = float(cfg.get('EVAL_GENERATION_INTERVAL_SECONDS', '15'))
@@ -240,22 +243,21 @@ def do_capture(args, cfg):
                 continue
             payload = dict(case=case, token=access, mode=args.mode, top_k=args.top_k,
                            document_map=mapping, expected_hashes=expected,
-                           expected_settings=expected_settings)
+                           dependency_hashes=dependencies,
+                           expected_settings=expected_settings,
+                           expected_source_hashes=expected_source_hashes)
             started = time.monotonic()
             result = subprocess.run(['docker', 'exec', '-i', args.container, 'python', remote],
-                    input=json.dumps(payload), capture_output=True, text=True,
+                    input=json.dumps(payload).encode('utf-8'), capture_output=True,
                     timeout=int(cfg.get('EVAL_CAPTURE_TIMEOUT_SECONDS', '420')))
-            lines = [line.removeprefix('STEP15_RESULT=') for line in result.stdout.splitlines()
-                     if line.startswith('STEP15_RESULT=')]
-            if not lines:
-                raise ValueError('Container capture failed; no result. Verify the API image and Python runtime.')
-            record = json.loads(lines[-1])
+            record = parse_capture_result(result.stdout)
             if 'fatal' in record:
                 raise ValueError('Container preflight failed: ' + record['fatal'])
             record['elapsed_seconds'] = round(time.monotonic() - started, 3)
             record['run_identity'] = run_identity
             record['document_map'] = {k: {'id': v['id'], 'sha256': v['sha256']} for k, v in mapping.items()}
             expected_settings = record['settings']
+            expected_source_hashes = record['source_hashes']
             append_row(output, record)
             print(case['case_id'] + ': ' + (record.get('error') or
                   (record.get('answer') or {}).get('status', 'retrieved')))
@@ -268,6 +270,20 @@ def do_capture(args, cfg):
         subprocess.run(['docker', 'exec', args.container, 'python', '-c',
                         'import pathlib; pathlib.Path(' + repr(remote) + ').unlink(missing_ok=True)'],
                        capture_output=True)
+
+
+def parse_capture_result(stdout):
+    # Docker/Python in the Linux container emits UTF-8. Windows text=True would
+    # otherwise choose the host ACP (often CP1252), corrupting source evidence or
+    # raising inside subprocess's reader thread. Keep stderr as uninterpreted bytes.
+    if not isinstance(stdout, bytes):
+        raise ValueError('Container capture failed; expected binary stdout')
+    decoded = stdout.decode('utf-8', errors='strict')
+    lines = [line.removeprefix('STEP15_RESULT=') for line in decoded.splitlines()
+             if line.startswith('STEP15_RESULT=')]
+    if not lines:
+        raise ValueError('Container capture failed; no result. Verify the API image and Python runtime.')
+    return json.loads(lines[-1])
 
 
 def exact_context(record):

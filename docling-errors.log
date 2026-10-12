@@ -1,0 +1,500 @@
+docling-serve-1  | 2026-10-12T05:25:36.804746400Z Starting production server 🚀
+docling-serve-1  | 2026-10-12T05:25:36.805082900Z 
+docling-serve-1  | 2026-10-12T05:25:36.805430100Z Server started at http://0.0.0.0:5001
+docling-serve-1  | 2026-10-12T05:25:36.805741700Z Documentation at http://0.0.0.0:5001/docs
+docling-serve-1  | 2026-10-12T05:25:36.805971600Z Scalar docs at http://0.0.0.0:5001/scalar
+docling-serve-1  | 2026-10-12T05:25:36.806127200Z 
+docling-serve-1  | 2026-10-12T05:25:36.806319500Z Logs:
+docling-serve-1  | 2026-10-12T05:25:36.920687000Z [92mINFO[0m:	05:25:36 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:36.920707100Z [92m[92mINFO[0m[0m:	05:25:36 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:36.937562300Z [92mINFO[0m:	05:25:36 - docling.models.factories - Registered ocr engines: ['auto', 'easyocr', 'kserve_v2_ocr', 'ocrmac', 'rapidocr', 'tesserocr', 'tesseract']
+docling-serve-1  | 2026-10-12T05:25:36.937582500Z [92m[92mINFO[0m[0m:	05:25:36 - docling.models.factories - Registered ocr engines: ['auto', 'easyocr', 'kserve_v2_ocr', 'ocrmac', 'rapidocr', 'tesserocr', 'tesseract']
+docling-serve-1  | 2026-10-12T05:25:36.938133200Z [92mINFO[0m:	05:25:36 - docling_serve.otel_instrumentation - Setting up OpenTelemetry metrics
+docling-serve-1  | 2026-10-12T05:25:36.938144100Z [92m[92mINFO[0m[0m:	05:25:36 - docling_serve.otel_instrumentation - Setting up OpenTelemetry metrics
+docling-serve-1  | 2026-10-12T05:25:36.938146700Z [92mINFO[0m:	05:25:36 - docling_serve.otel_instrumentation - Enabling Prometheus metrics export
+docling-serve-1  | 2026-10-12T05:25:36.938148700Z [92m[92mINFO[0m[0m:	05:25:36 - docling_serve.otel_instrumentation - Enabling Prometheus metrics export
+docling-serve-1  | 2026-10-12T05:25:36.938394800Z [92mINFO[0m:	05:25:36 - docling_serve.otel_instrumentation - Instrumenting FastAPI with OpenTelemetry (excluded_urls=/ready$,/healthz$,/livez$,/metrics$,/health$,/readyz$)
+docling-serve-1  | 2026-10-12T05:25:36.938406500Z [92m[92mINFO[0m[0m:	05:25:36 - docling_serve.otel_instrumentation - Instrumenting FastAPI with OpenTelemetry (excluded_urls=/ready$,/healthz$,/livez$,/metrics$,/health$,/readyz$)
+docling-serve-1  | 2026-10-12T05:25:37.136337300Z [92mINFO[0m:	05:25:37 - uvicorn.error - Started server process [7]
+docling-serve-1  | 2026-10-12T05:25:37.136358200Z [92mINFO[0m:	05:25:37 - uvicorn.error - Waiting for application startup.
+docling-serve-1  | 2026-10-12T05:25:41.531727800Z [92mINFO[0m:	05:25:41 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:41.531747200Z [92m[92mINFO[0m[0m:	05:25:41 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:41.534984100Z [92mINFO[0m:	05:25:41 - docling.models.factories - Registered table structure engines: ['docling_tableformer', 'docling_tableformer_v2', 'granite_vision_table']
+docling-serve-1  | 2026-10-12T05:25:41.535003600Z [92m[92mINFO[0m[0m:	05:25:41 - docling.models.factories - Registered table structure engines: ['docling_tableformer', 'docling_tableformer_v2', 'granite_vision_table']
+docling-serve-1  | 2026-10-12T05:25:41.551191100Z [92mINFO[0m:	05:25:41 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:41.551209400Z [92m[92mINFO[0m[0m:	05:25:41 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:41.555217000Z [92mINFO[0m:	05:25:41 - docling.models.factories - Registered layout engines: ['layout_object_detection', 'docling_layout_default', 'docling_experimental_table_crops_layout']
+docling-serve-1  | 2026-10-12T05:25:41.555230700Z [92m[92mINFO[0m[0m:	05:25:41 - docling.models.factories - Registered layout engines: ['layout_object_detection', 'docling_layout_default', 'docling_experimental_table_crops_layout']
+docling-serve-1  | 2026-10-12T05:25:41.555485200Z [92mINFO[0m:	05:25:41 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+docling-serve-1  | 2026-10-12T05:25:41.555492300Z [92m[92mINFO[0m[0m:	05:25:41 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+docling-serve-1  | 2026-10-12T05:25:41.579783700Z [92mINFO[0m:	05:25:41 - docling.document_converter - Initializing pipeline for StandardPdfPipeline with options hash ac07a03bb32d1a3e5aa5ef2e631c3726
+docling-serve-1  | 2026-10-12T05:25:41.579803700Z [92m[92mINFO[0m[0m:	05:25:41 - docling.document_converter - Initializing pipeline for StandardPdfPipeline with options hash ac07a03bb32d1a3e5aa5ef2e631c3726
+docling-serve-1  | 2026-10-12T05:25:41.596039000Z [92mINFO[0m:	05:25:41 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:41.596057800Z [92m[92mINFO[0m[0m:	05:25:41 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+docling-serve-1  | 2026-10-12T05:25:41.598336000Z [92mINFO[0m:	05:25:41 - docling.models.factories - Registered picture descriptions: ['picture_description_vlm_engine', 'vlm', 'api']
+docling-serve-1  | 2026-10-12T05:25:41.598351900Z [92m[92mINFO[0m[0m:	05:25:41 - docling.models.factories - Registered picture descriptions: ['picture_description_vlm_engine', 'vlm', 'api']
+docling-serve-1  | 2026-10-12T05:25:42.343340085Z [92mINFO[0m:	05:25:42 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T05:25:42.343358213Z [92m[92mINFO[0m[0m:	05:25:42 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T05:25:42.370075127Z [32m[INFO] 2026-10-12 05:25:42,369 [RapidOCR] base.py:22: Using engine_name: onnxruntime[0m
+docling-serve-1  | 2026-10-12T05:25:42.372679113Z [32m[INFO] 2026-10-12 05:25:42,372 [RapidOCR] main.py:57: Using /opt/app-root/src/.cache/docling/models/RapidOcr/onnx/PP-OCRv4/det/ch_PP-OCRv4_det_mobile.onnx[0m
+docling-serve-1  | 2026-10-12T05:25:42.467722620Z [32m[INFO] 2026-10-12 05:25:42,467 [RapidOCR] base.py:22: Using engine_name: onnxruntime[0m
+docling-serve-1  | 2026-10-12T05:25:42.467815165Z [32m[INFO] 2026-10-12 05:25:42,467 [RapidOCR] main.py:57: Using /opt/app-root/src/.cache/docling/models/RapidOcr/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx[0m
+docling-serve-1  | 2026-10-12T05:25:42.503383666Z [32m[INFO] 2026-10-12 05:25:42,503 [RapidOCR] base.py:22: Using engine_name: onnxruntime[0m
+docling-serve-1  | 2026-10-12T05:25:42.503562347Z [32m[INFO] 2026-10-12 05:25:42,503 [RapidOCR] main.py:57: Using /opt/app-root/src/.cache/docling/models/RapidOcr/onnx/PP-OCRv4/rec/ch_PP-OCRv4_rec_mobile.onnx[0m
+docling-serve-1  | 2026-10-12T05:25:42.639282870Z [92mINFO[0m:	05:25:42 - docling.models.stages.ocr.auto_ocr_model - Auto OCR model selected rapidocr with onnxruntime.
+docling-serve-1  | 2026-10-12T05:25:42.639310713Z [92m[92mINFO[0m[0m:	05:25:42 - docling.models.stages.ocr.auto_ocr_model - Auto OCR model selected rapidocr with onnxruntime.
+docling-serve-1  | 2026-10-12T05:25:42.652667267Z [92mINFO[0m:	05:25:42 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T05:25:42.652683593Z [92m[92mINFO[0m[0m:	05:25:42 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T05:25:43.679051166Z Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]Loading weights:  22%|██▏       | 172/770 [00:00<00:00, 1712.57it/s]Loading weights:  45%|████▍     | 344/770 [00:00<00:00, 798.01it/s] Loading weights:  60%|██████    | 464/770 [00:00<00:00, 909.75it/s]Loading weights:  75%|███████▌  | 579/770 [00:00<00:00, 977.84it/s]Loading weights:  92%|█████████▏| 712/770 [00:00<00:00, 1053.12it/s]Loading weights: 100%|██████████| 770/770 [00:00<00:00, 1060.10it/s]
+docling-serve-1  | 2026-10-12T05:25:43.793815336Z [92mINFO[0m:	05:25:43 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T05:25:43.793832336Z [92m[92mINFO[0m[0m:	05:25:43 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T05:25:44.749037506Z [92mINFO[0m:	05:25:44 - uvicorn.error - Application startup complete.
+docling-serve-1  | 2026-10-12T05:25:44.749638206Z [92mINFO[0m:	05:25:44 - uvicorn.error - Uvicorn running on http://0.0.0.0:5001 (Press CTRL+C to quit)
+docling-serve-1  | 2026-10-12T05:25:47.150413706Z [92mINFO[0m:	05:25:47 - uvicorn.access - 127.0.0.1:40106 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:26:02.251971737Z [92mINFO[0m:	05:26:02 - uvicorn.access - 127.0.0.1:37246 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:26:17.357398351Z [92mINFO[0m:	05:26:17 - uvicorn.access - 127.0.0.1:59458 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:26:32.456768186Z [92mINFO[0m:	05:26:32 - uvicorn.access - 127.0.0.1:52682 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:26:47.548326059Z [92mINFO[0m:	05:26:47 - uvicorn.access - 127.0.0.1:57678 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:27:02.648176967Z [92mINFO[0m:	05:27:02 - uvicorn.access - 127.0.0.1:33974 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:27:17.747389963Z [92mINFO[0m:	05:27:17 - uvicorn.access - 127.0.0.1:55800 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:27:32.840890055Z [92mINFO[0m:	05:27:32 - uvicorn.access - 127.0.0.1:51330 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:27:47.945916625Z [92mINFO[0m:	05:27:47 - uvicorn.access - 127.0.0.1:44534 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:28:03.039992187Z [92mINFO[0m:	05:28:03 - uvicorn.access - 127.0.0.1:49354 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:28:18.147353112Z [92mINFO[0m:	05:28:18 - uvicorn.access - 127.0.0.1:38994 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:28:33.242203054Z [92mINFO[0m:	05:28:33 - uvicorn.access - 127.0.0.1:54132 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:28:48.342473595Z [92mINFO[0m:	05:28:48 - uvicorn.access - 127.0.0.1:41064 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:29:03.438921183Z [92mINFO[0m:	05:29:03 - uvicorn.access - 127.0.0.1:56744 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:29:18.529790219Z [92mINFO[0m:	05:29:18 - uvicorn.access - 127.0.0.1:50440 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:29:33.622595216Z [92mINFO[0m:	05:29:33 - uvicorn.access - 127.0.0.1:51504 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:29:48.716870213Z [92mINFO[0m:	05:29:48 - uvicorn.access - 127.0.0.1:55022 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:30:03.812615874Z [92mINFO[0m:	05:30:03 - uvicorn.access - 127.0.0.1:60264 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:30:18.907435265Z [92mINFO[0m:	05:30:18 - uvicorn.access - 127.0.0.1:50062 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:30:34.001745094Z [92mINFO[0m:	05:30:34 - uvicorn.access - 127.0.0.1:37638 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:30:49.097511620Z [92mINFO[0m:	05:30:49 - uvicorn.access - 127.0.0.1:34276 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:31:04.189579532Z [92mINFO[0m:	05:31:04 - uvicorn.access - 127.0.0.1:36710 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:31:19.282702985Z [92mINFO[0m:	05:31:19 - uvicorn.access - 127.0.0.1:38362 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:31:34.380412358Z [92mINFO[0m:	05:31:34 - uvicorn.access - 127.0.0.1:54952 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:31:49.477877041Z [92mINFO[0m:	05:31:49 - uvicorn.access - 127.0.0.1:54922 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:32:04.569469666Z [92mINFO[0m:	05:32:04 - uvicorn.access - 127.0.0.1:53048 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:32:19.663398454Z [92mINFO[0m:	05:32:19 - uvicorn.access - 127.0.0.1:44764 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:32:34.763090823Z [92mINFO[0m:	05:32:34 - uvicorn.access - 127.0.0.1:39112 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:32:49.858157431Z [92mINFO[0m:	05:32:49 - uvicorn.access - 127.0.0.1:42994 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:33:04.947474932Z [92mINFO[0m:	05:33:04 - uvicorn.access - 127.0.0.1:57812 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:33:20.040885157Z [92mINFO[0m:	05:33:20 - uvicorn.access - 127.0.0.1:36208 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:33:35.134985252Z [92mINFO[0m:	05:33:35 - uvicorn.access - 127.0.0.1:39920 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:33:50.229186095Z [92mINFO[0m:	05:33:50 - uvicorn.access - 127.0.0.1:49272 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:34:05.323583019Z [92mINFO[0m:	05:34:05 - uvicorn.access - 127.0.0.1:52282 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:34:20.419315889Z [92mINFO[0m:	05:34:20 - uvicorn.access - 127.0.0.1:47010 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:34:35.515952506Z [92mINFO[0m:	05:34:35 - uvicorn.access - 127.0.0.1:40040 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:34:50.611038303Z [92mINFO[0m:	05:34:50 - uvicorn.access - 127.0.0.1:57146 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:35:05.701803795Z [92mINFO[0m:	05:35:05 - uvicorn.access - 127.0.0.1:47390 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:35:20.795678827Z [92mINFO[0m:	05:35:20 - uvicorn.access - 127.0.0.1:40134 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:35:35.887656098Z [92mINFO[0m:	05:35:35 - uvicorn.access - 127.0.0.1:58278 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:35:50.982507107Z [92mINFO[0m:	05:35:50 - uvicorn.access - 127.0.0.1:40478 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:36:06.071682255Z [92mINFO[0m:	05:36:06 - uvicorn.access - 127.0.0.1:45802 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:36:21.167845782Z [92mINFO[0m:	05:36:21 - uvicorn.access - 127.0.0.1:43068 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:36:36.265682562Z [92mINFO[0m:	05:36:36 - uvicorn.access - 127.0.0.1:40318 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:36:51.364581079Z [92mINFO[0m:	05:36:51 - uvicorn.access - 127.0.0.1:47560 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:37:06.462841206Z [92mINFO[0m:	05:37:06 - uvicorn.access - 127.0.0.1:51298 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:37:21.561691130Z [92mINFO[0m:	05:37:21 - uvicorn.access - 127.0.0.1:35420 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:37:36.652598559Z [92mINFO[0m:	05:37:36 - uvicorn.access - 127.0.0.1:37836 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:37:51.766840906Z [92mINFO[0m:	05:37:51 - uvicorn.access - 127.0.0.1:38816 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:38:06.861086663Z [92mINFO[0m:	05:38:06 - uvicorn.access - 127.0.0.1:46946 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:38:21.959563067Z [92mINFO[0m:	05:38:21 - uvicorn.access - 127.0.0.1:34906 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:38:37.055561284Z [92mINFO[0m:	05:38:37 - uvicorn.access - 127.0.0.1:60740 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:38:52.154281953Z [92mINFO[0m:	05:38:52 - uvicorn.access - 127.0.0.1:50656 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:39:07.245916627Z [92mINFO[0m:	05:39:07 - uvicorn.access - 127.0.0.1:52360 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:39:22.344597236Z [92mINFO[0m:	05:39:22 - uvicorn.access - 127.0.0.1:53636 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:39:37.436025952Z [92mINFO[0m:	05:39:37 - uvicorn.access - 127.0.0.1:39232 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:39:52.529767011Z [92mINFO[0m:	05:39:52 - uvicorn.access - 127.0.0.1:38524 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:40:07.624697389Z [92mINFO[0m:	05:40:07 - uvicorn.access - 127.0.0.1:39916 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:40:22.713064049Z [92mINFO[0m:	05:40:22 - uvicorn.access - 127.0.0.1:34224 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:40:37.807186545Z [92mINFO[0m:	05:40:37 - uvicorn.access - 127.0.0.1:36474 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:40:52.902086921Z [92mINFO[0m:	05:40:52 - uvicorn.access - 127.0.0.1:48296 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:41:07.999531625Z [92mINFO[0m:	05:41:07 - uvicorn.access - 127.0.0.1:43186 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:41:23.097539606Z [92mINFO[0m:	05:41:23 - uvicorn.access - 127.0.0.1:59884 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:41:38.190827927Z [92mINFO[0m:	05:41:38 - uvicorn.access - 127.0.0.1:43826 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:41:53.281869381Z [92mINFO[0m:	05:41:53 - uvicorn.access - 127.0.0.1:45338 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:42:08.377400797Z [92mINFO[0m:	05:42:08 - uvicorn.access - 127.0.0.1:41902 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:42:23.525729039Z [92mINFO[0m:	05:42:23 - uvicorn.access - 127.0.0.1:41934 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:42:38.629256912Z [92mINFO[0m:	05:42:38 - uvicorn.access - 127.0.0.1:42430 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:42:53.728081001Z [92mINFO[0m:	05:42:53 - uvicorn.access - 127.0.0.1:46214 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:43:08.824831345Z [92mINFO[0m:	05:43:08 - uvicorn.access - 127.0.0.1:59954 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:43:23.920413252Z [92mINFO[0m:	05:43:23 - uvicorn.access - 127.0.0.1:35230 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:43:39.019488588Z [92mINFO[0m:	05:43:39 - uvicorn.access - 127.0.0.1:60922 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:43:54.117321496Z [92mINFO[0m:	05:43:54 - uvicorn.access - 127.0.0.1:53950 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:44:09.214773619Z [92mINFO[0m:	05:44:09 - uvicorn.access - 127.0.0.1:54458 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:44:24.304739419Z [92mINFO[0m:	05:44:24 - uvicorn.access - 127.0.0.1:33202 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:44:39.397511565Z [92mINFO[0m:	05:44:39 - uvicorn.access - 127.0.0.1:44824 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:44:54.491373067Z [92mINFO[0m:	05:44:54 - uvicorn.access - 127.0.0.1:56676 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:45:09.589553721Z [92mINFO[0m:	05:45:09 - uvicorn.access - 127.0.0.1:46428 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:45:24.685601436Z [92mINFO[0m:	05:45:24 - uvicorn.access - 127.0.0.1:48824 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:45:39.803419366Z [92mINFO[0m:	05:45:39 - uvicorn.access - 127.0.0.1:49600 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:45:54.914551583Z [92mINFO[0m:	05:45:54 - uvicorn.access - 127.0.0.1:45862 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:46:10.016094159Z [92mINFO[0m:	05:46:10 - uvicorn.access - 127.0.0.1:41720 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:46:25.109774190Z [92mINFO[0m:	05:46:25 - uvicorn.access - 127.0.0.1:34354 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:46:40.205634451Z [92mINFO[0m:	05:46:40 - uvicorn.access - 127.0.0.1:33140 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:46:55.299007665Z [92mINFO[0m:	05:46:55 - uvicorn.access - 127.0.0.1:33716 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:47:10.397924706Z [92mINFO[0m:	05:47:10 - uvicorn.access - 127.0.0.1:36384 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:47:25.490372268Z [92mINFO[0m:	05:47:25 - uvicorn.access - 127.0.0.1:53288 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:47:40.584366758Z [92mINFO[0m:	05:47:40 - uvicorn.access - 127.0.0.1:35678 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:47:55.678108549Z [92mINFO[0m:	05:47:55 - uvicorn.access - 127.0.0.1:59030 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:48:10.775574947Z [92mINFO[0m:	05:48:10 - uvicorn.access - 127.0.0.1:36514 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:48:25.924483922Z [92mINFO[0m:	05:48:25 - uvicorn.access - 127.0.0.1:59090 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:48:41.025900221Z [92mINFO[0m:	05:48:41 - uvicorn.access - 127.0.0.1:43894 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:48:56.124311871Z [92mINFO[0m:	05:48:56 - uvicorn.access - 127.0.0.1:54750 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:49:11.222532436Z [92mINFO[0m:	05:49:11 - uvicorn.access - 127.0.0.1:51714 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:49:26.316498742Z [92mINFO[0m:	05:49:26 - uvicorn.access - 127.0.0.1:36936 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:49:41.414082003Z [92mINFO[0m:	05:49:41 - uvicorn.access - 127.0.0.1:45598 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:49:56.510500524Z [92mINFO[0m:	05:49:56 - uvicorn.access - 127.0.0.1:58684 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:50:11.617173494Z [92mINFO[0m:	05:50:11 - uvicorn.access - 127.0.0.1:38784 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:50:26.715791497Z [92mINFO[0m:	05:50:26 - uvicorn.access - 127.0.0.1:34228 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:50:41.810056043Z [92mINFO[0m:	05:50:41 - uvicorn.access - 127.0.0.1:43322 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:50:56.900590856Z [92mINFO[0m:	05:50:56 - uvicorn.access - 127.0.0.1:42072 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:51:12.001165476Z [92mINFO[0m:	05:51:12 - uvicorn.access - 127.0.0.1:54668 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:51:27.098440297Z [92mINFO[0m:	05:51:27 - uvicorn.access - 127.0.0.1:55948 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:51:42.196820835Z [92mINFO[0m:	05:51:42 - uvicorn.access - 127.0.0.1:55828 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:51:57.297687112Z [92mINFO[0m:	05:51:57 - uvicorn.access - 127.0.0.1:36542 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:52:12.408859246Z [92mINFO[0m:	05:52:12 - uvicorn.access - 127.0.0.1:47862 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:52:27.510071426Z [92mINFO[0m:	05:52:27 - uvicorn.access - 127.0.0.1:35604 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:52:42.608275687Z [92mINFO[0m:	05:52:42 - uvicorn.access - 127.0.0.1:40676 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:52:57.703915849Z [92mINFO[0m:	05:52:57 - uvicorn.access - 127.0.0.1:39302 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:53:12.799382929Z [92mINFO[0m:	05:53:12 - uvicorn.access - 127.0.0.1:60948 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:53:27.896439293Z [92mINFO[0m:	05:53:27 - uvicorn.access - 127.0.0.1:39472 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:53:42.991760120Z [92mINFO[0m:	05:53:42 - uvicorn.access - 127.0.0.1:49154 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:53:58.089886263Z [92mINFO[0m:	05:53:58 - uvicorn.access - 127.0.0.1:58072 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:54:13.190656332Z [92mINFO[0m:	05:54:13 - uvicorn.access - 127.0.0.1:54354 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:54:28.285504434Z [92mINFO[0m:	05:54:28 - uvicorn.access - 127.0.0.1:42916 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:54:43.381311236Z [92mINFO[0m:	05:54:43 - uvicorn.access - 127.0.0.1:43306 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:54:58.470732237Z [92mINFO[0m:	05:54:58 - uvicorn.access - 127.0.0.1:41604 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:55:13.572672788Z [92mINFO[0m:	05:55:13 - uvicorn.access - 127.0.0.1:48968 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:55:28.673185877Z [92mINFO[0m:	05:55:28 - uvicorn.access - 127.0.0.1:40370 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:55:43.771836665Z [92mINFO[0m:	05:55:43 - uvicorn.access - 127.0.0.1:55150 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:55:58.863140978Z [92mINFO[0m:	05:55:58 - uvicorn.access - 127.0.0.1:42140 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:56:13.966802962Z [92mINFO[0m:	05:56:13 - uvicorn.access - 127.0.0.1:48840 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:56:29.060686686Z [92mINFO[0m:	05:56:29 - uvicorn.access - 127.0.0.1:35640 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:56:44.170552898Z [92mINFO[0m:	05:56:44 - uvicorn.access - 127.0.0.1:50524 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:56:59.271086551Z [92mINFO[0m:	05:56:59 - uvicorn.access - 127.0.0.1:49730 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:57:14.365468938Z [92mINFO[0m:	05:57:14 - uvicorn.access - 127.0.0.1:54936 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:57:29.462303913Z [92mINFO[0m:	05:57:29 - uvicorn.access - 127.0.0.1:39192 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:57:44.557803336Z [92mINFO[0m:	05:57:44 - uvicorn.access - 127.0.0.1:54922 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:57:59.681307791Z [92mINFO[0m:	05:57:59 - uvicorn.access - 127.0.0.1:40814 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:58:14.775198827Z [92mINFO[0m:	05:58:14 - uvicorn.access - 127.0.0.1:58528 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:58:29.868226944Z [92mINFO[0m:	05:58:29 - uvicorn.access - 127.0.0.1:47778 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:58:44.966789462Z [92mINFO[0m:	05:58:44 - uvicorn.access - 127.0.0.1:37556 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:59:00.061429202Z [92mINFO[0m:	05:59:00 - uvicorn.access - 127.0.0.1:50562 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:59:15.156851098Z [92mINFO[0m:	05:59:15 - uvicorn.access - 127.0.0.1:58896 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:59:30.250105177Z [92mINFO[0m:	05:59:30 - uvicorn.access - 127.0.0.1:58920 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T05:59:45.345611834Z [92mINFO[0m:	05:59:45 - uvicorn.access - 127.0.0.1:54106 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:00:00.443131439Z [92mINFO[0m:	06:00:00 - uvicorn.access - 127.0.0.1:36394 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:00:15.535659759Z [92mINFO[0m:	06:00:15 - uvicorn.access - 127.0.0.1:41076 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:00:30.631918888Z [92mINFO[0m:	06:00:30 - uvicorn.access - 127.0.0.1:39642 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:00:45.746477494Z [92mINFO[0m:	06:00:45 - uvicorn.access - 127.0.0.1:49476 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:01:00.846990029Z [92mINFO[0m:	06:01:00 - uvicorn.access - 127.0.0.1:34148 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:01:15.944367683Z [92mINFO[0m:	06:01:15 - uvicorn.access - 127.0.0.1:60026 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:01:31.042489901Z [92mINFO[0m:	06:01:31 - uvicorn.access - 127.0.0.1:43906 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:01:46.138199150Z [92mINFO[0m:	06:01:46 - uvicorn.access - 127.0.0.1:40186 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:02:01.233840497Z [92mINFO[0m:	06:02:01 - uvicorn.access - 127.0.0.1:47556 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:02:16.335048181Z [92mINFO[0m:	06:02:16 - uvicorn.access - 127.0.0.1:57438 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:02:31.427995988Z [92mINFO[0m:	06:02:31 - uvicorn.access - 127.0.0.1:47872 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:02:46.532140960Z [92mINFO[0m:	06:02:46 - uvicorn.access - 127.0.0.1:53726 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:03:01.627826443Z [92mINFO[0m:	06:03:01 - uvicorn.access - 127.0.0.1:36694 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:03:16.722723084Z [92mINFO[0m:	06:03:16 - uvicorn.access - 127.0.0.1:48040 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:03:31.824049045Z [92mINFO[0m:	06:03:31 - uvicorn.access - 127.0.0.1:32990 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:03:46.919113037Z [92mINFO[0m:	06:03:46 - uvicorn.access - 127.0.0.1:43080 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:04:02.017882179Z [92mINFO[0m:	06:04:02 - uvicorn.access - 127.0.0.1:59022 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:04:17.120724704Z [92mINFO[0m:	06:04:17 - uvicorn.access - 127.0.0.1:37718 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:04:19.366200541Z [92mINFO[0m:	06:04:19 - uvicorn.access - 172.21.0.4:56644 - "GET /version HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:04:20.196925825Z [92mINFO[0m:	06:04:20 - uvicorn.access - 172.21.0.4:56644 - "GET /openapi.json HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:04:20.233411746Z [92mINFO[0m:	06:04:20 - docling_serve.app - [TENANT_ID] Extracted tenant_id from header: 'default' (header_value: 'None')
+docling-serve-1  | 2026-10-12T06:04:20.233432647Z [92m[92mINFO[0m[0m:	06:04:20 - docling_serve.app - [TENANT_ID] Extracted tenant_id from header: 'default' (header_value: 'None')
+docling-serve-1  | 2026-10-12T06:04:20.233435447Z [92mINFO[0m:	06:04:20 - docling_serve.app - [TENANT_ID] process_file endpoint received tenant_id='default'
+docling-serve-1  | 2026-10-12T06:04:20.233437247Z [92m[92mINFO[0m[0m:	06:04:20 - docling_serve.app - [TENANT_ID] process_file endpoint received tenant_id='default'
+docling-serve-1  | 2026-10-12T06:04:20.233621352Z [92mINFO[0m:	06:04:20 - docling_serve.app - [TENANT_ID] _enque_file called with tenant_id='default', processing 1 files
+docling-serve-1  | 2026-10-12T06:04:20.233632052Z [92m[92mINFO[0m[0m:	06:04:20 - docling_serve.app - [TENANT_ID] _enque_file called with tenant_id='default', processing 1 files
+docling-serve-1  | 2026-10-12T06:04:20.243209494Z [92mINFO[0m:	06:04:20 - docling_serve.app - File 0: name=document.pdf, size=5122473 bytes, md5=93b1fb1e3970, content_type=application/octet-stream
+docling-serve-1  | 2026-10-12T06:04:20.243233294Z [92m[92mINFO[0m[0m:	06:04:20 - docling_serve.app - File 0: name=document.pdf, size=5122473 bytes, md5=93b1fb1e3970, content_type=application/octet-stream
+docling-serve-1  | 2026-10-12T06:04:20.245148943Z [92mINFO[0m:	06:04:20 - docling_serve.app - [TENANT_ID] File task 9f3a1399-bb79-4a82-8917-a3d68e7653cb created with tenant_id='default'
+docling-serve-1  | 2026-10-12T06:04:20.245178244Z [92m[92mINFO[0m[0m:	06:04:20 - docling_serve.app - [TENANT_ID] File task 9f3a1399-bb79-4a82-8917-a3d68e7653cb created with tenant_id='default'
+docling-serve-1  | 2026-10-12T06:04:20.245907462Z [92mINFO[0m:	06:04:20 - docling_jobkit.orchestrators.local.worker - Worker 0 processing task 9f3a1399-bb79-4a82-8917-a3d68e7653cb
+docling-serve-1  | 2026-10-12T06:04:20.245916762Z [92m[92mINFO[0m[0m:	06:04:20 - docling_jobkit.orchestrators.local.worker - Worker 0 processing task 9f3a1399-bb79-4a82-8917-a3d68e7653cb
+docling-serve-1  | 2026-10-12T06:04:20.248294622Z [92mINFO[0m:	06:04:20 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+docling-serve-1  | 2026-10-12T06:04:20.248305423Z [92m[92mINFO[0m[0m:	06:04:20 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+docling-serve-1  | 2026-10-12T06:04:20.278621888Z [92mINFO[0m:	06:04:20 - docling.document_converter - Initializing pipeline for StandardPdfPipeline with options hash aa4b16f4b50c1a18e670b57587c18b23
+docling-serve-1  | 2026-10-12T06:04:20.278642989Z [92m[92mINFO[0m[0m:	06:04:20 - docling.document_converter - Initializing pipeline for StandardPdfPipeline with options hash aa4b16f4b50c1a18e670b57587c18b23
+docling-serve-1  | 2026-10-12T06:04:20.281277055Z [92mINFO[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T06:04:20.281289556Z [92m[92mINFO[0m[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T06:04:20.887993380Z Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]Loading weights:  26%|██▌       | 199/770 [00:00<00:00, 1980.61it/s]Loading weights:  52%|█████▏    | 401/770 [00:00<00:00, 1994.20it/s]Loading weights:  82%|████████▏ | 629/770 [00:00<00:00, 2119.63it/s]Loading weights: 100%|██████████| 770/770 [00:00<00:00, 2130.29it/s]
+docling-serve-1  | 2026-10-12T06:04:20.918053640Z [92mINFO[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T06:04:20.918073440Z [92m[92mINFO[0m[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
+docling-serve-1  | 2026-10-12T06:04:21.618794540Z [92mINFO[0m:	06:04:21 - docling.datamodel.document - detected formats: [<InputFormat.PDF: 'pdf'>]
+docling-serve-1  | 2026-10-12T06:04:21.618824941Z [92m[92mINFO[0m[0m:	06:04:21 - docling.datamodel.document - detected formats: [<InputFormat.PDF: 'pdf'>]
+docling-serve-1  | 2026-10-12T06:04:21.720097499Z [92mINFO[0m:	06:04:21 - docling.document_converter - Going to convert document batch...
+docling-serve-1  | 2026-10-12T06:04:21.720136700Z [92m[92mINFO[0m[0m:	06:04:21 - docling.document_converter - Going to convert document batch...
+docling-serve-1  | 2026-10-12T06:04:21.721266628Z [92mINFO[0m:	06:04:21 - docling.pipeline.base_pipeline - Processing document document.pdf
+docling-serve-1  | 2026-10-12T06:04:21.721274628Z [92m[92mINFO[0m[0m:	06:04:21 - docling.pipeline.base_pipeline - Processing document document.pdf
+docling-serve-1  | 2026-10-12T06:04:32.278954736Z [92mINFO[0m:	06:04:32 - uvicorn.access - 127.0.0.1:32920 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:04:47.410392444Z [92mINFO[0m:	06:04:47 - uvicorn.access - 127.0.0.1:35358 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:05:02.514938597Z [92mINFO[0m:	06:05:02 - uvicorn.access - 127.0.0.1:55346 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:05:17.620947991Z [92mINFO[0m:	06:05:17 - uvicorn.access - 127.0.0.1:51110 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:05:32.741856867Z [92mINFO[0m:	06:05:32 - uvicorn.access - 127.0.0.1:49634 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:05:47.855358981Z [92mINFO[0m:	06:05:47 - uvicorn.access - 127.0.0.1:42972 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:06:03.009701572Z [92mINFO[0m:	06:06:03 - uvicorn.access - 127.0.0.1:47286 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:06:18.400872915Z [92mINFO[0m:	06:06:18 - uvicorn.access - 127.0.0.1:58822 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:06:33.570280811Z [92mINFO[0m:	06:06:33 - uvicorn.access - 127.0.0.1:46122 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:06:48.704254080Z [92mINFO[0m:	06:06:48 - uvicorn.access - 127.0.0.1:35058 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:07:03.822910828Z [92mINFO[0m:	06:07:03 - uvicorn.access - 127.0.0.1:46658 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:07:18.937866086Z [92mINFO[0m:	06:07:18 - uvicorn.access - 127.0.0.1:50090 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:07:34.051602739Z [92mINFO[0m:	06:07:34 - uvicorn.access - 127.0.0.1:35492 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:07:49.156962726Z [92mINFO[0m:	06:07:49 - uvicorn.access - 127.0.0.1:56696 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:08:04.257114536Z [92mINFO[0m:	06:08:04 - uvicorn.access - 127.0.0.1:50116 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:08:19.379988756Z [92mINFO[0m:	06:08:19 - uvicorn.access - 127.0.0.1:50226 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:08:34.481525331Z [92mINFO[0m:	06:08:34 - uvicorn.access - 127.0.0.1:36278 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:08:36.755124267Z [92mINFO[0m:	06:08:36 - docling.document_converter - Finished converting document document.pdf in 255.15 sec.
+docling-serve-1  | 2026-10-12T06:08:36.755148268Z [92m[92mINFO[0m[0m:	06:08:36 - docling.document_converter - Finished converting document document.pdf in 255.15 sec.
+docling-serve-1  | 2026-10-12T06:08:36.778816918Z [92mINFO[0m:	06:08:36 - docling_jobkit.convert.results - Processed 1 docs in 255.17 seconds.
+docling-serve-1  | 2026-10-12T06:08:36.778849619Z [92m[92mINFO[0m[0m:	06:08:36 - docling_jobkit.convert.results - Processed 1 docs in 255.17 seconds.
+docling-serve-1  | 2026-10-12T06:08:36.779454841Z [92mINFO[0m:	06:08:36 - docling_jobkit.orchestrators.local.worker - Worker 0 completed job 9f3a1399-bb79-4a82-8917-a3d68e7653cb in 255.17 seconds
+docling-serve-1  | 2026-10-12T06:08:36.779467641Z [92m[92mINFO[0m[0m:	06:08:36 - docling_jobkit.orchestrators.local.worker - Worker 0 completed job 9f3a1399-bb79-4a82-8917-a3d68e7653cb in 255.17 seconds
+docling-serve-1  | 2026-10-12T06:08:38.546812014Z [92mINFO[0m:	06:08:38 - uvicorn.access - 172.21.0.4:56644 - "POST /v1/convert/file HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:08:49.591836342Z [92mINFO[0m:	06:08:49 - uvicorn.access - 127.0.0.1:56876 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:09:04.691082921Z [92mINFO[0m:	06:09:04 - uvicorn.access - 127.0.0.1:54696 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:09:19.794133919Z [92mINFO[0m:	06:09:19 - uvicorn.access - 127.0.0.1:56862 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:09:34.894517325Z [92mINFO[0m:	06:09:34 - uvicorn.access - 127.0.0.1:54474 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:09:49.997399793Z [92mINFO[0m:	06:09:49 - uvicorn.access - 127.0.0.1:43106 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:10:05.105856993Z [92mINFO[0m:	06:10:05 - uvicorn.access - 127.0.0.1:60512 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:10:20.205706258Z [92mINFO[0m:	06:10:20 - uvicorn.access - 127.0.0.1:38846 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:10:35.315674599Z [92mINFO[0m:	06:10:35 - uvicorn.access - 127.0.0.1:51960 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:10:50.423597734Z [92mINFO[0m:	06:10:50 - uvicorn.access - 127.0.0.1:52074 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:11:05.526247961Z [92mINFO[0m:	06:11:05 - uvicorn.access - 127.0.0.1:39164 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:11:20.635975809Z [92mINFO[0m:	06:11:20 - uvicorn.access - 127.0.0.1:46352 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:11:35.747832882Z [92mINFO[0m:	06:11:35 - uvicorn.access - 127.0.0.1:34382 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:11:50.859638504Z [92mINFO[0m:	06:11:50 - uvicorn.access - 127.0.0.1:59586 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:12:05.970754159Z [92mINFO[0m:	06:12:05 - uvicorn.access - 127.0.0.1:49118 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:12:21.111646412Z [92mINFO[0m:	06:12:21 - uvicorn.access - 127.0.0.1:38338 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:12:24.463600768Z [92mINFO[0m:	06:12:24 - uvicorn.access - 172.21.0.4:42458 - "GET /version HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:12:24.472890985Z [92mINFO[0m:	06:12:24 - uvicorn.access - 172.21.0.4:42458 - "GET /openapi.json HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:12:24.491869532Z [92mINFO[0m:	06:12:24 - docling_serve.app - [TENANT_ID] Extracted tenant_id from header: 'default' (header_value: 'None')
+docling-serve-1  | 2026-10-12T06:12:24.491889733Z [92m[92mINFO[0m[0m:	06:12:24 - docling_serve.app - [TENANT_ID] Extracted tenant_id from header: 'default' (header_value: 'None')
+docling-serve-1  | 2026-10-12T06:12:24.491892433Z [92mINFO[0m:	06:12:24 - docling_serve.app - [TENANT_ID] process_file endpoint received tenant_id='default'
+docling-serve-1  | 2026-10-12T06:12:24.491894733Z [92m[92mINFO[0m[0m:	06:12:24 - docling_serve.app - [TENANT_ID] process_file endpoint received tenant_id='default'
+docling-serve-1  | 2026-10-12T06:12:24.491896533Z [92mINFO[0m:	06:12:24 - docling_serve.app - [TENANT_ID] _enque_file called with tenant_id='default', processing 1 files
+docling-serve-1  | 2026-10-12T06:12:24.491898333Z [92m[92mINFO[0m[0m:	06:12:24 - docling_serve.app - [TENANT_ID] _enque_file called with tenant_id='default', processing 1 files
+docling-serve-1  | 2026-10-12T06:12:24.495626461Z [92mINFO[0m:	06:12:24 - docling_serve.app - File 0: name=document.pdf, size=2436166 bytes, md5=3fca31faccfd, content_type=application/octet-stream
+docling-serve-1  | 2026-10-12T06:12:24.495640361Z [92m[92mINFO[0m[0m:	06:12:24 - docling_serve.app - File 0: name=document.pdf, size=2436166 bytes, md5=3fca31faccfd, content_type=application/octet-stream
+docling-serve-1  | 2026-10-12T06:12:24.495933571Z [92mINFO[0m:	06:12:24 - docling_serve.app - [TENANT_ID] File task 636b7e52-7830-438e-9f2e-52707d536f09 created with tenant_id='default'
+docling-serve-1  | 2026-10-12T06:12:24.495959372Z [92m[92mINFO[0m[0m:	06:12:24 - docling_serve.app - [TENANT_ID] File task 636b7e52-7830-438e-9f2e-52707d536f09 created with tenant_id='default'
+docling-serve-1  | 2026-10-12T06:12:24.496062076Z [92mINFO[0m:	06:12:24 - docling_jobkit.orchestrators.local.worker - Worker 0 processing task 636b7e52-7830-438e-9f2e-52707d536f09
+docling-serve-1  | 2026-10-12T06:12:24.496082176Z [92m[92mINFO[0m[0m:	06:12:24 - docling_jobkit.orchestrators.local.worker - Worker 0 processing task 636b7e52-7830-438e-9f2e-52707d536f09
+docling-serve-1  | 2026-10-12T06:12:24.496401887Z [92mINFO[0m:	06:12:24 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+docling-serve-1  | 2026-10-12T06:12:24.496408787Z [92m[92mINFO[0m[0m:	06:12:24 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+docling-serve-1  | 2026-10-12T06:12:24.497553726Z [92mINFO[0m:	06:12:24 - docling.datamodel.document - detected formats: [<InputFormat.PDF: 'pdf'>]
+docling-serve-1  | 2026-10-12T06:12:24.497562727Z [92m[92mINFO[0m[0m:	06:12:24 - docling.datamodel.document - detected formats: [<InputFormat.PDF: 'pdf'>]
+docling-serve-1  | 2026-10-12T06:12:24.517367403Z [92mINFO[0m:	06:12:24 - docling.document_converter - Going to convert document batch...
+docling-serve-1  | 2026-10-12T06:12:24.517392104Z [92m[92mINFO[0m[0m:	06:12:24 - docling.document_converter - Going to convert document batch...
+docling-serve-1  | 2026-10-12T06:12:24.517829419Z [92mINFO[0m:	06:12:24 - docling.pipeline.base_pipeline - Processing document document.pdf
+docling-serve-1  | 2026-10-12T06:12:24.517838019Z [92m[92mINFO[0m[0m:	06:12:24 - docling.pipeline.base_pipeline - Processing document document.pdf
+docling-serve-1  | 2026-10-12T06:12:36.293456477Z [92mINFO[0m:	06:12:36 - uvicorn.access - 127.0.0.1:56880 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:12:51.432590554Z [92mINFO[0m:	06:12:51 - uvicorn.access - 127.0.0.1:43542 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:13:06.566242892Z [92mINFO[0m:	06:13:06 - uvicorn.access - 127.0.0.1:47266 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:13:21.676049890Z [92mINFO[0m:	06:13:21 - uvicorn.access - 127.0.0.1:37890 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:13:36.789257772Z [92mINFO[0m:	06:13:36 - uvicorn.access - 127.0.0.1:57818 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:13:38.538156353Z [92mINFO[0m:	06:13:38 - docling_jobkit.orchestrators.local.orchestrator - Deleting result of task task_id='9f3a1399-bb79-4a82-8917-a3d68e7653cb'
+docling-serve-1  | 2026-10-12T06:13:38.538183554Z [92m[92mINFO[0m[0m:	06:13:38 - docling_jobkit.orchestrators.local.orchestrator - Deleting result of task task_id='9f3a1399-bb79-4a82-8917-a3d68e7653cb'
+docling-serve-1  | 2026-10-12T06:13:38.538186254Z [92mINFO[0m:	06:13:38 - docling_jobkit.orchestrators.base_orchestrator - Deleting task_id='9f3a1399-bb79-4a82-8917-a3d68e7653cb'
+docling-serve-1  | 2026-10-12T06:13:38.538188254Z [92m[92mINFO[0m[0m:	06:13:38 - docling_jobkit.orchestrators.base_orchestrator - Deleting task_id='9f3a1399-bb79-4a82-8917-a3d68e7653cb'
+docling-serve-1  | 2026-10-12T06:13:51.915369026Z [92mINFO[0m:	06:13:51 - uvicorn.access - 127.0.0.1:44540 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:14:07.080500767Z [92mINFO[0m:	06:14:07 - uvicorn.access - 127.0.0.1:46390 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:14:22.215207116Z [92mINFO[0m:	06:14:22 - uvicorn.access - 127.0.0.1:59960 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:14:37.326695485Z [92mINFO[0m:	06:14:37 - uvicorn.access - 127.0.0.1:54360 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:14:52.452927081Z [92mINFO[0m:	06:14:52 - uvicorn.access - 127.0.0.1:57486 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:15:07.573243042Z [92mINFO[0m:	06:15:07 - uvicorn.access - 127.0.0.1:33646 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:15:22.704896273Z [92mINFO[0m:	06:15:22 - uvicorn.access - 127.0.0.1:39850 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:15:37.844198025Z [92mINFO[0m:	06:15:37 - uvicorn.access - 127.0.0.1:36982 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:15:52.970165534Z [92mINFO[0m:	06:15:52 - uvicorn.access - 127.0.0.1:41586 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:16:08.114562265Z [92mINFO[0m:	06:16:08 - uvicorn.access - 127.0.0.1:60866 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:16:23.242575771Z [92mINFO[0m:	06:16:23 - uvicorn.access - 127.0.0.1:36292 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:16:38.363657948Z [92mINFO[0m:	06:16:38 - uvicorn.access - 127.0.0.1:50222 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:16:53.510411437Z [92mINFO[0m:	06:16:53 - uvicorn.access - 127.0.0.1:53390 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:17:08.675821370Z [92mINFO[0m:	06:17:08 - uvicorn.access - 127.0.0.1:34630 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:17:23.823003061Z [92mINFO[0m:	06:17:23 - uvicorn.access - 127.0.0.1:37464 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:17:38.934988353Z [92mINFO[0m:	06:17:38 - uvicorn.access - 127.0.0.1:32936 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:17:54.041302264Z [92mINFO[0m:	06:17:54 - uvicorn.access - 127.0.0.1:36592 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:18:09.155207893Z [92mINFO[0m:	06:18:09 - uvicorn.access - 127.0.0.1:47386 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:18:24.258731092Z [92mINFO[0m:	06:18:24 - uvicorn.access - 127.0.0.1:36648 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:18:39.373371224Z [92mINFO[0m:	06:18:39 - uvicorn.access - 127.0.0.1:46876 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:18:54.474531037Z [92mINFO[0m:	06:18:54 - uvicorn.access - 127.0.0.1:39734 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:19:09.599906859Z [92mINFO[0m:	06:19:09 - uvicorn.access - 127.0.0.1:39978 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:19:24.724364671Z [92mINFO[0m:	06:19:24 - uvicorn.access - 127.0.0.1:51370 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:19:39.857844826Z [92mINFO[0m:	06:19:39 - uvicorn.access - 127.0.0.1:47670 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:19:54.974261695Z [92mINFO[0m:	06:19:54 - uvicorn.access - 127.0.0.1:53798 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:20:10.101897632Z [92mINFO[0m:	06:20:10 - uvicorn.access - 127.0.0.1:50730 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:20:25.204930237Z [92mINFO[0m:	06:20:25 - uvicorn.access - 127.0.0.1:60180 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:20:40.313013619Z [92mINFO[0m:	06:20:40 - uvicorn.access - 127.0.0.1:43652 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:20:55.415820685Z [92mINFO[0m:	06:20:55 - uvicorn.access - 127.0.0.1:45388 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:21:10.537381391Z [92mINFO[0m:	06:21:10 - uvicorn.access - 127.0.0.1:55268 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:21:25.649322184Z [92mINFO[0m:	06:21:25 - uvicorn.access - 127.0.0.1:35228 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:21:40.754248348Z [92mINFO[0m:	06:21:40 - uvicorn.access - 127.0.0.1:43100 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:21:55.877919557Z [92mINFO[0m:	06:21:55 - uvicorn.access - 127.0.0.1:49442 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:22:10.983987808Z [92mINFO[0m:	06:22:10 - uvicorn.access - 127.0.0.1:54222 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:22:24.543428588Z [93mWARNING[0m:	06:22:24 - docling.pipeline.standard_pdf_pipeline - Document processing time (600.050s) exceeded timeout of 600.000s
+docling-serve-1  | 2026-10-12T06:22:24.543479890Z [93m[93mWARNING[0m[0m:	06:22:24 - docling.pipeline.standard_pdf_pipeline - Document processing time (600.050s) exceeded timeout of 600.000s
+docling-serve-1  | 2026-10-12T06:22:26.099824887Z [92mINFO[0m:	06:22:26 - uvicorn.access - 127.0.0.1:42346 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:22:39.156459748Z [92mINFO[0m:	06:22:39 - docling.document_converter - Finished converting document document.pdf in 614.69 sec.
+docling-serve-1  | 2026-10-12T06:22:39.156484549Z [92m[92mINFO[0m[0m:	06:22:39 - docling.document_converter - Finished converting document document.pdf in 614.69 sec.
+docling-serve-1  | 2026-10-12T06:22:39.200423441Z [92mINFO[0m:	06:22:39 - docling_jobkit.convert.results - Processed 1 docs in 614.73 seconds.
+docling-serve-1  | 2026-10-12T06:22:39.200444442Z [92m[92mINFO[0m[0m:	06:22:39 - docling_jobkit.convert.results - Processed 1 docs in 614.73 seconds.
+docling-serve-1  | 2026-10-12T06:22:39.206113025Z [92mINFO[0m:	06:22:39 - docling_jobkit.orchestrators.local.worker - Worker 0 completed job 636b7e52-7830-438e-9f2e-52707d536f09 in 614.73 seconds
+docling-serve-1  | 2026-10-12T06:22:39.206129326Z [92m[92mINFO[0m[0m:	06:22:39 - docling_jobkit.orchestrators.local.worker - Worker 0 completed job 636b7e52-7830-438e-9f2e-52707d536f09 in 614.73 seconds
+docling-serve-1  | 2026-10-12T06:22:41.072641848Z [92mINFO[0m:	06:22:41 - uvicorn.access - 172.21.0.4:42458 - "POST /v1/convert/file HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:22:41.201754589Z [92mINFO[0m:	06:22:41 - uvicorn.access - 127.0.0.1:58928 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:22:56.297158634Z [92mINFO[0m:	06:22:56 - uvicorn.access - 127.0.0.1:48508 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:23:11.393855919Z [92mINFO[0m:	06:23:11 - uvicorn.access - 127.0.0.1:35000 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:23:26.491179158Z [92mINFO[0m:	06:23:26 - uvicorn.access - 127.0.0.1:33154 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:23:41.590141314Z [92mINFO[0m:	06:23:41 - uvicorn.access - 127.0.0.1:36614 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:23:56.690764311Z [92mINFO[0m:	06:23:56 - uvicorn.access - 127.0.0.1:32924 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:24:11.790400155Z [92mINFO[0m:	06:24:11 - uvicorn.access - 127.0.0.1:56526 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:24:26.885381034Z [92mINFO[0m:	06:24:26 - uvicorn.access - 127.0.0.1:41188 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:24:41.983740921Z [92mINFO[0m:	06:24:41 - uvicorn.access - 127.0.0.1:49770 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:24:57.083079392Z [92mINFO[0m:	06:24:57 - uvicorn.access - 127.0.0.1:55196 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:25:12.183387454Z [92mINFO[0m:	06:25:12 - uvicorn.access - 127.0.0.1:35944 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:25:27.274892758Z [92mINFO[0m:	06:25:27 - uvicorn.access - 127.0.0.1:53044 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:25:42.375948673Z [92mINFO[0m:	06:25:42 - uvicorn.access - 127.0.0.1:44260 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:25:57.473223745Z [92mINFO[0m:	06:25:57 - uvicorn.access - 127.0.0.1:45036 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:26:12.569878338Z [92mINFO[0m:	06:26:12 - uvicorn.access - 127.0.0.1:44210 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:26:27.666296647Z [92mINFO[0m:	06:26:27 - uvicorn.access - 127.0.0.1:35462 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:26:42.762775811Z [92mINFO[0m:	06:26:42 - uvicorn.access - 127.0.0.1:43502 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:26:57.859656963Z [92mINFO[0m:	06:26:57 - uvicorn.access - 127.0.0.1:37976 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:27:12.954482774Z [92mINFO[0m:	06:27:12 - uvicorn.access - 127.0.0.1:47438 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:27:28.052727619Z [92mINFO[0m:	06:27:28 - uvicorn.access - 127.0.0.1:40290 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:27:41.061017928Z [92mINFO[0m:	06:27:41 - docling_jobkit.orchestrators.local.orchestrator - Deleting result of task task_id='636b7e52-7830-438e-9f2e-52707d536f09'
+docling-serve-1  | 2026-10-12T06:27:41.061051330Z [92m[92mINFO[0m[0m:	06:27:41 - docling_jobkit.orchestrators.local.orchestrator - Deleting result of task task_id='636b7e52-7830-438e-9f2e-52707d536f09'
+docling-serve-1  | 2026-10-12T06:27:41.061054830Z [92mINFO[0m:	06:27:41 - docling_jobkit.orchestrators.base_orchestrator - Deleting task_id='636b7e52-7830-438e-9f2e-52707d536f09'
+docling-serve-1  | 2026-10-12T06:27:41.061056930Z [92m[92mINFO[0m[0m:	06:27:41 - docling_jobkit.orchestrators.base_orchestrator - Deleting task_id='636b7e52-7830-438e-9f2e-52707d536f09'
+docling-serve-1  | 2026-10-12T06:27:43.149376184Z [92mINFO[0m:	06:27:43 - uvicorn.access - 127.0.0.1:57954 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:27:58.242799325Z [92mINFO[0m:	06:27:58 - uvicorn.access - 127.0.0.1:60906 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:28:13.339052938Z [92mINFO[0m:	06:28:13 - uvicorn.access - 127.0.0.1:48970 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:28:28.435930022Z [92mINFO[0m:	06:28:28 - uvicorn.access - 127.0.0.1:53696 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:28:43.533689969Z [92mINFO[0m:	06:28:43 - uvicorn.access - 127.0.0.1:58592 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:28:58.630798282Z [92mINFO[0m:	06:28:58 - uvicorn.access - 127.0.0.1:41582 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:29:13.731768083Z [92mINFO[0m:	06:29:13 - uvicorn.access - 127.0.0.1:42740 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:29:28.824980888Z [92mINFO[0m:	06:29:28 - uvicorn.access - 127.0.0.1:54012 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:29:43.921592250Z [92mINFO[0m:	06:29:43 - uvicorn.access - 127.0.0.1:46546 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:29:59.017074960Z [92mINFO[0m:	06:29:59 - uvicorn.access - 127.0.0.1:49086 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:30:14.118527705Z [92mINFO[0m:	06:30:14 - uvicorn.access - 127.0.0.1:33734 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:30:29.211073915Z [92mINFO[0m:	06:30:29 - uvicorn.access - 127.0.0.1:34468 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:30:44.321787858Z [92mINFO[0m:	06:30:44 - uvicorn.access - 127.0.0.1:58084 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:30:59.416369306Z [92mINFO[0m:	06:30:59 - uvicorn.access - 127.0.0.1:48738 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:31:14.515856926Z [92mINFO[0m:	06:31:14 - uvicorn.access - 127.0.0.1:44108 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:31:29.630957748Z [92mINFO[0m:	06:31:29 - uvicorn.access - 127.0.0.1:35846 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:31:44.730711727Z [92mINFO[0m:	06:31:44 - uvicorn.access - 127.0.0.1:47408 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:31:59.834048843Z [92mINFO[0m:	06:31:59 - uvicorn.access - 127.0.0.1:36828 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:32:14.931187026Z [92mINFO[0m:	06:32:14 - uvicorn.access - 127.0.0.1:47868 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:32:30.033250121Z [92mINFO[0m:	06:32:30 - uvicorn.access - 127.0.0.1:35430 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:32:45.131222026Z [92mINFO[0m:	06:32:45 - uvicorn.access - 127.0.0.1:40468 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:33:00.227512295Z [92mINFO[0m:	06:33:00 - uvicorn.access - 127.0.0.1:43328 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:33:15.323606465Z [92mINFO[0m:	06:33:15 - uvicorn.access - 127.0.0.1:48128 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:33:30.434167812Z [92mINFO[0m:	06:33:30 - uvicorn.access - 127.0.0.1:42850 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:33:45.534608910Z [92mINFO[0m:	06:33:45 - uvicorn.access - 127.0.0.1:33928 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:34:00.632009640Z [92mINFO[0m:	06:34:00 - uvicorn.access - 127.0.0.1:48234 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:34:15.730977271Z [92mINFO[0m:	06:34:15 - uvicorn.access - 127.0.0.1:42926 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:34:30.828400202Z [92mINFO[0m:	06:34:30 - uvicorn.access - 127.0.0.1:37692 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:34:45.923843430Z [92mINFO[0m:	06:34:45 - uvicorn.access - 127.0.0.1:58212 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:35:01.026486397Z [92mINFO[0m:	06:35:01 - uvicorn.access - 127.0.0.1:44854 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:35:16.123010244Z [92mINFO[0m:	06:35:16 - uvicorn.access - 127.0.0.1:39222 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:35:31.222429041Z [92mINFO[0m:	06:35:31 - uvicorn.access - 127.0.0.1:33940 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:35:46.319793001Z [92mINFO[0m:	06:35:46 - uvicorn.access - 127.0.0.1:50482 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:36:01.418546766Z [92mINFO[0m:	06:36:01 - uvicorn.access - 127.0.0.1:38144 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:36:16.513098159Z [92mINFO[0m:	06:36:16 - uvicorn.access - 127.0.0.1:40998 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:36:31.609912101Z [92mINFO[0m:	06:36:31 - uvicorn.access - 127.0.0.1:59224 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:36:46.714272176Z [92mINFO[0m:	06:36:46 - uvicorn.access - 127.0.0.1:54362 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:37:01.811346192Z [92mINFO[0m:	06:37:01 - uvicorn.access - 127.0.0.1:56498 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:37:16.907126022Z [92mINFO[0m:	06:37:16 - uvicorn.access - 127.0.0.1:55926 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:37:32.003699580Z [92mINFO[0m:	06:37:32 - uvicorn.access - 127.0.0.1:39298 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:37:47.099947279Z [92mINFO[0m:	06:37:47 - uvicorn.access - 127.0.0.1:44640 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:38:02.192783420Z [92mINFO[0m:	06:38:02 - uvicorn.access - 127.0.0.1:56648 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:38:17.308826230Z [92mINFO[0m:	06:38:17 - uvicorn.access - 127.0.0.1:57622 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:38:32.410610452Z [92mINFO[0m:	06:38:32 - uvicorn.access - 127.0.0.1:45348 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:38:47.507308067Z [92mINFO[0m:	06:38:47 - uvicorn.access - 127.0.0.1:48830 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:39:02.604029708Z [92mINFO[0m:	06:39:02 - uvicorn.access - 127.0.0.1:43180 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:39:17.700506606Z [92mINFO[0m:	06:39:17 - uvicorn.access - 127.0.0.1:47138 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:39:32.792384206Z [92mINFO[0m:	06:39:32 - uvicorn.access - 127.0.0.1:52582 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:39:47.892442275Z [92mINFO[0m:	06:39:47 - uvicorn.access - 127.0.0.1:36732 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:40:02.985974484Z [92mINFO[0m:	06:40:02 - uvicorn.access - 127.0.0.1:50562 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:40:18.095439266Z [92mINFO[0m:	06:40:18 - uvicorn.access - 127.0.0.1:57866 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:40:33.194487270Z [92mINFO[0m:	06:40:33 - uvicorn.access - 127.0.0.1:36654 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:40:48.289942062Z [92mINFO[0m:	06:40:48 - uvicorn.access - 127.0.0.1:45172 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:41:03.385414855Z [92mINFO[0m:	06:41:03 - uvicorn.access - 127.0.0.1:57514 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:41:18.492280843Z [92mINFO[0m:	06:41:18 - uvicorn.access - 127.0.0.1:59150 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:41:33.584160779Z [92mINFO[0m:	06:41:33 - uvicorn.access - 127.0.0.1:39420 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:41:48.679610876Z [92mINFO[0m:	06:41:48 - uvicorn.access - 127.0.0.1:42840 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:42:03.775257583Z [92mINFO[0m:	06:42:03 - uvicorn.access - 127.0.0.1:51348 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:42:18.874766878Z [92mINFO[0m:	06:42:18 - uvicorn.access - 127.0.0.1:42120 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:42:33.972987453Z [92mINFO[0m:	06:42:33 - uvicorn.access - 127.0.0.1:49764 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:42:49.070091789Z [92mINFO[0m:	06:42:49 - uvicorn.access - 127.0.0.1:42136 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:43:04.177761026Z [92mINFO[0m:	06:43:04 - uvicorn.access - 127.0.0.1:55750 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:43:19.276638926Z [92mINFO[0m:	06:43:19 - uvicorn.access - 127.0.0.1:55210 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:43:34.374367425Z [92mINFO[0m:	06:43:34 - uvicorn.access - 127.0.0.1:46610 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:43:49.471513137Z [92mINFO[0m:	06:43:49 - uvicorn.access - 127.0.0.1:46242 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:44:04.572065053Z [92mINFO[0m:	06:44:04 - uvicorn.access - 127.0.0.1:54516 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:44:19.672136257Z [92mINFO[0m:	06:44:19 - uvicorn.access - 127.0.0.1:60016 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:44:34.774680029Z [92mINFO[0m:	06:44:34 - uvicorn.access - 127.0.0.1:33598 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:44:49.874241099Z [92mINFO[0m:	06:44:49 - uvicorn.access - 127.0.0.1:56486 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:45:04.971006622Z [92mINFO[0m:	06:45:04 - uvicorn.access - 127.0.0.1:40890 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:45:20.075247899Z [92mINFO[0m:	06:45:20 - uvicorn.access - 127.0.0.1:51060 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:45:35.173380622Z [92mINFO[0m:	06:45:35 - uvicorn.access - 127.0.0.1:51312 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:45:50.272095154Z [92mINFO[0m:	06:45:50 - uvicorn.access - 127.0.0.1:45676 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:46:05.369062938Z [92mINFO[0m:	06:46:05 - uvicorn.access - 127.0.0.1:37978 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:46:20.475204660Z [92mINFO[0m:	06:46:20 - uvicorn.access - 127.0.0.1:34542 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:46:35.572954065Z [92mINFO[0m:	06:46:35 - uvicorn.access - 127.0.0.1:52556 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:46:50.677848492Z [92mINFO[0m:	06:46:50 - uvicorn.access - 127.0.0.1:55746 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:47:05.774880617Z [92mINFO[0m:	06:47:05 - uvicorn.access - 127.0.0.1:35332 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:47:20.873710513Z [92mINFO[0m:	06:47:20 - uvicorn.access - 127.0.0.1:48678 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:47:35.974459102Z [92mINFO[0m:	06:47:35 - uvicorn.access - 127.0.0.1:52004 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:47:51.078963101Z [92mINFO[0m:	06:47:51 - uvicorn.access - 127.0.0.1:49262 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:48:06.177936674Z [92mINFO[0m:	06:48:06 - uvicorn.access - 127.0.0.1:35750 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:48:21.278433063Z [92mINFO[0m:	06:48:21 - uvicorn.access - 127.0.0.1:52530 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:48:36.388438945Z [92mINFO[0m:	06:48:36 - uvicorn.access - 127.0.0.1:53696 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:48:51.492811765Z [92mINFO[0m:	06:48:51 - uvicorn.access - 127.0.0.1:40988 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:49:06.591654300Z [92mINFO[0m:	06:49:06 - uvicorn.access - 127.0.0.1:58386 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:49:21.723877741Z [92mINFO[0m:	06:49:21 - uvicorn.access - 127.0.0.1:46394 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:49:36.822816676Z [92mINFO[0m:	06:49:36 - uvicorn.access - 127.0.0.1:47922 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:49:51.922483923Z [92mINFO[0m:	06:49:51 - uvicorn.access - 127.0.0.1:36014 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:50:07.022090648Z [92mINFO[0m:	06:50:07 - uvicorn.access - 127.0.0.1:47108 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:50:22.125798899Z [92mINFO[0m:	06:50:22 - uvicorn.access - 127.0.0.1:39980 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:50:37.219289905Z [92mINFO[0m:	06:50:37 - uvicorn.access - 127.0.0.1:37528 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:50:52.316618804Z [92mINFO[0m:	06:50:52 - uvicorn.access - 127.0.0.1:48070 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:51:07.409433193Z [92mINFO[0m:	06:51:07 - uvicorn.access - 127.0.0.1:50380 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:51:22.508811263Z [92mINFO[0m:	06:51:22 - uvicorn.access - 127.0.0.1:33702 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:51:37.609115952Z [92mINFO[0m:	06:51:37 - uvicorn.access - 127.0.0.1:54864 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:51:52.703052967Z [92mINFO[0m:	06:51:52 - uvicorn.access - 127.0.0.1:53882 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:52:07.800086214Z [92mINFO[0m:	06:52:07 - uvicorn.access - 127.0.0.1:36332 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:52:22.897698761Z [92mINFO[0m:	06:52:22 - uvicorn.access - 127.0.0.1:56814 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:52:37.996261948Z [92mINFO[0m:	06:52:37 - uvicorn.access - 127.0.0.1:55296 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:52:53.091008430Z [92mINFO[0m:	06:52:53 - uvicorn.access - 127.0.0.1:36528 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:53:08.188182316Z [92mINFO[0m:	06:53:08 - uvicorn.access - 127.0.0.1:57842 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:53:23.284524604Z [92mINFO[0m:	06:53:23 - uvicorn.access - 127.0.0.1:40938 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:53:38.380892073Z [92mINFO[0m:	06:53:38 - uvicorn.access - 127.0.0.1:38716 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:53:53.474694009Z [92mINFO[0m:	06:53:53 - uvicorn.access - 127.0.0.1:32824 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:54:08.570190794Z [92mINFO[0m:	06:54:08 - uvicorn.access - 127.0.0.1:52882 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:54:23.667259930Z [92mINFO[0m:	06:54:23 - uvicorn.access - 127.0.0.1:34732 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:54:38.776214734Z [92mINFO[0m:	06:54:38 - uvicorn.access - 127.0.0.1:60712 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:54:53.877711747Z [92mINFO[0m:	06:54:53 - uvicorn.access - 127.0.0.1:53554 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:55:08.981725539Z [92mINFO[0m:	06:55:08 - uvicorn.access - 127.0.0.1:38944 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:55:24.080258673Z [92mINFO[0m:	06:55:24 - uvicorn.access - 127.0.0.1:50588 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:55:39.180873530Z [92mINFO[0m:	06:55:39 - uvicorn.access - 127.0.0.1:55404 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:55:54.279679343Z [92mINFO[0m:	06:55:54 - uvicorn.access - 127.0.0.1:37868 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:56:09.377084613Z [92mINFO[0m:	06:56:09 - uvicorn.access - 127.0.0.1:58822 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:56:24.473318799Z [92mINFO[0m:	06:56:24 - uvicorn.access - 127.0.0.1:46612 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:56:39.572066070Z [92mINFO[0m:	06:56:39 - uvicorn.access - 127.0.0.1:44126 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:56:54.671503155Z [92mINFO[0m:	06:56:54 - uvicorn.access - 127.0.0.1:44884 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:57:09.803383276Z [92mINFO[0m:	06:57:09 - uvicorn.access - 127.0.0.1:48816 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:57:24.897417776Z [92mINFO[0m:	06:57:24 - uvicorn.access - 127.0.0.1:54420 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:57:39.993582885Z [92mINFO[0m:	06:57:39 - uvicorn.access - 127.0.0.1:44318 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:57:55.100333323Z [92mINFO[0m:	06:57:55 - uvicorn.access - 127.0.0.1:41462 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:58:10.204649517Z [92mINFO[0m:	06:58:10 - uvicorn.access - 127.0.0.1:53272 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:58:25.325201871Z [92mINFO[0m:	06:58:25 - uvicorn.access - 127.0.0.1:50604 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:58:40.441804441Z [92mINFO[0m:	06:58:40 - uvicorn.access - 127.0.0.1:41246 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:58:55.537842588Z [92mINFO[0m:	06:58:55 - uvicorn.access - 127.0.0.1:51736 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:59:10.638712232Z [92mINFO[0m:	06:59:10 - uvicorn.access - 127.0.0.1:43560 - "GET /ready HTTP/1.1" 200
+docling-serve-1  | 2026-10-12T06:59:25.735679867Z [92mINFO[0m:	06:59:25 - uvicorn.access - 127.0.0.1:49500 - "GET /ready HTTP/1.1" 200

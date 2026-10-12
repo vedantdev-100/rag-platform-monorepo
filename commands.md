@@ -146,3 +146,68 @@ dc12 down
 
 ### Start it again
 dc12 up -d
+
+
+# RAG EVALUATION
+git clone --depth 1 https://github.com/patronus-ai/financebench.git ../financebench
+uv sync --project evals/step15_deepeval --locked  # creates the separate DeepEval environment using its locked versions.
+
+#### Run offline tests — checks the harness, metric integration, caching and compatibility logic without calling your hosted LLM.
+uv run --project evals/step15_deepeval --locked python -m unittest discover -s evals/step15_deepeval/tests -v
+
+#### Create the evaluation configuration — copies the settings template; skip this command if .env.evals already exists.
+cp evals/step15_deepeval/.env.evals.example .env.evals
+
+#### Check the LM Studio connection — verifies the configured model and structured JSON response support.
+uv run --project evals/step15_deepeval --locked python evals/step15_deepeval/run.py doctor
+
+#### Prepare the initial FinanceBench selection — creates the source dataset, PDF inventory and manifest; skip if already prepared
+uv run --project evals/step15_deepeval --locked python evals/step15_deepeval/run.py prepare --financebench ../financebench --count 25
+
+#### Create the two-PDF subset — selects the 14 AMD/American Express questions and preserves existing upload IDs; skip if this subset already exists.
+python prepare_step15_two_pdfs.py
+source scripts/dc-step12.sh
+dc12 ps
+
+####  Upload or verify the two PDFs — reuses saved uploads and waits for both documents to reach ingested.
+uv run --project evals/step15_deepeval --locked python evals/step15_deepeval/run.py upload --data evals/step15/data-two-pdfs
+
+#### Check capture-source compatibility — verifies the running application files against reviewed versions without making LLM calls.
+python evals/step15_deepeval/collect_capture_sources.py --container "$(dc12 ps -q rag-service)"
+
+#### Capture three smoke-test answers — runs retrieval and hosted generation, saving the exact context, answers and errors.
+uv run --project evals/step15_deepeval --locked python \
+  evals/step15_deepeval/run.py capture \
+  --data evals/step15/data-two-pdfs \
+  --container "$(dc12 ps -q rag-service)" \
+  --mode pipeline --split dev --limit 3 \
+  --revision "$(git rev-parse HEAD)-two-pdfs-v1" \
+  --out evals/step15/results/pipeline-two-pdfs-v1.jsonl
+
+#### Evaluate the smoke-test answers — uses DeepEval and LM Studio to calculate the core metrics locally.
+uv run --project evals/step15_deepeval --locked python \
+  evals/step15_deepeval/run.py judge \
+  --data evals/step15/data-two-pdfs \
+  --captures evals/step15/results/pipeline-two-pdfs-v1.jsonl \
+  --profile core \
+  --out evals/step15/results/deepeval-two-pdfs-core-v1
+
+#### Open the smoke-test report — lets you inspect scores and evaluator failures before completing the run.
+notepad evals/step15/results/deepeval-two-pdfs-core-v1/report.md
+
+#### Capture all 14 answers — processes the remaining questions while skipping the three already saved
+uv run --project evals/step15_deepeval --locked python \
+  evals/step15_deepeval/run.py capture \
+  --data evals/step15/data-two-pdfs \
+  --container "$(dc12 ps -q rag-service)" \
+  --mode pipeline --split all \
+  --revision "$(git rev-parse HEAD)-two-pdfs-v1" \
+  --out evals/step15/results/pipeline-two-pdfs-v1.jsonl 
+
+#### Run the final full evaluation — scores all captured answers, adding completeness, citation checks and context-budget recall.
+uv run --project evals/step15_deepeval --locked python \
+  evals/step15_deepeval/run.py judge \
+  --data evals/step15/data-two-pdfs \
+  --captures evals/step15/results/pipeline-two-pdfs-v1.jsonl \
+  --profile full \
+  --out evals/step15/results/deepeval-two-pdfs-full-v1

@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "RS256"
     JWT_KEY_ID: str = "2026-01"  # bump when rotating; must appear in /.well-known/jwks.json
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    # ACCESS_TOKEN_EXPIRE_MINUTES=10080
+    # PLATFORM_AUTH_MAX_TOKEN_LIFETIME_SECONDS=604800
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     BCRYPT_ROUNDS: int = 12

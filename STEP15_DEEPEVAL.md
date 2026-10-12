@@ -61,7 +61,7 @@ Use Python 3.12. The lock was tested with uv 0.12.23. If your uv cannot read the
 
 The environment is created inside `evals/step15_deepeval/.venv`. DeepEval requires newer Pydantic than the application's pinned version; **do not install it into your API/worker environment**. The lock has a release cutoff of 2026-10-03, matching the seven-day policy at preparation time. Keep the supplied evaluation `uv.lock` committed alongside its `pyproject.toml`.
 
-Verified here: 17 offline checks, including executing real DeepEval metrics with scripted local API responses and replaying the original capture format into reports. These checks do not establish your real judge's quality. Live LM Studio and your laptop's Docker/provider paths still need verification.
+Verified here: 22 offline checks, including executing real DeepEval metrics with scripted local API responses and replaying the original capture format into reports. These checks do not establish your real judge's quality. Live LM Studio and your laptop's Docker/provider paths still need verification.
 
 ## 2. Keep or create root `.env.evals`
 
@@ -207,3 +207,19 @@ Every selected original FinanceBench question is answerable. This set measures f
 The standard graph is run in a temporary API-container subprocess with authenticated HTTP retrieval. It captures exact bounded provider input without modifying the running API. It does not test generation middleware, API-global concurrency or generation SSE; keep the Step 14 endpoint/SSE harness for those. Operational/load evaluations remain deferred.
 
 Official references: [custom judges](https://deepeval.com/guides/guides-using-custom-llms), [contextual precision](https://deepeval.com/docs/metrics-contextual-precision), [contextual recall](https://deepeval.com/docs/metrics-contextual-recall), [faithfulness](https://deepeval.com/docs/metrics-faithfulness), [G-Eval](https://deepeval.com/docs/metrics-llm-evals).
+
+## Capture import fix (2026-10-12)
+
+The helper adds the API container working directory to its Python import path before importing `app`. This fixes running the uninstalled application source from a temporary `/tmp` script. Missing-module diagnostics now identify the module name. The regression test runs an actual subprocess with no PYTHONPATH, matching the container path layout.
+
+## Reviewed chat-service compatibility (2026-10-12)
+
+The uploaded running generation service adds optional `history`, `document_ids` and `conversation_id`; with their default values the single-question evaluation path is unchanged. Both the original service hash and this reviewed variant are approved. The guard reports all mismatches at once and captures record the actual selected hashes. Resume rejects changed runtime source hashes. Run `python evals/step15_deepeval/collect_capture_sources.py --container "$(dc12 ps -q rag-service)"` to check the other files without generation. If needed, it writes `step15_capture_source_review.zip` with only mismatched allowlisted source files for review; no application files are changed.
+
+## Reviewed chat graph and memory compatibility (2026-10-12)
+
+The supplied `context.py`, `types.py`, `standard.py` and `app/chat/memory.py` have been reviewed. Context history is optional; the resolver immediately returns `(query, None)` for empty history, without invoking the provider. Conditional dependency hashes verify the reviewed memory file whenever the new graph variant is selected. A capture test using the actual reviewed service/graph/types/context/memory with mocked HTTP and provider responses passed with one answer call and zero resolver calls. The packaged suite now has 19 passing offline tests. These checks do not replace the live capture on your laptop.
+
+## Windows UTF-8 capture fix (2026-10-12)
+
+Docker subprocess capture now uses binary stdin/stdout and explicit strict UTF-8 decoding for the structured result. This avoids Windows CP1252 reader-thread failures and silent Unicode corruption. Stderr remains bytes and is not parsed. Unicode, invalid-UTF-8 and real subprocess regression tests pass; the package now has 22 passing tests. Resume preserves previously saved rows; the case interrupted during decoding may need one additional provider call. Review earlier captures for garbled Unicode before final scoring.

@@ -1,5 +1,6 @@
+import { withDeadline } from '../../../shared/api/deadline'
 import { config } from '../../../config/env'
-import { body,check,json,refresh,clearSession } from '../../../shared/api/http'
+import { body,check,json,refresh,clearSession,beginLogout,settleRefreshBeforeLogout } from '../../../shared/api/http'
 import { useSession } from '../store/session'
 import type { Tokens,User } from '../types'
 export async function login(email:string,password:string){
@@ -12,4 +13,14 @@ export async function signup(email:string,password:string,full_name:string){
 }
 let boot:Promise<void>|undefined
 export function restore(){return boot??=(async()=>{try{await refresh();const user=await json<User>('auth','/users/me');useSession.getState().set(useSession.getState().token,user)}catch{clearSession()}})()}
-export async function logout(){await check(await fetch(config.auth+config.prefix+'/auth/browser/logout',{method:'POST',credentials:'include'}));clearSession()}
+let signingOutTask:Promise<void>|null=null
+export function logout():Promise<void>{
+ if(signingOutTask)return signingOutTask
+ beginLogout()
+ signingOutTask=(async()=>{
+  await settleRefreshBeforeLogout()
+  await withDeadline(async signal=>{const r=await check(await fetch(config.auth+config.prefix+'/auth/browser/logout',{method:'POST',credentials:'include',signal}));await r.body?.cancel().catch(()=>{})},10000)
+  clearSession()
+ })().finally(()=>{useSession.setState({signingOut:false});signingOutTask=null})
+ return signingOutTask
+}

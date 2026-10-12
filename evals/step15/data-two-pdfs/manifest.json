@@ -1,0 +1,9 @@
+{
+  "source_commit": "cc39aeb4afdf33909ee1412188bf89035950c2eb",
+  "seed": 15,
+  "source_sha256": "b927dae968f6f8dd36a920393717d0a5c2a537d0c6bc93a7e754bf356d7a73b0",
+  "dataset_sha256": "1a58f39d33539dba2664645da893586bab17d85d0331503a6bb604df0848e3be",
+  "count": 14,
+  "note": "Two-PDF smoke subset: AMD development / American Express held-out; all cases answerable.",
+  "parent_dataset_sha256": "833595855b8cd791e3109b7243ee77b715aefd69c02e165f5dd1c3997540b405"
+}

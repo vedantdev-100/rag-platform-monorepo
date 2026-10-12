@@ -1,7 +1,9 @@
+import { RequestTimeout } from '../api/deadline'
 export class ApiError extends Error {
  constructor(public status: number, public code: string) { super(code) }
 }
 export function explain(e: unknown): string {
+ if(e instanceof RequestTimeout)return 'The server took too long to respond. Please try again.'
  if (e instanceof ApiError) {
   if (e.code === 'invalid_citations') return 'The answer did not include valid references to the retrieved sources. Send a new message to try again.'
   if (e.status === 401) return 'Your session expired. Please sign in again.'

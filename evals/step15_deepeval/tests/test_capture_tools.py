@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 import sys
+import os
+import subprocess
 import tempfile
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -8,6 +10,43 @@ import capture_tools as tools
 
 
 class CaptureToolTests(unittest.TestCase):
+    def test_unicode_capture_is_decoded_as_utf8_not_windows_acp(self):
+        value = {'answer': 'Financial text: € “growth” Ελληνικά 😐',
+                 'messages': [{'content': 'Exact evidence 😐'}]}
+        raw = ('STEP15_RESULT=' + json.dumps(value, ensure_ascii=False) + '\n').encode('utf-8')
+        with self.assertRaises(UnicodeDecodeError):
+            raw.decode('cp1252')
+        self.assertEqual(tools.parse_capture_result(raw), value)
+
+    def test_invalid_utf8_evidence_is_rejected_not_replaced(self):
+        with self.assertRaises(UnicodeDecodeError):
+            tools.parse_capture_result(b'STEP15_RESULT={"answer":"\xff"}\n')
+
+    def test_binary_subprocess_capture_preserves_international_text(self):
+        value = {'query': 'Résumé', 'answer': '€ 😐'}
+        code = ('import json,sys;sys.stdout.buffer.write((' + repr('STEP15_RESULT=') +
+                ' + json.dumps(' + repr(value) + ',ensure_ascii=False)).encode("utf-8"))')
+        result = subprocess.run([sys.executable, '-c', code], capture_output=True, check=True)
+        self.assertEqual(tools.parse_capture_result(result.stdout), value)
+
+    def test_tmp_script_can_import_uninstalled_app_from_container_workdir(self):
+        # Reproduce the actual runtime topology: helper in /tmp, uninstalled app
+        # in cwd, and no PYTHONPATH supplied by the test runner.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'api/app').mkdir(parents=True)
+            (root / 'tmp').mkdir()
+            (root / 'api/app/__init__.py').write_text('MARKER = "api-source-found"\n')
+            helper = Path(__file__).resolve().parents[1] / 'container_capture.py'
+            prefix = helper.read_text().split("if __name__ == '__main__':")[0]
+            script = root / 'tmp/probe.py'
+            script.write_text(prefix + '\nimport app\nprint(app.MARKER)\n')
+            env = dict(os.environ)
+            env.pop('PYTHONPATH', None)
+            result = subprocess.run([sys.executable, str(script)], cwd=root / 'api',
+                                    env=env, capture_output=True, text=True, check=True)
+            self.assertEqual(result.stdout.strip(), 'api-source-found')
+
     def test_reviewed_recall_includes_missed_labels(self):
         scores = tools.ranked_metrics(['a', 'b'], {'a': 2, 'b': 0, 'missed': 1})
         self.assertEqual(scores['precision_at_5'], .2)

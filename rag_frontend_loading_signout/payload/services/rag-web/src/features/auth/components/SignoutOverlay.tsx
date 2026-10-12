@@ -1,0 +1,2 @@
+import { useEffect,useRef } from 'react'
+export function SignoutOverlay(){const ref=useRef<HTMLDivElement>(null);useEffect(()=>{ref.current?.focus()},[]);return <div ref={ref} tabIndex={-1} className="signout-overlay" role="dialog" aria-modal="true" aria-labelledby="signout-title"><div className="signout-orbit" aria-hidden="true"><span/><span/><i>◈</i></div><h2 id="signout-title">Signing you out</h2><p>Closing your session securely…</p><span className="sr-only" role="status">Please wait. Workspace controls are temporarily disabled.</span></div>}

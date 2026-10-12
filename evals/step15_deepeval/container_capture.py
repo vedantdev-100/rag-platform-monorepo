@@ -6,6 +6,10 @@ import json
 import pathlib
 import sys
 
+# Executing an absolute script in /tmp puts /tmp, not the API working directory,
+# at sys.path[0]. The slim image copies app/ without installing the root project.
+sys.path.insert(0, str(pathlib.Path.cwd()))
+
 
 def digest(path):
     return hashlib.sha256(pathlib.Path(path).read_text().replace('\r\n', '\n').encode()).hexdigest()
@@ -18,19 +22,40 @@ async def capture(payload):
     from app.rag.generation.service import GenerationService
     from app.rag.retrieval.base import RetrievedChunk
 
+    actual_hashes, mismatches = {}, []
     for path, expected in payload['expected_hashes'].items():
         # Resolve imports relative to the installed app, not the caller's cwd.
         import app
         actual = pathlib.Path(app.__file__).resolve().parent.parent / path
-        if digest(actual) != expected:
-            raise RuntimeError('step14_source_mismatch:' + path)
+        if not actual.is_file():
+            mismatches.append(path)
+            continue
+        actual_hashes[path] = digest(actual)
+        allowed = expected if isinstance(expected, list) else [expected]
+        if actual_hashes[path] not in allowed:
+            mismatches.append(path)
+    if mismatches:
+        raise RuntimeError('step14_source_mismatch:' + ','.join(mismatches))
+    for parent, variants in payload.get('dependency_hashes', {}).items():
+        for path, expected in variants.get(actual_hashes.get(parent), {}).items():
+            actual = pathlib.Path(app.__file__).resolve().parent.parent / path
+            if not actual.is_file():
+                mismatches.append(path)
+                continue
+            actual_hashes[path] = digest(actual)
+            if actual_hashes[path] != expected:
+                mismatches.append(path)
+    if mismatches:
+        raise RuntimeError('step14_source_mismatch:' + ','.join(mismatches))
+    if payload.get('expected_source_hashes') and payload['expected_source_hashes'] != actual_hashes:
+        raise RuntimeError('evaluation_source_changed:use_a_new_capture_file')
     settings = get_generation_settings()
     if payload['mode'] != 'retriever' and (not settings.active or settings.RAG_GENERATION_STRATEGY != 'standard'):
         raise RuntimeError('enable_standard_generation_first')
     trace = {'case_id': payload['case']['case_id'], 'mode': payload['mode'],
              'query': payload['case']['query'], 'retrieved': [], 'messages': [],
              'raw_result': None, 'answer': None, 'error': None,
-             'source_hashes': payload['expected_hashes'],
+             'source_hashes': actual_hashes,
              'settings': {'provider': settings.RAG_LLM_PROVIDER, 'model': settings.model,
                           'context_max_bytes': settings.RAG_CONTEXT_MAX_BYTES,
                           'context_max_chunks': settings.RAG_CONTEXT_MAX_CHUNKS,
@@ -108,6 +133,8 @@ if __name__ == '__main__':
         result = asyncio.run(capture(json.load(sys.stdin)))
     except Exception as exc:
         # Do not print exception bodies: they can contain service details.
-        result = {'fatal': str(exc) if str(exc).startswith(('step14_source_mismatch:',
-                    'enable_standard_generation_first', 'evaluation_configuration_changed:')) else type(exc).__name__}
+        result = {'fatal': ('module_not_found:' + (exc.name or 'unknown')) if isinstance(exc, ModuleNotFoundError)
+                  else str(exc) if str(exc).startswith(('step14_source_mismatch:',
+                    'enable_standard_generation_first', 'evaluation_configuration_changed:',
+                    'evaluation_source_changed:')) else type(exc).__name__}
     print('STEP15_RESULT=' + json.dumps(result, ensure_ascii=False))

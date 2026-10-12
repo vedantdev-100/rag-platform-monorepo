@@ -1,0 +1,10 @@
+{
+  "AMD_2022_10K": {
+    "id": "a5b16904-c1f1-4fc7-b86e-41f6961db612",
+    "sha256": "a3bd74088fae0ad4aa03d04998a1f4c64fd0b3c693841601b0ac49b46cf5c1f4"
+  },
+  "AMERICANEXPRESS_2022_10K": {
+    "id": "8a4ee552-fbc4-44a8-81dc-9e02a7c37a4c",
+    "sha256": "d3bbc7ab23d6160e07eab50a359e4d68c40efff9fde3baa168e7c40e06f568e6"
+  }
+}

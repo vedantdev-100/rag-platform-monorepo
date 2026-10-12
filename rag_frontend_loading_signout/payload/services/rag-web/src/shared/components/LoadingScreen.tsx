@@ -1,0 +1,1 @@
+export function LoadingScreen(){return <main className="loading-screen" role="status" aria-label="Loading workspace"><div className="loading-mark" aria-hidden="true">◈</div><div className="loading-lines" aria-hidden="true"><span/><span/><span/></div><p className="muted small">Loading your workspace…</p></main>}
