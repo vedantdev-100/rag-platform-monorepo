@@ -6,7 +6,6 @@ import hashlib
 import json
 import math
 import os
-from pathlib import Path
 import random
 import re
 import subprocess
@@ -15,6 +14,7 @@ import time
 import urllib.error
 import urllib.request
 import uuid
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 RUBRIC_VERSION = 'step15-v1'
@@ -242,10 +242,10 @@ def do_capture(args, cfg):
             if case['case_id'] in done:
                 continue
             payload = dict(case=case, token=access, mode=args.mode, top_k=args.top_k,
-                           document_map=mapping, expected_hashes=expected,
-                           dependency_hashes=dependencies,
-                           expected_settings=expected_settings,
-                           expected_source_hashes=expected_source_hashes)
+                            document_map=mapping, expected_hashes=expected,
+                            dependency_hashes=dependencies,
+                            expected_settings=expected_settings,
+                            expected_source_hashes=expected_source_hashes)
             started = time.monotonic()
             result = subprocess.run(['docker', 'exec', '-i', args.container, 'python', remote],
                     input=json.dumps(payload).encode('utf-8'), capture_output=True,
@@ -260,7 +260,7 @@ def do_capture(args, cfg):
             expected_source_hashes = record['source_hashes']
             append_row(output, record)
             print(case['case_id'] + ': ' + (record.get('error') or
-                  (record.get('answer') or {}).get('status', 'retrieved')))
+                    (record.get('answer') or {}).get('status', 'retrieved')))
             # Stop, retain failure, refresh token or resolve quota before resuming.
             if record.get('error') and any(word in record['error'] for word in ('authorization', 'rate_limited', 'http_401', 'http_403', 'http_429')):
                 raise ValueError('Stopped on auth/quota error. Failure was saved; use a new output for an explicit retry.')
@@ -269,7 +269,7 @@ def do_capture(args, cfg):
     finally:
         subprocess.run(['docker', 'exec', args.container, 'python', '-c',
                         'import pathlib; pathlib.Path(' + repr(remote) + ').unlink(missing_ok=True)'],
-                       capture_output=True)
+                        capture_output=True)
 
 
 def parse_capture_result(stdout):
@@ -280,7 +280,7 @@ def parse_capture_result(stdout):
         raise ValueError('Container capture failed; expected binary stdout')
     decoded = stdout.decode('utf-8', errors='strict')
     lines = [line.removeprefix('STEP15_RESULT=') for line in decoded.splitlines()
-             if line.startswith('STEP15_RESULT=')]
+                if line.startswith('STEP15_RESULT=')]
     if not lines:
         raise ValueError('Container capture failed; no result. Verify the API image and Python runtime.')
     return json.loads(lines[-1])
@@ -316,5 +316,5 @@ def ranked_metrics(ids, labels, k=5):
     return {'precision_at_5': hit / k, 'labeled_recall_at_5': hit / len(relevant) if relevant else None,
             'ndcg_at_5': dcg([labels[i] for i in ids[:k]]) / denominator if denominator else None,
             'mrr_at_5': next((1 / (i + 1) for i, key in enumerate(ids[:k]) if key in relevant), 0.0)
-                          if relevant else None}
+                            if relevant else None}
 

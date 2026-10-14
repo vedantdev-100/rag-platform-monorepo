@@ -211,3 +211,17 @@ uv run --project evals/step15_deepeval --locked python \
   --captures evals/step15/results/pipeline-two-pdfs-v1.jsonl \
   --profile full \
   --out evals/step15/results/deepeval-two-pdfs-full-v1
+
+
+
+
+
+
+
+
+
+
+
+
+
+Give a brief overview pointwise of what all  are being done and with what datasets. Give short explanation about the evaluation methods that are being used.

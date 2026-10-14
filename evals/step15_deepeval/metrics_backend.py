@@ -1,15 +1,20 @@
 """DeepEval owns semantic scoring; deterministic audit metrics remain separate."""
-from dataclasses import dataclass
 import json
 import math
 import re
-from pydantic import ValidationError
+from dataclasses import dataclass
 
-from deepeval.metrics import (AnswerRelevancyMetric, FaithfulnessMetric,
-    ContextualPrecisionMetric, ContextualRecallMetric, ContextualRelevancyMetric, GEval)
+from capture_tools import HttpFailure, exact_context, ranked_metrics
+from deepeval.metrics import (
+    AnswerRelevancyMetric,
+    ContextualPrecisionMetric,
+    ContextualRecallMetric,
+    ContextualRelevancyMetric,
+    FaithfulnessMetric,
+    GEval,
+)
 from deepeval.test_case import LLMTestCase, SingleTurnParams
-
-from capture_tools import exact_context, ranked_metrics, HttpFailure
+from pydantic import ValidationError
 
 METRIC_DEFINITION_VERSION = 'deepeval-step15-v1'
 CUSTOM_STEPS = {
@@ -99,7 +104,7 @@ def metric_specs(case, record, judge, profile='full'):
     specs = []
     if record['mode'] != 'oracle' and retrieved:
         for key, cls in [('contextual_precision', ContextualPrecisionMetric),
-                         ('contextual_recall', ContextualRecallMetric)]:
+                        ('contextual_recall', ContextualRecallMetric)]:
             specs.append(MetricSpec('deepeval_' + key, cls(**common), 'ranked_retrieval',
                                     cls.__name__, retrieval_case))
         specs.append(MetricSpec('deepeval_retrieved_context_relevancy', ContextualRelevancyMetric(**common),
@@ -121,9 +126,9 @@ def metric_specs(case, record, judge, profile='full'):
             if key.startswith('citation') and not bounded:
                 continue
             params = [SingleTurnParams.INPUT, SingleTurnParams.ACTUAL_OUTPUT,
-                      SingleTurnParams.RETRIEVAL_CONTEXT if key.startswith('citation') else SingleTurnParams.EXPECTED_OUTPUT]
+                        SingleTurnParams.RETRIEVAL_CONTEXT if key.startswith('citation') else SingleTurnParams.EXPECTED_OUTPUT]
             metric = GEval(name=key.replace('_', ' ').title(), evaluation_steps=CUSTOM_STEPS[key],
-                           evaluation_params=params, model=judge, threshold=None, async_mode=False)
+                            evaluation_params=params, model=judge, threshold=None, async_mode=False)
             specs.append(MetricSpec('deepeval_geval_' + key, metric,
                                     'labeled_exact_context' if key.startswith('citation') else 'reference_answer',
                                     'GEval: task-specific fixed evaluation_steps',

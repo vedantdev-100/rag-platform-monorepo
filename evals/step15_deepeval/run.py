@@ -8,17 +8,16 @@ os.environ['DEEPEVAL_EVAL_MODE'] = 'llm'
 os.environ['CONFIDENT_API_KEY'] = ''
 
 import argparse
-from importlib.metadata import version
 import json
-from pathlib import Path
 import subprocess
 import sys
-
-from pydantic import BaseModel, ConfigDict, Field
+from importlib.metadata import version
+from pathlib import Path
 
 import capture_tools as tools
-from lmstudio_judge import LMStudioJudge, ADAPTER_VERSION
-from metrics_backend import score_case, METRIC_DEFINITION_VERSION, CUSTOM_STEPS
+from lmstudio_judge import ADAPTER_VERSION, LMStudioJudge
+from metrics_backend import CUSTOM_STEPS, METRIC_DEFINITION_VERSION, score_case
+from pydantic import BaseModel, ConfigDict, Field
 
 
 def validate_captures(data, captures):
@@ -163,8 +162,7 @@ def main():
     elif args.command == 'doctor':
         doctor(cfg)
     else:
-        tools.write_json(args.out, {r['case_id']: {c['chunk_id']: None for c in r['retrieved']}
-                                   for r in tools.load_rows(args.captures)})
+        tools.write_json(args.out, {r['case_id']: {c['chunk_id']: None for c in r['retrieved']} for r in tools.load_rows(args.captures)})
         print('Review null grades as 0/1/2 and add known relevant missed chunks.')
 
 
