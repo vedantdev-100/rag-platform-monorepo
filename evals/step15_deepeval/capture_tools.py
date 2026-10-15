@@ -20,16 +20,19 @@ ROOT = Path(__file__).resolve().parent
 RUBRIC_VERSION = 'step15-v1'
 
 
+# Compute SHA-256 hex digest for bytes or JSON-serialized data.
 def sha(value):
     if not isinstance(value, bytes):
         value = json.dumps(value, sort_keys=True, ensure_ascii=False).encode()
     return hashlib.sha256(value).hexdigest()
 
 
+# Load JSON lines from a file into a list of dictionaries.
 def load_rows(path):
     return [json.loads(line) for line in Path(path).read_text(encoding='utf-8').splitlines() if line.strip()]
 
 
+# Atomically write data as formatted JSON using a temporary file.
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -38,6 +41,7 @@ def write_json(path, value):
     temporary.replace(path)
 
 
+# Append a single JSON-serialized record as a new line in a file.
 def append_row(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -45,6 +49,7 @@ def append_row(path, value):
         f.write(json.dumps(value, ensure_ascii=False) + '\n')
 
 
+# Load evaluation configuration from .env.evals and EVAL_* environment variables.
 def config():
     values = {}
     p = Path('.env.evals')
@@ -58,6 +63,7 @@ def config():
     return values
 
 
+# Retrieve test access token from EVAL_ACCESS_TOKEN env var or interactive prompt.
 def token():
     value = os.environ.get('EVAL_ACCESS_TOKEN') or getpass.getpass('Test-account Bearer access token: ')
     if not value.strip():
@@ -71,6 +77,7 @@ class HttpFailure(Exception):
         super().__init__('HTTP ' + str(status))
 
 
+# Perform an HTTP request with JSON handling, Bearer auth, and redirect protection.
 def request(url, *, data=None, bearer=None, headers=None, method=None, timeout=180):
     headers = dict(headers or {})
     if bearer:
@@ -90,6 +97,7 @@ def request(url, *, data=None, bearer=None, headers=None, method=None, timeout=1
         raise HttpFailure(exc.code, exc.headers.get('Retry-After')) from None
 
 
+# Sample and split FinanceBench questions and PDFs into dev and test golden datasets.
 def prepare(financebench, count, seed, destination):
     if not 20 <= count <= 30:
         raise ValueError('Choose 20–30 cases')
@@ -165,6 +173,7 @@ def prepare(financebench, count, seed, destination):
     print(f'Prepared {count} questions and {len(docs)} PDFs. Review {dest / "questions.csv"}.')
 
 
+# Upload dataset PDFs to the RAG API and poll until ingestion completes.
 def upload(dataset_dir, cfg):
     data = Path(dataset_dir)
     docs = json.loads((data / 'documents.json').read_text())
@@ -206,6 +215,7 @@ def upload(dataset_dir, cfg):
             time.sleep(interval)
 
 
+# Run evaluation capture inside the target Docker container and record output rows.
 def do_capture(args, cfg):
     data = Path(args.data)
     cases = load_rows(data / 'golden.jsonl')
@@ -272,6 +282,7 @@ def do_capture(args, cfg):
                         capture_output=True)
 
 
+# Extract and parse JSON result payload from Docker container stdout.
 def parse_capture_result(stdout):
     # Docker/Python in the Linux container emits UTF-8. Windows text=True would
     # otherwise choose the host ACP (often CP1252), corrupting source evidence or
@@ -286,6 +297,7 @@ def parse_capture_result(stdout):
     return json.loads(lines[-1])
 
 
+# Extract structured evidence JSON blocks from captured prompt messages.
 def exact_context(record):
     messages = record.get('messages') or []
     if not messages:
@@ -300,6 +312,7 @@ def exact_context(record):
     return blocks
 
 
+# Compute ranking evaluation metrics (Precision@k, Recall@k, NDCG@k, MRR@k).
 def ranked_metrics(ids, labels, k=5):
     """Reviewed labels keyed by chunk ID. Incomplete labels yield labeled recall."""
     if len(ids) != len(set(ids)):

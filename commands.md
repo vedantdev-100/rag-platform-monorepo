@@ -225,3 +225,17 @@ uv run --project evals/step15_deepeval --locked python \
 
 
 Give a brief overview pointwise of what all  are being done and with what datasets. Give short explanation about the evaluation methods that are being used.
+
+# give user the permission to run kubectl cmds directly
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+
+# Step 10 — Useful cluster management commands  
+
+Cluster nodes- 	kubectl get nodes
+All Pods- 	kubectl get pods -A
+Node resource usage- 	kubectl top nodes
+Pod resource usage- 	kubectl top pods -A
+K3s log- 	sudo journalctl -u k3s -f
+Restart K3s- 	sudo systemctl restart k3s
+Stop K3s- 	sudo systemctl stop k3s
+Start K3s- 	sudo systemctl start k3s
