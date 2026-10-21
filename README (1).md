@@ -273,6 +273,9 @@ sudo install -m 600 \
   -g "$(id -gn)" \
   /etc/rancher/k3s/k3s.yaml \
   "$HOME/.kube/config"
+
+# use this instead
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 ```
 
 Verify the correct context:

@@ -45,7 +45,14 @@ docling-serve-1  | 2026-10-12T05:25:42.639282870Z [92mINFO[0m:	05:25:42 - docl
 docling-serve-1  | 2026-10-12T05:25:42.639310713Z [92m[92mINFO[0m[0m:	05:25:42 - docling.models.stages.ocr.auto_ocr_model - Auto OCR model selected rapidocr with onnxruntime.
 docling-serve-1  | 2026-10-12T05:25:42.652667267Z [92mINFO[0m:	05:25:42 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
 docling-serve-1  | 2026-10-12T05:25:42.652683593Z [92m[92mINFO[0m[0m:	05:25:42 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
-docling-serve-1  | 2026-10-12T05:25:43.679051166Z Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]Loading weights:  22%|██▏       | 172/770 [00:00<00:00, 1712.57it/s]Loading weights:  45%|████▍     | 344/770 [00:00<00:00, 798.01it/s] Loading weights:  60%|██████    | 464/770 [00:00<00:00, 909.75it/s]Loading weights:  75%|███████▌  | 579/770 [00:00<00:00, 977.84it/s]Loading weights:  92%|█████████▏| 712/770 [00:00<00:00, 1053.12it/s]Loading weights: 100%|██████████| 770/770 [00:00<00:00, 1060.10it/s]
+docling-serve-1  | 2026-10-12T05:25:43.679051166Z 
+Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]
+Loading weights:  22%|██▏       | 172/770 [00:00<00:00, 1712.57it/s]
+Loading weights:  45%|████▍     | 344/770 [00:00<00:00, 798.01it/s] 
+Loading weights:  60%|██████    | 464/770 [00:00<00:00, 909.75it/s]
+Loading weights:  75%|███████▌  | 579/770 [00:00<00:00, 977.84it/s]
+Loading weights:  92%|█████████▏| 712/770 [00:00<00:00, 1053.12it/s]
+Loading weights: 100%|██████████| 770/770 [00:00<00:00, 1060.10it/s]
 docling-serve-1  | 2026-10-12T05:25:43.793815336Z [92mINFO[0m:	05:25:43 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
 docling-serve-1  | 2026-10-12T05:25:43.793832336Z [92m[92mINFO[0m[0m:	05:25:43 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
 docling-serve-1  | 2026-10-12T05:25:44.749037506Z [92mINFO[0m:	05:25:44 - uvicorn.error - Application startup complete.
@@ -224,7 +231,12 @@ docling-serve-1  | 2026-10-12T06:04:20.278621888Z [92mINFO[0m:	06:04:20 - docl
 docling-serve-1  | 2026-10-12T06:04:20.278642989Z [92m[92mINFO[0m[0m:	06:04:20 - docling.document_converter - Initializing pipeline for StandardPdfPipeline with options hash aa4b16f4b50c1a18e670b57587c18b23
 docling-serve-1  | 2026-10-12T06:04:20.281277055Z [92mINFO[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
 docling-serve-1  | 2026-10-12T06:04:20.281289556Z [92m[92mINFO[0m[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
-docling-serve-1  | 2026-10-12T06:04:20.887993380Z Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]Loading weights:  26%|██▌       | 199/770 [00:00<00:00, 1980.61it/s]Loading weights:  52%|█████▏    | 401/770 [00:00<00:00, 1994.20it/s]Loading weights:  82%|████████▏ | 629/770 [00:00<00:00, 2119.63it/s]Loading weights: 100%|██████████| 770/770 [00:00<00:00, 2130.29it/s]
+docling-serve-1  | 2026-10-12T06:04:20.887993380Z 
+Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]
+Loading weights:  26%|██▌       | 199/770 [00:00<00:00, 1980.61it/s]
+Loading weights:  52%|█████▏    | 401/770 [00:00<00:00, 1994.20it/s]
+Loading weights:  82%|████████▏ | 629/770 [00:00<00:00, 2119.63it/s]
+Loading weights: 100%|██████████| 770/770 [00:00<00:00, 2130.29it/s]
 docling-serve-1  | 2026-10-12T06:04:20.918053640Z [92mINFO[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
 docling-serve-1  | 2026-10-12T06:04:20.918073440Z [92m[92mINFO[0m[0m:	06:04:20 - docling.utils.accelerator_utils - Accelerator device: 'cpu'
 docling-serve-1  | 2026-10-12T06:04:21.618794540Z [92mINFO[0m:	06:04:21 - docling.datamodel.document - detected formats: [<InputFormat.PDF: 'pdf'>]

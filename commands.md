@@ -219,11 +219,6 @@ uv run --project evals/step15_deepeval --locked python \
 
 
 
-
-
-
-
-
 Give a brief overview pointwise of what all  are being done and with what datasets. Give short explanation about the evaluation methods that are being used.
 
 # give user the permission to run kubectl cmds directly
